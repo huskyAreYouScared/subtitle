@@ -1,7 +1,7 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
-
+import './ipc-event'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -20,12 +20,16 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
+    show: true, // 防止初次出现闪烁 在ready-to-show进行加载
     height: 563,
     useContentSize: true,
+    frame: false,
     width: 1000,
-    // webPreferences: {
-    //   nodeIntegration: true
-    // }
+    center:true,
+    backgroundColor:'#1d1d1d',
+    webPreferences: {
+      nodeIntegration: true
+    }
   })
 
   mainWindow.loadURL(winURL)
@@ -48,6 +52,9 @@ app.on('activate', () => {
     createWindow()
   }
 })
+// app.once('ready-to-show', () => {
+//   win.show()
+// })
 
 /**
  * Auto Updater

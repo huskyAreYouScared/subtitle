@@ -1,0 +1,32 @@
+
+$primary:#212121;
+$deep:#1d1d1d;
+$tint:rgb(68, 68, 68);
+$text:#F5F5F5;
+$sub-text:#BDBDBD;
+$smallTxt:12px;
+
+.bg{
+  background: $primary;
+}
+.bg-tint{
+  background: $tint;
+}
+.bg-deep{
+  background: $deep;
+}
+.text{
+  color: $text;
+}
+.text-deep{
+  color: $sub-text;
+}
+
+@mixin textCenter($lineHeight) {
+  text-align: center;
+  line-height: $lineHeight;
+}
+
+@mixin cursorPointer {
+  cursor: pointer;
+}
