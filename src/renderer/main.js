@@ -10,6 +10,10 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
+// 用户目录
+const { remote } = require('electron');
+Vue.prototype.$userData = remote.app.getPath('userData');
+
 /* eslint-disable no-new */
 new Vue({
   components: { App },

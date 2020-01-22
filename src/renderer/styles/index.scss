@@ -1,20 +1,21 @@
 @import './reset.scss';
 @import './variable.scss';
 @import './common.scss';
-@import './layout.scss';
-@import './menubar.scss';
-@import './sidebar.scss';
+@import './basic-layout/layout.scss';
+@import './tool-layout/menubar.scss';
+@import './tool-layout/sidebar.scss';
+@import './tool-layout/viewport.scss';
 @media screen and (max-width:786px){
-  @import './xs-layout.scss' ;
+  @import './basic-layout/xs-layout.scss' ;
 }
 @media screen and (min-width:786px){
-  @import './small-layout.scss' ;
+  @import './basic-layout/small-layout.scss' ;
 }
 @media screen and (min-width:960px){
-  @import './medium-layout.scss' ;
+  @import './basic-layout/medium-layout.scss' ;
 }
 @media screen and (min-width:1200px){
- @import './big-layout.scss' ;
+ @import './basic-layout/big-layout.scss' ;
 }
 
 

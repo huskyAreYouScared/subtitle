@@ -5,7 +5,7 @@
       <span class="iconfont icon-jiahao text toolbar-item" @click="selectLocalFile"></span>
     </div>
     <div class="file-list" >
-      <p class="file-item text" v-for="(item,index) in filePath" :key="index">
+      <p class="file-item text" @click="selectFile(item)" v-for="(item,index) in filePath" :key="index">
         {{item.name}}
       </p>
     </div>
@@ -13,7 +13,8 @@
 </template>
 
 <script>
-import { ipcRenderer as ipc } from 'electron';
+import { ipcRenderer as ipc,remote} from 'electron';
+import {mapMutations } from 'vuex'
 import fs from 'fs'
 export default {
   components: {},
@@ -22,7 +23,9 @@ export default {
       filePath:[]
     };
   },
-  computed: {},
+  computed: {
+    // ...mapMutations(['setFilePath'])
+  },
   watch: {},
   methods: {
     selectLocalFile(){
@@ -30,7 +33,6 @@ export default {
     },
     init(){
       ipc.on('selected-file', (event, file) =>{
-        
         let temp = file.filePaths.map(item=>{
           return {
             name:item.split('\\').pop(),
@@ -40,7 +42,6 @@ export default {
         this.filePath=[...this.filePath,...temp]
         temp =null
       })
-      
       this.$refs.sidebar.addEventListener('drop', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -56,9 +57,14 @@ export default {
         e.preventDefault();
         e.stopPropagation();
       });
+    },
+    selectFile(item){
+      this.$store.commit('setFilePath',item.path)
     }
   },
   mounted() {
+    console.log(this.$userData);
+    
     this.init()
   }
 }

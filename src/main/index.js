@@ -2,6 +2,7 @@
 
 import { app, BrowserWindow } from 'electron'
 import './ipc-event'
+import './global'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -23,12 +24,13 @@ function createWindow () {
     show: true, // 防止初次出现闪烁 在ready-to-show进行加载
     height: 563,
     useContentSize: true,
-    frame: false,
+    frame: true,
     width: 1000,
     center:true,
     backgroundColor:'#1d1d1d',
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      webSecurity: false
     }
   })
 
