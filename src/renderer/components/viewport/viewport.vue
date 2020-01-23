@@ -6,37 +6,36 @@
 </template>
 
 <script>
-import { ipcRenderer as ipc,remote} from 'electron';
+import { ipcRenderer as ipc, remote} from 'electron'
 import {mapState} from 'vuex'
 export default {
   components: {},
-  data() {
+  data () {
     return {
-      currentPath:''
-    };
+      currentPath: ''
+    }
   },
   computed: {
     ...mapState(['filePath'])
   },
   watch: {
-    filePath:{
-      handler:function(newVal,oldVal){
-        this.currentPath =newVal.filePath
-        console.log(newVal);
-        
+    filePath: {
+      handler: function (newVal, oldVal) {
+        this.currentPath = newVal.filePath
+        console.log(newVal)
       },
-      deep:true
+      deep: true
     }
   },
   methods: {
-    init(){
+    init () {
       // ipc.on('file-intend',(event, file) =>{
-        
+
       //   this.filePath = file
       // })
     }
   },
-  mounted() {
+  mounted () {
 
   }
 }

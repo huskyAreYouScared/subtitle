@@ -6,17 +6,17 @@
 <script>
 export default {
   components: {},
-  data() {
+  data () {
     return {
-      
-    };
+
+    }
   },
   computed: {},
   watch: {},
   methods: {
 
   },
-  mounted() {
+  mounted () {
 
   }
 }

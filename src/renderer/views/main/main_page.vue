@@ -15,17 +15,17 @@ export default {
     sidebar,
     viewport
   },
-  data() {
+  data () {
     return {
 
-    };
+    }
   },
   computed: {},
   watch: {},
   methods: {
 
   },
-  mounted() {
+  mounted () {
 
   }
 }

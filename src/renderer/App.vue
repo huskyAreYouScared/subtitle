@@ -9,7 +9,7 @@
   import menubar from '@/components/menubar/menubar'
   export default {
     name: 'husky-subtitle',
-    components:{
+    components: {
       menubar
     }
   }

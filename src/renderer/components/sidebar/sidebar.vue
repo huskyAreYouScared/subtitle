@@ -4,7 +4,7 @@
     <div class="top-toolbar">
       <span class="iconfont icon-jiahao text toolbar-item" @click="selectLocalFile"></span>
     </div>
-    <div class="file-list" >
+    <div class="file-list" @dblclick="selectLocalFile">
       <p class="file-item text" @click="selectFile(item)" v-for="(item,index) in filePath" :key="index">
         {{item.name}}
       </p>
@@ -13,58 +13,69 @@
 </template>
 
 <script>
-import { ipcRenderer as ipc,remote} from 'electron';
+import { ipcRenderer as ipc, remote} from 'electron'
 import {mapMutations } from 'vuex'
 import fs from 'fs'
 export default {
   components: {},
-  data() {
+  data () {
     return {
-      filePath:[]
-    };
+      filePath: []
+    }
   },
   computed: {
     // ...mapMutations(['setFilePath'])
   },
   watch: {},
   methods: {
-    selectLocalFile(){
+    selectLocalFile () {
       ipc.send('open-file-dialog')
     },
-    init(){
-      ipc.on('selected-file', (event, file) =>{
-        let temp = file.filePaths.map(item=>{
+    init () {
+      ipc.on('selected-file', (event, file) => {
+        let temp = file.filePaths.map(item => {
           return {
-            name:item.split('\\').pop(),
-            path:item
+            name: item.split('\\').pop(),
+            path: item
           }
         })
-        this.filePath=[...this.filePath,...temp]
-        temp =null
+        this.filePath = [...this.filePath, ...temp]
+        temp = null
       })
       this.$refs.sidebar.addEventListener('drop', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault()
+        e.stopPropagation()
 
         for (const f of e.dataTransfer.files) {
           this.filePath.push({
-            name:f.name,
-            path:f.path
+            name: f.name,
+            path: f.path
           })
         }
-      });
+      })
       this.$refs.sidebar.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      });
+        e.preventDefault()
+        e.stopPropagation()
+      })
     },
-    selectFile(item){
-      this.$store.commit('setFilePath',item.path)
+    selectFile (item) {
+      this.$store.commit('setFilePath', item.path)
+      this.extractAudio(item.path)
+    },
+    /**
+     * @param targetPath 目标文件路径
+     */
+    extractAudio(targetPath){
+      
+      this.$exec(`${this.$ffmpegPath} -i ${targetPath} -acodec aac -vn ${this.$userPath}/output.aac `,function(error, stdout, stderr){
+        console.log(error,stdout, stderr);
+
+      })
     }
   },
-  mounted() {
-    console.log(this.$userData);
-    
+  mounted () {
+    console.log(this.$userPath)
+    console.log(this.$ffmpegPath)
     this.init()
   }
 }

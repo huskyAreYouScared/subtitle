@@ -1,15 +1,15 @@
 const state = {
-  filePath:''
+  filePath: ''
 }
 
 const mutations = {
-  setFilePath (state,data) {
+  setFilePath (state, data) {
     state.filePath = data
   }
 }
 
 const actions = {
-  
+
 }
 
 export default {

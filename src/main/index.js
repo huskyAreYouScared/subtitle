@@ -26,8 +26,8 @@ function createWindow () {
     useContentSize: true,
     frame: true,
     width: 1000,
-    center:true,
-    backgroundColor:'#1d1d1d',
+    center: true,
+    backgroundColor: '#1d1d1d',
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false
