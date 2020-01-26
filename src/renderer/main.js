@@ -11,7 +11,7 @@ Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 // 用户目录
-const { remote,app } = require('electron')
+const { remote, app } = require('electron')
 Vue.prototype.$userPath = remote.getGlobal('fileObj').userPath
 
 // ffmpeg目录

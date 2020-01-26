@@ -2,16 +2,15 @@
   height: calc(100vh - 30px);
   min-width: 250px;
   max-width: 250px;
-  background: $primary;
   .top-toolbar{
     display: flex;
     flex-wrap: nowrap;
     justify-content: flex-end;
     border-right: $tint 1px solid;
     .toolbar-item{
-      display: inline-block;
       width: 30px;
       height: 30px;
+      position: relative;
       @include textCenter(30px);
       @include cursorPointer
     }
@@ -37,8 +36,20 @@
     }
     .file-item{
       font-size: $smallTxt;
-      padding: 1px;
+      padding: 3px;
+      position: relative;
       @include cursorPointer;
+      .item-toolsbar{
+        display: none;
+        position: absolute;
+        right: 1px;
+      }
+      &:hover .item-toolsbar{
+        display: inline-block;
+      }
+      &:hover{
+        background: $deep;
+      }
     }
   }
 }

@@ -1,12 +1,15 @@
 <!--  -->
 <template>
-  <div class='sidebar-container' ref="sidebar">
+  <div class='sidebar-container bg' ref="sidebar">
     <div class="top-toolbar">
       <span class="iconfont icon-jiahao text toolbar-item" @click="selectLocalFile"></span>
     </div>
     <div class="file-list" @dblclick="selectLocalFile">
-      <p class="file-item text" @click="selectFile(item)" v-for="(item,index) in filePath" :key="index">
+      <p class="file-item text" @dbclick="selectFile(item)" v-for="(item,index) in filePath" :key="index">
         {{item.name}}
+        <span class="item-toolsbar">
+          <span @click="deleteFile(index)" class="iconfont icon-jianhao text"></span>
+        </span>
       </p>
     </div>
   </div>
@@ -65,12 +68,13 @@ export default {
     /**
      * @param targetPath 目标文件路径
      */
-    extractAudio(targetPath){
-      
-      this.$exec(`${this.$ffmpegPath} -i ${targetPath} -acodec aac -vn ${this.$userPath}/output.aac `,function(error, stdout, stderr){
-        console.log(error,stdout, stderr);
-
+    extractAudio (targetPath) {
+      this.$exec(`${this.$ffmpegPath} -i ${targetPath} -acodec aac -vn ${this.$userPath}/output.aac `, function (error, stdout, stderr) {
+        console.log(error, stdout, stderr)
       })
+    },
+    deleteFile(index){
+      this.filePath.splice(index,1)
     }
   },
   mounted () {
