@@ -10,14 +10,17 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
-// 用户目录
+// 项目目录
 const { remote, app } = require('electron')
 Vue.prototype.$userPath = remote.getGlobal('fileObj').userPath
+
+// 用户目录
+Vue.prototype.$userPath = remote.app.getPath('userData');
 
 // ffmpeg目录
 const ffmpegPath = require('ffmpeg-static')
 Vue.prototype.$ffmpegPath = ffmpegPath
-// ffmpeg目录
+// exec
 const { exec } = require('child_process')
 Vue.prototype.$exec = exec
 

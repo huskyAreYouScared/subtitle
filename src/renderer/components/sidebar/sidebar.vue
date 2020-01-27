@@ -5,7 +5,7 @@
       <span class="iconfont icon-jiahao text toolbar-item" @click="selectLocalFile"></span>
     </div>
     <div class="file-list" @dblclick="selectLocalFile">
-      <p class="file-item text" @dbclick="selectFile(item)" v-for="(item,index) in filePath" :key="index">
+      <p class="file-item text" @click="selectFile(item)" v-for="(item,index) in filePath" :key="index">
         {{item.name}}
         <span class="item-toolsbar">
           <span @click="deleteFile(index)" class="iconfont icon-jianhao text"></span>
@@ -19,6 +19,7 @@
 import { ipcRenderer as ipc, remote} from 'electron'
 import {mapMutations } from 'vuex'
 import fs from 'fs'
+import { log } from 'util'
 export default {
   components: {},
   data () {
@@ -48,11 +49,22 @@ export default {
       this.$refs.sidebar.addEventListener('drop', (e) => {
         e.preventDefault()
         e.stopPropagation()
-
+        let tempName ='' // 不支持的文件
         for (const f of e.dataTransfer.files) {
-          this.filePath.push({
-            name: f.name,
-            path: f.path
+          if(/\.(mp4|avi|mkv|mov)$/.test(f.name)){
+            this.filePath.push({
+              name: f.name,
+              path: f.path
+            })
+          }else{
+            tempName+=f.name+'\n'
+          }
+        }
+        if(tempName.length>0){
+          tempName+='\n不支持该格式文件'
+          ipc.send('custom-message',{
+            msg:tempName,
+            type:'error'
           })
         }
       })
@@ -78,8 +90,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$userPath)
-    console.log(this.$ffmpegPath)
     this.init()
   }
 }
