@@ -3,10 +3,14 @@
 const userPath = require('electron').app.getAppPath()
 const fs = require('fs')
 
-export default global.fileObj = {
+global.fileObj = {
   currentPath: '',
   userPath: userPath
 }
+//
+global.isWindows = process.platform === 'darwin'? false : true
+export default global
+
 
 fs.mkdir(userPath + '/temp', function (err, result) {
 

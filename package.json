@@ -7,6 +7,7 @@
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
+    "build:mac": "node .electron-vue/build.js && electron-builder --mac --x64",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
     "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
@@ -53,13 +54,13 @@
     }
   },
   "dependencies": {
-    "vue": "^2.5.16",
     "axios": "^0.18.0",
+    "ffmpeg-static": "^3.0.0",
+    "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vuex-electron": "^1.0.0",
-    "ffmpeg-static": "^3.0.0"
+    "vuex-electron": "^1.0.0"
   },
   "devDependencies": {
     "ajv": "^6.5.0",
@@ -95,6 +96,7 @@
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "0.4.0",
     "multispinner": "^0.2.1",
+    "node-gyp": "^6.1.0",
     "node-loader": "^0.6.0",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",

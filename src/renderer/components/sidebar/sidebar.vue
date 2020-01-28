@@ -7,9 +7,9 @@
     <div class="file-list" @dblclick="selectLocalFile">
       <p class="file-item text" @click="selectFile(item)" v-for="(item,index) in filePath" :key="index">
         {{item.name}}
-        <span class="item-toolsbar">
+        <!-- <span class="item-toolsbar">
           <span @click="deleteFile(index)" class="iconfont icon-jianhao text"></span>
-        </span>
+        </span> -->
       </p>
     </div>
   </div>
@@ -18,6 +18,7 @@
 <script>
 import { ipcRenderer as ipc, remote} from 'electron'
 import {mapMutations } from 'vuex'
+import {  checkAllowFile} from '@/utils/tools.js'
 import fs from 'fs'
 import { log } from 'util'
 export default {
@@ -39,7 +40,7 @@ export default {
       ipc.on('selected-file', (event, file) => {
         let temp = file.filePaths.map(item => {
           return {
-            name: item.split('\\').pop(),
+            name: this.$isWindows?item.split('\\').pop():item.split('/').pop(),
             path: item
           }
         })
@@ -49,22 +50,22 @@ export default {
       this.$refs.sidebar.addEventListener('drop', (e) => {
         e.preventDefault()
         e.stopPropagation()
-        let tempName ='' // 不支持的文件
+        let tempName = '' // 不支持的文件
         for (const f of e.dataTransfer.files) {
-          if(/\.(mp4|avi|mkv|mov)$/.test(f.name)){
+          if (/\.(mp4|avi|mkv|mov)$/.test(f.name)) {
             this.filePath.push({
               name: f.name,
               path: f.path
             })
-          }else{
-            tempName+=f.name+'\n'
+          } else {
+            tempName += f.name + '\n'
           }
         }
-        if(tempName.length>0){
-          tempName+='\n不支持该格式文件'
-          ipc.send('custom-message',{
-            msg:tempName,
-            type:'error'
+        if (tempName.length > 0) {
+          tempName += '\n不支持该格式文件'
+          ipc.send('custom-message', {
+            msg: tempName,
+            type: 'error'
           })
         }
       })
@@ -75,18 +76,30 @@ export default {
     },
     selectFile (item) {
       this.$store.commit('setFilePath', item.path)
-      this.extractAudio(item.path)
+      this.extractVideo(item)
     },
     /**
      * @param targetPath 目标文件路径
      */
-    extractAudio (targetPath) {
-      this.$exec(`${this.$ffmpegPath} -i ${targetPath} -acodec aac -vn ${this.$userPath}/output.aac `, function (error, stdout, stderr) {
-        console.log(error, stdout, stderr)
+    extractAudio (target) {
+      
+      this.$exec(`${this.$ffmpegPath} -i ${target.path} -vn -y -acodec copy ${this.$objectPath}/temp/output.aac `, (error, stdout, stderr)=> {
+        
       })
     },
-    deleteFile(index){
-      this.filePath.splice(index,1)
+    extractVideo(target){
+      if(!checkAllowFile(target.name)){
+        this.$exec(`${this.$ffmpegPath} -i ${target.path} -vcodec copy -acodec copy ${this.$objectPath}/temp/output.mp4 `, (error, stdout, stderr) =>{
+          this.extractAudio({
+            name:'output.mp4',
+            path:`${this.$objectPath}/temp/output.mp4`
+          })  
+        })
+       
+      }
+    },
+    deleteFile (index) {
+      this.filePath.splice(index, 1)
     }
   },
   mounted () {

@@ -11,11 +11,14 @@ Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 // 项目目录
-const { remote, app } = require('electron')
-Vue.prototype.$userPath = remote.getGlobal('fileObj').userPath
+const { remote } = require('electron')
+Vue.prototype.$objectPath = remote.getGlobal('fileObj').userPath
+
+// 是否为windows
+Vue.prototype.$isWindows = remote.getGlobal('isWindows')
 
 // 用户目录
-Vue.prototype.$userPath = remote.app.getPath('userData');
+Vue.prototype.$userPath = remote.app.getPath('userData')
 
 // ffmpeg目录
 const ffmpegPath = require('ffmpeg-static')
