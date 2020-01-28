@@ -4,13 +4,14 @@
     <div class="top-toolbar">
       <span class="iconfont icon-jiahao text toolbar-item" @click="selectLocalFile"></span>
     </div>
-    <div class="file-list" @dblclick="selectLocalFile">
-      <p class="file-item text" @click="selectFile(item)" v-for="(item,index) in filePath" :key="index">
+    <div class="file-list">
+      <p class="file-item text"  @click="selectFile(item)" v-for="(item,index) in filePath" :key="index">
         {{item.name}}
-        <!-- <span class="item-toolsbar">
+        <span class="item-toolsbar">
           <span @click="deleteFile(index)" class="iconfont icon-jianhao text"></span>
-        </span> -->
+        </span>
       </p>
+      <p class="file-item text" v-show="filePath.length==0">支持拖拽选择文件</p>
     </div>
   </div>
 </template>
@@ -95,7 +96,8 @@ export default {
             path:`${this.$objectPath}/temp/output.mp4`
           })  
         })
-       
+      }else{
+        this.extractAudio(target)  
       }
     },
     deleteFile (index) {

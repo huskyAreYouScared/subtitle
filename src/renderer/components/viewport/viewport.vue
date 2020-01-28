@@ -1,7 +1,8 @@
 <!--  -->
 <template>
   <div class='viewport-container col-lg-11 col-md-11 col-sm-11 col-xs-11'>
-    <video class="video-style" controls :src="currentPath"></video>
+    <video v-if="currentPath !== ''" class="video-style" controls :src="`file:${currentPath}`"></video>
+    <p class="novideo text" v-else>请选择视频文件</p>
   </div>
 </template>
 
