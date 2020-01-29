@@ -1,16 +1,28 @@
 <!--  -->
 <template>
   <div class='viewport-container col-lg-11 col-md-11 col-sm-11 col-xs-11'>
-    <video v-if="currentPath !== ''" class="video-style" controls :src="`file:${currentPath}`"></video>
-    <p class="novideo text" v-else>请选择视频文件</p>
+    <div class="row">
+       <div class="subtitle-container col-lg-7 col-md-7 col-sm-7 col-xs-7">
+
+      </div>
+      <div class="video-container col-lg-5 col-md-5 col-sm-5 col-xs-5">
+        <showVideo v-if="currentPath !== ''" :currentPath="currentPath"></showVideo>
+        <p class="novideo text" v-else>请选择视频文件</p>
+      </div>
+    </div>
+   
+   
   </div>
 </template>
 
 <script>
 import { ipcRenderer as ipc, remote} from 'electron'
+import showVideo from './components/video'
 import {mapState} from 'vuex'
 export default {
-  components: {},
+  components: {
+    showVideo
+  },
   data () {
     return {
       currentPath: ''

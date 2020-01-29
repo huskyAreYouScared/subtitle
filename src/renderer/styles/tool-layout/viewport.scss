@@ -1,12 +1,21 @@
 .viewport-container{
+  // subtitle component style
+  .subtitle-container{
+    height: calc(100vh - 35px);
+    border: solid 1px $tint;
+  }
+
+  // video component style
+  .video-container{
+    .video-style{
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .novideo{
+      margin: 5px;
+      @include textCenter(15px);
+    }
+  }
   
-  .video-style{
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  .novideo{
-    margin: 5px;
-    @include textCenter(15px);
-  }
 }

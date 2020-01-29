@@ -84,13 +84,14 @@ export default {
      */
     extractAudio (target) {
       
-      this.$exec(`${this.$ffmpegPath} -i ${target.path} -vn -y -acodec copy ${this.$objectPath}/temp/output.aac `, (error, stdout, stderr)=> {
+      // this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vn -y -acodec copy ${this.$objectPath}/temp/output.aac `, (error, stdout, stderr)=> {
+      this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -codec:a  pcm_f32le -ar 16000 -ac 2 -f f32le ${this.$objectPath}/temp/output.pcm `, (error, stdout, stderr)=> {
         
       })
     },
     extractVideo(target){
       if(!checkAllowFile(target.name)){
-        this.$exec(`${this.$ffmpegPath} -i ${target.path} -vcodec copy -acodec copy ${this.$objectPath}/temp/output.mp4 `, (error, stdout, stderr) =>{
+        this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vcodec copy -acodec copy ${this.$objectPath}/temp/output.mp4 `, (error, stdout, stderr) =>{
           this.extractAudio({
             name:'output.mp4',
             path:`${this.$objectPath}/temp/output.mp4`
