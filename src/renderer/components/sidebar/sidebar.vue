@@ -85,7 +85,8 @@ export default {
     extractAudio (target) {
       
       // this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vn -y -acodec copy ${this.$objectPath}/temp/output.aac `, (error, stdout, stderr)=> {
-      this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -codec:a  pcm_f32le -ar 16000 -ac 2 -f f32le ${this.$objectPath}/temp/output.pcm `, (error, stdout, stderr)=> {
+      // this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -codec:a  pcm_f32le -ar 16000 -ac 2 -f f32le ${this.$objectPath}/temp/output.pcm `, (error, stdout, stderr)=> {
+      this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -f wav -ar 16000 ${this.$objectPath}/temp/output.wav `, (error, stdout, stderr)=> {
         
       })
     },
