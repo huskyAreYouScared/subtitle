@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { ipcRenderer as ipc, remote} from 'electron'
+import { ipcRenderer as ipc} from 'electron'
 import {mapMutations } from 'vuex'
 import { checkAllowFile} from '@/utils/tools.js'
 import fs from 'fs'

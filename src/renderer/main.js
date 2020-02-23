@@ -24,7 +24,8 @@ Vue.prototype.$userPath = remote.app.getPath('userData')
 const ffmpegPath = require('ffmpeg-static')
 Vue.prototype.$ffmpegPath = ffmpegPath
 // exec
-const { exec } = require('child_process')
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 Vue.prototype.$exec = exec
 
 /* eslint-disable no-new */

@@ -2,10 +2,16 @@
   <div style="width:100%">
     <div>
       <button type="button" @click="splitStep">语音识别</button>
+      <button type="button" @click="exportFile">导出字幕srt文件</button>
       <div class="srt-container">
         <p v-for="audioItem in srtObjTemp" :key="audioItem.index">
-          <span>{{audioItem.index}}</span><br/><span>{{audioItem.start}}-->{{audioItem.end}}</span><br/>
-          <span>{{audioItem.value}}</span>
+          <input class="srt-input bg" type="text" v-model="audioItem.index">
+          <br/>
+          <input class="srt-input bg" type="text" v-model="audioItem.start">
+          -->
+          <input class="srt-input bg" type="text" v-model="audioItem.end">
+          <br/>
+          <textarea class="srt-textarea bg" v-model="audioItem.value" cols="30" rows="10"></textarea>
         </p>
       </div>
     </div>
@@ -14,6 +20,7 @@
 
 <script>
 import {speech as AipSpeechClient} from 'baidu-aip-sdk'
+import { ipcRenderer as ipc} from 'electron'
 import fs from 'fs'
 export default {
   data () {
@@ -29,31 +36,43 @@ export default {
       client:null // * baiduapi instance
     }
   },
+  mounted(){
+    ipc.on('save-srt-file', (event, file) => {
+        fs.writeFile(file.filePath,this.joinSrtFlie(),{flag:'w'},(err,data)=>{
+          if(!err){
+            ipc.send('custom-message', {
+              msg: '保存成功',
+              type: 'info'
+            })
+          }
+          console.log(data);
+          
+        })
+    })
+  },
   methods: {
     splitStep(){
       this.splitStateCtrl(true)
       this.newTempFolder(`${this.$objectPath}/temp/wav`)
       this.splitAudio()
     },
-    splitAudio(){
-      console.log(this.doubleNumberCtrl());
-      
-        this.$exec(`${this.$ffmpegPath} -y -ss ${this.doubleNumberCtrl()} -i ${this.$objectPath}/temp/output.wav  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav -hide_banner `, (error, stdout, stderr) => {
-          // 如果返回结果位true代表已经没有音频了
-          if(/audio:0kB/.test(stderr)){
-            this.splitStateCtrl(false)
-          }
-          if(this.splitState){
-            // 文件名加1
-            this.srtTiemLineCtrl(this.fileIndex,this.doubleNumberCtrl(),'start',`output_${this.fileIndex}.wav`)
-            this.startTimeCtrl(this.splitDuration)
-            this.srtTiemLineCtrl(this.fileIndex,this.doubleNumberCtrl(),'end')
-            this.splitAudio()
-            this.fileIndex++
-          }else{
-            this.aiAudio()
-          }
-        })
+    async splitAudio(){
+      const { stdout, stderr }=await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
+      // 如果返回结果位true代表已经没有音频了
+      if(/audio:0kB/.test(stderr)){
+        this.splitStateCtrl(false)
+      }
+      if(this.splitState){
+        // 文件名加1
+        this.srtTiemLineCtrl(this.fileIndex,this.doubleNumberCtrl(),'start',`output_${this.fileIndex}.wav`)
+        this.startTimeCtrl(this.splitDuration)
+        this.srtTiemLineCtrl(this.fileIndex,this.doubleNumberCtrl(),'end')
+        this.fileIndex++
+        this.splitAudio()
+      }else{
+        this.aiAudio()
+      }
+    
     },
     splitStateCtrl(state){
       this.splitState = state
@@ -65,11 +84,11 @@ export default {
           fs.unlinkSync(curPath); //删除文件
       });
       fs.mkdir(path,(err,data)=>{
-
+        
       })
     },
     startTimeCtrl(duration){
-      if(duration>this.splitDuration){
+      if(duration>20){
         return
       }
       if((this.splitStartTimeSeconds+duration)>=60){
@@ -115,16 +134,25 @@ export default {
       if(type=='start'){
         this.srtObjTemp.push({
           index:current,
-          start:TimeLine,
+          start:TimeLine+',000',
           end:'',
           value:'',
           audioFlieName:fileName
         })
       }else{
-        this.srtObjTemp[current-1].end = TimeLine
+        this.srtObjTemp[current-1].end = TimeLine+',000'
       }
     },
+    joinSrtFlie(){
+      let appendText=''
+      this.srtObjTemp.forEach((item)=>{
+        appendText+=`${item.index}\n${item.start}-->${item.end}\n${item.value}\n\n`
+      })
+      return appendText
+    },
     aiAudio () {
+      // 因为最后一个文件总是空文件，所以去除
+      // this.srtObjTemp.pop()
       // 设置APPID/AK/SK
       var APP_ID = '18336046'
       var API_KEY = 'CX7HpOECibS7wIGKXlAyxVA8'
@@ -138,10 +166,11 @@ export default {
     recognize(){
       fs.readFile(`${this.$objectPath}/temp/wav/output_${this.recognizeIndex}.wav`,(err,data)=>{
         let voiceBuffer = new Buffer(data)
-
         // 识别本地文件
         this.client.recognize(voiceBuffer, 'wav', 16000).then( (result)=> {
-          console.log(`<recognize>:${this.recognizeIndex} ` + JSON.stringify(result))
+          if(result.err_no=== 0){
+            this.srtObjTemp[this.recognizeIndex-1].value = result.result[0]
+          }
           if(this.recognizeIndex<this.srtObjTemp.length){
             this.recognizeIndex++
             this.recognize()
@@ -152,6 +181,9 @@ export default {
           console.log(err)
         })
       })
+    },
+    exportFile(){
+      ipc.send('save-srt-file-dialog')
     }
   }
 }

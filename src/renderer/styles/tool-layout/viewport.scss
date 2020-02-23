@@ -37,6 +37,15 @@
       border-radius: 3px;
     }
     color: #fff;
+    .srt-input{
+      color: #fff;
+      border: $tint 0 solid;
+    }
+    .srt-textarea{
+      color: #fff;
+      border: $tint 0 solid;
+      width: 100%;
+    }
   }
   
 }
