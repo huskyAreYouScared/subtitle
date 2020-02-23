@@ -31,8 +31,8 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
-      experimentalFeatures:true,
-      allowRunningInsecureContent:false
+      experimentalFeatures: true,
+      allowRunningInsecureContent: false
     }
   })
 

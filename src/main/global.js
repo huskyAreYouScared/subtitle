@@ -8,9 +8,8 @@ global.fileObj = {
   userPath: userPath
 }
 //
-global.isWindows = process.platform === 'darwin'? false : true
+global.isWindows = process.platform !== 'darwin'
 export default global
-
 
 fs.mkdir(userPath + '/temp', function (err, result) {
 

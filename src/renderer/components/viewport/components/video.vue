@@ -7,10 +7,10 @@
 
 <script>
 export default {
-  props:{
-    currentPath:{
-      type:String,
-      default:''
+  props: {
+    currentPath: {
+      type: String,
+      default: ''
     }
   }
 }

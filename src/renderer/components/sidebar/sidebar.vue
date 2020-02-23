@@ -19,7 +19,7 @@
 <script>
 import { ipcRenderer as ipc, remote} from 'electron'
 import {mapMutations } from 'vuex'
-import {  checkAllowFile} from '@/utils/tools.js'
+import { checkAllowFile} from '@/utils/tools.js'
 import fs from 'fs'
 import { log } from 'util'
 export default {
@@ -41,7 +41,7 @@ export default {
       ipc.on('selected-file', (event, file) => {
         let temp = file.filePaths.map(item => {
           return {
-            name: this.$isWindows?item.split('\\').pop():item.split('/').pop(),
+            name: this.$isWindows ? item.split('\\').pop() : item.split('/').pop(),
             path: item
           }
         })
@@ -83,23 +83,24 @@ export default {
      * @param targetPath 目标文件路径
      */
     extractAudio (target) {
-      
       // this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vn -y -acodec copy ${this.$objectPath}/temp/output.aac `, (error, stdout, stderr)=> {
       // this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -codec:a  pcm_f32le -ar 16000 -ac 2 -f f32le ${this.$objectPath}/temp/output.pcm `, (error, stdout, stderr)=> {
-      this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -f wav -ar 16000 ${this.$objectPath}/temp/output.wav `, (error, stdout, stderr)=> {
-        
+      this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -f wav  -ac 1 -ar 16000 ${this.$objectPath}/temp/output.wav `, (error, stdout, stderr) => {
+
       })
     },
-    extractVideo(target){
-      if(!checkAllowFile(target.name)){
-        this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vcodec copy -acodec copy ${this.$objectPath}/temp/output.mp4 `, (error, stdout, stderr) =>{
+    extractVideo (target) {
+      if (!checkAllowFile(target.name)) {
+        this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vcodec libx264 -preset fast -crf 20 -y -vf "scale=1920:-1" -acodec libmp3lame -ab 128k ${this.$objectPath}/temp/output.mp4 `, (error, stdout, stderr) => {
+          console.log(error);
+          
           this.extractAudio({
-            name:'output.mp4',
-            path:`${this.$objectPath}/temp/output.mp4`
-          })  
+            name: 'output.mp4',
+            path: `${this.$objectPath}/temp/output.mp4`
+          })
         })
-      }else{
-        this.extractAudio(target)  
+      } else {
+        this.extractAudio(target)
       }
     },
     deleteFile (index) {
