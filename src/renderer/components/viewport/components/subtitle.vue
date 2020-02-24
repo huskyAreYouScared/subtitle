@@ -78,13 +78,12 @@ export default {
       this.splitState = state
     },
     newTempFolder(path){
-      let files = fs.readdirSync(path);
-      files.forEach((file, index) => {
-          let curPath = path + "/" + file;
-          fs.unlinkSync(curPath); //删除文件
-      });
       fs.mkdir(path,(err,data)=>{
-        
+        let files = fs.readdirSync(path);
+        files.forEach((file, index) => {
+            let curPath = path + "/" + file;
+            fs.unlinkSync(curPath); //删除文件
+        });
       })
     },
     startTimeCtrl(duration){

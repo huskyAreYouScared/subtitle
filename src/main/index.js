@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, remote } from 'electron'
 import './ipc-event'
 import './global'
 /**
@@ -37,10 +37,11 @@ function createWindow () {
   })
 
   mainWindow.loadURL(winURL)
-
+  mainWindow.webContents.openDevTools()
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+  // 在开发环境获取项目目录，上线获取用户目录
 }
 
 app.on('ready', createWindow)
@@ -54,10 +55,12 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
+
   }
 })
 // app.once('ready-to-show', () => {
 //   win.show()
+  
 // })
 
 /**

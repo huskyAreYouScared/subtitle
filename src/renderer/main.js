@@ -12,8 +12,13 @@ Vue.config.productionTip = false
 
 // 项目目录
 const { remote } = require('electron')
-Vue.prototype.$objectPath = remote.getGlobal('fileObj').userPath
+const userPath = process.env.NODE_ENV == 'development' ? remote.getGlobal('fileObj').userPath : remote.app.getPath('userData')
+Vue.prototype.$objectPath = userPath
 
+const fs = require('fs')
+fs.mkdir(userPath + '/temp', function (err, result) {
+
+})
 // 是否为windows
 Vue.prototype.$isWindows = remote.getGlobal('isWindows')
 
@@ -22,7 +27,9 @@ Vue.prototype.$userPath = remote.app.getPath('userData')
 
 // ffmpeg目录
 const ffmpegPath = require('ffmpeg-static')
-Vue.prototype.$ffmpegPath = ffmpegPath
+// electron build default app.asar/node_modules change app.asar.unpacked
+Vue.prototype.$ffmpegPath = process.env.NODE_ENV == 'development' ? ffmpegPath : ffmpegPath.replace('app.asar','app.asar.unpacked')
+
 // exec
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);

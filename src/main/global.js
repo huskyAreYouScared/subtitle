@@ -1,8 +1,7 @@
 
 // 获取项目目录
-const userPath = require('electron').app.getAppPath()
-const fs = require('fs')
-
+const userPath = require('electron').app.getAppPath() 
+  
 global.fileObj = {
   currentPath: '',
   userPath: userPath
@@ -11,6 +10,4 @@ global.fileObj = {
 global.isWindows = process.platform !== 'darwin'
 export default global
 
-fs.mkdir(userPath + '/temp', function (err, result) {
 
-})
