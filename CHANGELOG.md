@@ -1,3 +1,22 @@
+# 0.2.0 (2020-02-24)
+
+
+### Bug Fixes
+
+* **main index.js global.js renderer sidebar.vue subtitle.vue main.js:** can use ([7adcfee](https://github.com/huskyAreYouScared/subtitle/commit/7adcfeef542b9dc7f4bcc5d0c6d3ebf5165e902d))
+
+
+### Features
+
+* **changelog.md:** 增加日志给予convertional-changelog ([0b74345](https://github.com/huskyAreYouScared/subtitle/commit/0b74345450d73194cc9f3a0203e7fc72722e4f1b))
+
+
+### Performance Improvements
+
+* version命令修改 ([b9b9218](https://github.com/huskyAreYouScared/subtitle/commit/b9b9218bdfe167b86d7fba3808306926a44c7a90))
+
+
+
 # 0.1.0 (2020-02-24)
 
 
