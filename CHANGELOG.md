@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/huskyAreYouScared/subtitle/compare/v0.2.0...v0.3.0) (2020-02-24)
+
+
+### Features
+
+* **renderer subtitle and style file:** add subtitle bcc type file ([e942d7b](https://github.com/huskyAreYouScared/subtitle/commit/e942d7bdd3764008d9cef6045eb01f5da6bfae61))
+
+
+
 # 0.2.0 (2020-02-24)
 
 
