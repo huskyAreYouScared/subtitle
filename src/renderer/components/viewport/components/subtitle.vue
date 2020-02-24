@@ -1,8 +1,9 @@
 <template>
   <div style="width:100%">
     <div>
-      <button type="button" @click="splitStep">语音识别</button>
-      <button type="button" @click="exportFile">导出字幕srt文件</button>
+      <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="splitStep">语音识别</button>
+      <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('srt')">导出字幕srt文件</button>
+      <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('bcc')">导出字幕bcc文件</button>
       <div class="srt-container">
         <p v-for="audioItem in srtObjTemp" :key="audioItem.index">
           <input class="srt-input bg" type="text" v-model="audioItem.index">
@@ -33,25 +34,52 @@ export default {
       fileIndex:1, // 文件索引
       recognizeIndex:1, // 识别索引
       splitDuration:10, // * 切分持续时间
-      client:null // * baiduapi instance
+      client:null, // * baiduapi instance
+      BCCObj:{
+        "font_size":0.4,
+        "font_color":"#FFFFFF",
+        "background_alpha":0.5,
+        "background_color":"#9C27B0",
+        "Stroke":"none",
+        "body":[
+            
+        ]
+      },
+      exportType:'srt',
+      disableBtn:false
     }
   },
   mounted(){
     ipc.on('save-srt-file', (event, file) => {
-        fs.writeFile(file.filePath,this.joinSrtFlie(),{flag:'w'},(err,data)=>{
+      let subtitleConetnt = ''
+      if(this.exportType === 'srt'){
+        subtitleConetnt = this.joinSrtFlie()
+      }else if(this.exportType === 'bcc'){
+        subtitleConetnt = this.joinBCCFlie()
+    
+      }
+        fs.writeFile(file.filePath,subtitleConetnt,{flag:'w'},(err,data)=>{
           if(!err){
             ipc.send('custom-message', {
               msg: '保存成功',
               type: 'info'
             })
           }
-          console.log(data);
-          
+
         })
     })
   },
   methods: {
+    init(){
+      this.fileIndex=1 // 文件索引
+      this.recognizeIndex=1 // 识别索引
+      this.splitStartTimeHours=0
+      this.splitStartTimeMinutes=0
+      this.splitStartTimeSeconds=0
+    },
     splitStep(){
+      this.srtObjTemp=[], // 清空之前的切分信息数组
+      this.disableBtn = true
       this.splitStateCtrl(true)
       this.newTempFolder(`${this.$objectPath}/temp/wav`)
       this.splitAudio()
@@ -136,7 +164,8 @@ export default {
           start:TimeLine+',000',
           end:'',
           value:'',
-          audioFlieName:fileName
+          audioFlieName:fileName,
+          startSecond:(current-1)*10
         })
       }else{
         this.srtObjTemp[current-1].end = TimeLine+',000'
@@ -145,9 +174,25 @@ export default {
     joinSrtFlie(){
       let appendText=''
       this.srtObjTemp.forEach((item)=>{
-        appendText+=`${item.index}\n${item.start}-->${item.end}\n${item.value}\n\n`
+        appendText+=`${item.index}\n${item.start} --> ${item.end}\n${item.value}\n\n`
       })
       return appendText
+    },
+    joinBCCFlie(){
+      let subtitleArr = []
+      this.srtObjTemp.forEach((item)=>{
+        let temp =  {
+          from:item.startSecond,
+          to:item.startSecond+this.splitDuration,
+          location:2,
+          content:item.value
+        }
+        subtitleArr.push(temp)
+      })
+      console.log(subtitleArr);
+      
+      this.BCCObj.body = subtitleArr
+      return JSON.stringify(this.BCCObj)
     },
     aiAudio () {
       // 因为最后一个文件总是空文件，所以去除
@@ -175,14 +220,22 @@ export default {
             this.recognize()
           }else{
             alert('over')
+            // 禁止按钮解禁
+            this.disableBtn = false
+            this.init()
           }
-        }, function (err) {
-          console.log(err)
+        }, (err)=> {
+          if(this.recognizeIndex>this.srtObjTemp.length){
+            this.disableBtn = false
+          }
         })
       })
     },
-    exportFile(){
-      ipc.send('save-srt-file-dialog')
+    exportFile(type){
+      this.exportType = type
+      setTimeout(()=>{
+        ipc.send('save-srt-file-dialog')
+      },100)
     }
   }
 }
