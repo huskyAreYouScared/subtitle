@@ -58,7 +58,8 @@ export default {
         subtitleConetnt = this.joinBCCFlie()
     
       }
-        fs.writeFile(file.filePath,subtitleConetnt,{flag:'w'},(err,data)=>{
+      let path = this.suffixCtrl(file.filePath)
+        fs.writeFile(path,subtitleConetnt,{flag:'w'},(err,data)=>{
           if(!err){
             ipc.send('custom-message', {
               msg: '保存成功',
@@ -77,6 +78,15 @@ export default {
       this.splitStartTimeMinutes=0
       this.splitStartTimeSeconds=0
     },
+    suffixCtrl(path){
+      let pathTempArr = path.split('.')
+      // 因为默认给bcc文件后缀，所以只判断了srt文件
+      if(this.exportType=='srt'){
+        pathTempArr[pathTempArr.length-1]='srt'
+        return pathTempArr.join('.')
+      }
+      return path
+    },
     splitStep(){
       this.srtObjTemp=[], // 清空之前的切分信息数组
       this.disableBtn = true
@@ -85,21 +95,26 @@ export default {
       this.splitAudio()
     },
     async splitAudio(){
-      const { stdout, stderr }=await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
-      // 如果返回结果位true代表已经没有音频了
-      if(/audio:0kB/.test(stderr)){
-        this.splitStateCtrl(false)
+      try {
+        const { stdout, stderr }=await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
+        // 如果返回结果位true代表已经没有音频了
+        if(/audio:0kB/.test(stderr)){
+          this.splitStateCtrl(false)
+        }
+        if(this.splitState){
+          // 文件名加1
+          this.srtTiemLineCtrl(this.fileIndex,this.doubleNumberCtrl(),'start',`output_${this.fileIndex}.wav`)
+          this.startTimeCtrl(this.splitDuration)
+          this.srtTiemLineCtrl(this.fileIndex,this.doubleNumberCtrl(),'end')
+          this.fileIndex++
+          this.splitAudio()
+        }else{
+          this.aiAudio()
+        }
+      } catch (error) {
+        this.disableBtn = false
       }
-      if(this.splitState){
-        // 文件名加1
-        this.srtTiemLineCtrl(this.fileIndex,this.doubleNumberCtrl(),'start',`output_${this.fileIndex}.wav`)
-        this.startTimeCtrl(this.splitDuration)
-        this.srtTiemLineCtrl(this.fileIndex,this.doubleNumberCtrl(),'end')
-        this.fileIndex++
-        this.splitAudio()
-      }else{
-        this.aiAudio()
-      }
+      
     
     },
     splitStateCtrl(state){
