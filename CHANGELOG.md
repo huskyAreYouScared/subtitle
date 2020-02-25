@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/huskyAreYouScared/subtitle/compare/v0.3.0...v0.4.0) (2020-02-25)
+
+
+### Features
+
+* **renderer subtitle:** 增加文件过滤，保存文件自动处理后缀名 ([eda313c](https://github.com/huskyAreYouScared/subtitle/commit/eda313c400953dc88ad89c3c38f3d5dfe9546449))
+
+
+
 # [0.3.0](https://github.com/huskyAreYouScared/subtitle/compare/v0.2.0...v0.3.0) (2020-02-24)
 
 
