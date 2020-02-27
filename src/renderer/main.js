@@ -6,6 +6,7 @@ import '@/assets/iconfont/iconfont.css'
 import App from './App'
 import router from './router'
 import store from './store'
+import db from '../utils/dataStore'
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
@@ -34,6 +35,9 @@ Vue.prototype.$ffmpegPath = process.env.NODE_ENV == 'development' ? ffmpegPath :
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 Vue.prototype.$exec = exec
+
+// db
+Vue.prototype.$DB = db
 
 /* eslint-disable no-new */
 new Vue({

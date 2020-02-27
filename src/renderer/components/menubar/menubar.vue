@@ -1,6 +1,8 @@
 <!--  -->
 <template>
-  <div class='container menubar-container bg-deep'></div>
+  <div class='container menubar-container bg-deep'>
+    
+  </div>
 </template>
 
 <script>

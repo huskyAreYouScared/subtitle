@@ -50,6 +50,11 @@ export default {
     }
   },
   mounted(){
+    // this.$DB.read().set('recognitionObject',{
+    //   APP_ID : '18336046',
+    //   API_KEY : 'CX7HpOECibS7wIGKXlAyxVA8',
+    //   SECRET_KEY : 'TFngd3UfhsdN0NnBm4koUVyeQd67RlGK'
+    // }).write()
     ipc.on('save-srt-file', (event, file) => {
       let subtitleConetnt = ''
       if(this.exportType === 'srt'){
@@ -213,9 +218,13 @@ export default {
       // 因为最后一个文件总是空文件，所以去除
       // this.srtObjTemp.pop()
       // 设置APPID/AK/SK
-      var APP_ID = '18336046'
-      var API_KEY = 'CX7HpOECibS7wIGKXlAyxVA8'
-      var SECRET_KEY = 'TFngd3UfhsdN0NnBm4koUVyeQd67RlGK'
+      // var APP_ID = '18336046'
+      // var API_KEY = 'CX7HpOECibS7wIGKXlAyxVA8'
+      // var SECRET_KEY = 'TFngd3UfhsdN0NnBm4koUVyeQd67RlGK'
+      let {APP_ID, API_KEY, SECRET_KEY} = this.$DB.read().get('recognitionObject').value()
+      console.log('SECRET_KEY: ', SECRET_KEY);
+      console.log('API_KEY: ', API_KEY);
+      console.log('APP_ID: ', APP_ID);      
       this.recognizeIndex = 1
       // 新建一个对象，建议只保存一个对象调用服务接口
        this.client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
