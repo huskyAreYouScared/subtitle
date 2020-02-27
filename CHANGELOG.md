@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/huskyAreYouScared/subtitle/compare/v0.4.0...v0.5.0) (2020-02-27)
+
+
+### Features
+
+* **utils datastore,renderer subtitle main:** add local storage ([8ab22d8](https://github.com/huskyAreYouScared/subtitle/commit/8ab22d80330f4fc2bc18ca4d3390d909c10ad489))
+
+
+
 # [0.4.0](https://github.com/huskyAreYouScared/subtitle/compare/v0.3.0...v0.4.0) (2020-02-25)
 
 
