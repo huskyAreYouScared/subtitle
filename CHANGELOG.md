@@ -1,3 +1,12 @@
+## [0.5.1](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.0...v0.5.1) (2020-02-28)
+
+
+### Features
+
+* **renderer setting and style,tool.js,menubar.vue and style:** add setting page ([7c17356](https://github.com/huskyAreYouScared/subtitle/commit/7c173565fa3b6b1e275002bd2388c9001d9c64ad))
+
+
+
 # [0.5.0](https://github.com/huskyAreYouScared/subtitle/compare/v0.4.0...v0.5.0) (2020-02-27)
 
 
