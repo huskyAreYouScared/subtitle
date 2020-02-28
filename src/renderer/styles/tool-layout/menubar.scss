@@ -2,5 +2,13 @@
   height: 30px;
   -webkit-app-region: drag;
   box-shadow:1px 1px 1px $tint; 
-  
+  display: flex;
+  .menu-item{
+    width: 40px;
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+    text-align: center;
+    @include cursorPointer;
+  }
 }

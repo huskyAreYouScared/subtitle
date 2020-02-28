@@ -6,6 +6,7 @@ import '@/assets/iconfont/iconfont.css'
 import App from './App'
 import router from './router'
 import store from './store'
+import { quickRouter} from '@/utils/tools.js'
 import db from '../utils/dataStore'
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
@@ -39,6 +40,8 @@ Vue.prototype.$exec = exec
 // db
 Vue.prototype.$DB = db
 
+// quickRouter
+Vue.prototype.$quickRouter = quickRouter
 /* eslint-disable no-new */
 new Vue({
   components: { App },

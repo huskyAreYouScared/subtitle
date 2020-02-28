@@ -1,0 +1,12 @@
+.setting-main{
+  position: relative;
+  height: calc(100vh - 30px)!important;
+  .back-btn{
+    @include WH(100px ,30px);
+    @include textCenter(30px);
+    @include absolutePositionTool(0,10px,10px,0);
+    @include cursorPointer;
+    border:solid $text 1px;
+    border-radius: 4px;
+  }
+}

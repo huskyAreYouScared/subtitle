@@ -30,4 +30,30 @@ $smallTxt:12px;
 
 @mixin cursorPointer {
   cursor: pointer;
+  user-select: none;
+}
+
+@mixin absolutePositionTool($top,$right,$bottom,$left) {
+  position: absolute;
+  @if($top!=0){
+    top: $top;
+  }
+  @if($right!=0){
+     right: $right;
+  }
+  @if($bottom!=0){
+    bottom: $bottom;
+  }
+  @if($left!=0){
+    left: $left;
+  }
+}
+
+@mixin WH($w,$h) {
+  @if($w){
+    width: $w;
+  }
+  @if($h){
+    height: $h;
+  }
 }

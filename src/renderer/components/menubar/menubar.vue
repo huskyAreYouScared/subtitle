@@ -1,7 +1,9 @@
 <!--  -->
 <template>
   <div class='container menubar-container bg-deep'>
-    
+    <div class="menu-item text" @click="goto('/setting')">
+      设置
+    </div>
   </div>
 </template>
 
@@ -16,10 +18,12 @@ export default {
   computed: {},
   watch: {},
   methods: {
-
+    goto(path){
+      this.$router.push(path)
+    }
   },
   mounted () {
-
+    
   }
 }
 </script>
