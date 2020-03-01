@@ -50,11 +50,7 @@ export default {
     }
   },
   mounted(){
-    // this.$DB.read().set('recognitionObject',{
-    //   APP_ID : '18336046',
-    //   API_KEY : 'CX7HpOECibS7wIGKXlAyxVA8',
-    //   SECRET_KEY : 'TFngd3UfhsdN0NnBm4koUVyeQd67RlGK'
-    // }).write()
+    
     ipc.on('save-srt-file', (event, file) => {
       let subtitleConetnt = ''
       if(this.exportType === 'srt'){

@@ -1,10 +1,45 @@
 .setting-main{
   position: relative;
   height: calc(100vh - 30px)!important;
+  .baidu-api-area{
+    overflow: hidden;
+    width: 98%;
+    border: 1px solid $text;
+    border-radius: 15px;
+    padding: 10px;
+    .header{
+      margin-left: 20px;
+    }
+    .input-label{
+      display: block;
+      margin-left: 20px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .baidu-input{
+      background: $tint;
+      border: 0;
+      width: 60%;
+      height: 30px;
+      line-height: 30px;
+      margin-left:  20px;
+      margin-top:  5px;
+      min-width: 400px;
+      text-indent: 4px;
+    }
+  }
   .back-btn{
     @include WH(100px ,30px);
     @include textCenter(30px);
     @include absolutePositionTool(0,10px,10px,0);
+    @include cursorPointer;
+    border:solid $text 1px;
+    border-radius: 4px;
+  }
+  .save-btn{
+    @include WH(100px ,30px);
+    @include textCenter(30px);
+    @include absolutePositionTool(0,140px,10px,0);
     @include cursorPointer;
     border:solid $text 1px;
     border-radius: 4px;
