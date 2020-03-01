@@ -1,3 +1,12 @@
+## [0.5.2](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.1...v0.5.2) (2020-03-01)
+
+
+### Features
+
+* **renderer setting and style:** 增加语音识别参数配置 ([5e574b1](https://github.com/huskyAreYouScared/subtitle/commit/5e574b163287b04a4b3509d2132a1fae4efbadea))
+
+
+
 ## [0.5.1](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.0...v0.5.1) (2020-02-28)
 
 
