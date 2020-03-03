@@ -1,7 +1,7 @@
 
 // 获取项目目录
-const userPath = require('electron').app.getAppPath() 
-  
+const userPath = require('electron').app.getAppPath()
+
 global.fileObj = {
   currentPath: '',
   userPath: userPath
@@ -9,5 +9,3 @@ global.fileObj = {
 //
 global.isWindows = process.platform !== 'darwin'
 export default global
-
-

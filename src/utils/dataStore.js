@@ -21,9 +21,9 @@ db._.mixin(LodashId)
 
 if (!db.has('recognitionObject').value()) {
   db.set('recognitionObject', {
-    APP_ID:'',
-    API_KEY:'',
-    SECRET_KEY:''
+    APP_ID: '',
+    API_KEY: '',
+    SECRET_KEY: ''
   }).write()
 }
 

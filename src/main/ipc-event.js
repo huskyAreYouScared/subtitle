@@ -8,12 +8,23 @@ ipcMain.on('open-file-dialog', function (event) {
       { name: 'Movies', extensions: ['mkv', 'avi', 'mp4', 'mov'] }
     ]
   }).then(res => {
-    event.sender.send('selected-file', res)
+    event.sender.send('selected-video-file', res)
+  })
+})
+// select audio file
+ipcMain.on('open-audio-file-dialog', function (event) {
+  dialog.showOpenDialog({
+    properties: ['openFile', 'multiSelections'],
+    filters: [
+      { name: 'Audio', extensions: ['wav', 'pcm', 'mp3', 'mov'] }
+    ]
+  }).then(res => {
+    event.sender.send('selected-audio-file', res)
   })
 })
 // save srt file
 ipcMain.on('save-srt-file-dialog', function (event) {
-  dialog.showSaveDialog({title:'保存文件',
+  dialog.showSaveDialog({title: '保存文件',
     filters: [
       { name: 'subtitle', extensions: ['bcc', 'srt'] }
     ],

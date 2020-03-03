@@ -4,6 +4,6 @@ export function checkAllowFile (file) {
   return /\.(mp4|webm|ogg)$/.test(file)
 }
 
-export function quickRouter (path){
+export function quickRouter (path) {
   route.push(path)
 }

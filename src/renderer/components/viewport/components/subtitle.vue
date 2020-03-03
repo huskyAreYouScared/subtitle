@@ -26,144 +26,139 @@ import fs from 'fs'
 export default {
   data () {
     return {
-      srtObjTemp:[], // 切分信息数组
-      splitState:true, // 切分状态
-      splitStartTimeHours:0,
-      splitStartTimeMinutes:0,
-      splitStartTimeSeconds:0,
-      fileIndex:1, // 文件索引
-      recognizeIndex:1, // 识别索引
-      splitDuration:10, // * 切分持续时间
-      client:null, // * baiduapi instance
-      BCCObj:{
-        "font_size":0.4,
-        "font_color":"#FFFFFF",
-        "background_alpha":0.5,
-        "background_color":"#9C27B0",
-        "Stroke":"none",
-        "body":[
-            
+      srtObjTemp: [], // 切分信息数组
+      splitState: true, // 切分状态
+      splitStartTimeHours: 0,
+      splitStartTimeMinutes: 0,
+      splitStartTimeSeconds: 0,
+      fileIndex: 1, // 文件索引
+      recognizeIndex: 1, // 识别索引
+      splitDuration: 10, // * 切分持续时间
+      client: null, // * baiduapi instance
+      BCCObj: {
+        'font_size': 0.4,
+        'font_color': '#FFFFFF',
+        'background_alpha': 0.5,
+        'background_color': '#9C27B0',
+        'Stroke': 'none',
+        'body': [
+
         ]
       },
-      exportType:'srt',
-      disableBtn:false
+      exportType: 'srt',
+      disableBtn: false
     }
   },
-  mounted(){
-    
+  mounted () {
     ipc.on('save-srt-file', (event, file) => {
       let subtitleConetnt = ''
-      if(this.exportType === 'srt'){
+      if (this.exportType === 'srt') {
         subtitleConetnt = this.joinSrtFlie()
-      }else if(this.exportType === 'bcc'){
+      } else if (this.exportType === 'bcc') {
         subtitleConetnt = this.joinBCCFlie()
-    
       }
       let path = this.suffixCtrl(file.filePath)
-        fs.writeFile(path,subtitleConetnt,{flag:'w'},(err,data)=>{
-          if(!err){
-            ipc.send('custom-message', {
-              msg: '保存成功',
-              type: 'info'
-            })
-          }
-
-        })
+      fs.writeFile(path, subtitleConetnt, {flag: 'w'}, (err, data) => {
+        if (!err) {
+          ipc.send('custom-message', {
+            msg: '保存成功',
+            type: 'info'
+          })
+        }
+      })
     })
   },
   methods: {
-    init(){
-      this.fileIndex=1 // 文件索引
-      this.recognizeIndex=1 // 识别索引
-      this.splitStartTimeHours=0
-      this.splitStartTimeMinutes=0
-      this.splitStartTimeSeconds=0
+    init () {
+      this.fileIndex = 1 // 文件索引
+      this.recognizeIndex = 1 // 识别索引
+      this.splitStartTimeHours = 0
+      this.splitStartTimeMinutes = 0
+      this.splitStartTimeSeconds = 0
     },
-    suffixCtrl(path){
+    suffixCtrl (path) {
       let pathTempArr = path.split('.')
       // 因为默认给bcc文件后缀，所以只判断了srt文件
-      if(this.exportType=='srt'){
-        pathTempArr[pathTempArr.length-1]='srt'
+      if (this.exportType == 'srt') {
+        pathTempArr[pathTempArr.length - 1] = 'srt'
         return pathTempArr.join('.')
       }
       return path
     },
-    splitStep(){
-      this.srtObjTemp=[], // 清空之前的切分信息数组
+    splitStep () {
+      this.srtObjTemp = [], // 清空之前的切分信息数组
       this.disableBtn = true
       this.splitStateCtrl(true)
       this.newTempFolder(`${this.$objectPath}/temp/wav`)
       this.splitAudio()
     },
-    async splitAudio(){
+    async splitAudio () {
       try {
-        const { stdout, stderr }=await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
+        const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
         // 如果返回结果位true代表已经没有音频了
-        if(/audio:0kB/.test(stderr)){
+        if (/audio:0kB/.test(stderr)) {
           this.splitStateCtrl(false)
         }
-        if(this.splitState){
+        if (this.splitState) {
           // 文件名加1
-          this.srtTiemLineCtrl(this.fileIndex,this.doubleNumberCtrl(),'start',`output_${this.fileIndex}.wav`)
+          this.srtTiemLineCtrl(this.fileIndex, this.doubleNumberCtrl(), 'start', `output_${this.fileIndex}.wav`)
           this.startTimeCtrl(this.splitDuration)
-          this.srtTiemLineCtrl(this.fileIndex,this.doubleNumberCtrl(),'end')
+          this.srtTiemLineCtrl(this.fileIndex, this.doubleNumberCtrl(), 'end')
           this.fileIndex++
           this.splitAudio()
-        }else{
+        } else {
           this.aiAudio()
         }
       } catch (error) {
         this.disableBtn = false
       }
-      
-    
     },
-    splitStateCtrl(state){
+    splitStateCtrl (state) {
       this.splitState = state
     },
-    newTempFolder(path){
-      fs.mkdir(path,(err,data)=>{
-        let files = fs.readdirSync(path);
+    newTempFolder (path) {
+      fs.mkdir(path, (err, data) => {
+        let files = fs.readdirSync(path)
         files.forEach((file, index) => {
-            let curPath = path + "/" + file;
-            fs.unlinkSync(curPath); //删除文件
-        });
+          let curPath = path + '/' + file
+          fs.unlinkSync(curPath) // 删除文件
+        })
       })
     },
-    startTimeCtrl(duration){
-      if(duration>20){
+    startTimeCtrl (duration) {
+      if (duration > 20) {
         return
       }
-      if((this.splitStartTimeSeconds+duration)>=60){
+      if ((this.splitStartTimeSeconds + duration) >= 60) {
         this.splitStartTimeMinutes++
-        this.splitStartTimeSeconds=this.splitStartTimeSeconds+duration -60
-      }else{
-        this.splitStartTimeSeconds+=duration
+        this.splitStartTimeSeconds = this.splitStartTimeSeconds + duration - 60
+      } else {
+        this.splitStartTimeSeconds += duration
       }
-      if((this.splitStartTimeMinutes)>=60){
+      if ((this.splitStartTimeMinutes) >= 60) {
         this.splitStartTimeHours++
         this.splitStartTimeMinutes = 0
       }
     },
     // 将时间日期处理成 00:00:00的格式
-    doubleNumberCtrl(){
+    doubleNumberCtrl () {
       let seconds = ''
       let minutes = ''
       let hours = ''
-      if(this.splitStartTimeSeconds<9){
+      if (this.splitStartTimeSeconds < 9) {
         seconds = `0${this.splitStartTimeSeconds}`
-      }else{
-         seconds = `${this.splitStartTimeSeconds}`
+      } else {
+        seconds = `${this.splitStartTimeSeconds}`
       }
-      if(this.splitStartTimeMinutes<9){
+      if (this.splitStartTimeMinutes < 9) {
         minutes = `0${this.splitStartTimeMinutes}`
-      }else{
-         minutes = `${this.splitStartTimeMinutes}`
+      } else {
+        minutes = `${this.splitStartTimeMinutes}`
       }
-      if(this.splitStartTimeHours<9){
+      if (this.splitStartTimeHours < 9) {
         hours = `0${this.splitStartTimeHours}`
-      }else{
-         hours = `${this.splitStartTimeHours}`
+      } else {
+        hours = `${this.splitStartTimeHours}`
       }
       return `${hours}:${minutes}:${seconds}`
     },
@@ -173,40 +168,40 @@ export default {
      * @param type 'start'或者 'end' 开始时间线或者结束时间线
      * @param fileName 音频文件名
      */
-    srtTiemLineCtrl(current,TimeLine,type,fileName){
-      if(type=='start'){
+    srtTiemLineCtrl (current, TimeLine, type, fileName) {
+      if (type == 'start') {
         this.srtObjTemp.push({
-          index:current,
-          start:TimeLine+',000',
-          end:'',
-          value:'',
-          audioFlieName:fileName,
-          startSecond:(current-1)*10
+          index: current,
+          start: TimeLine + ',000',
+          end: '',
+          value: '',
+          audioFlieName: fileName,
+          startSecond: (current - 1) * 10
         })
-      }else{
-        this.srtObjTemp[current-1].end = TimeLine+',000'
+      } else {
+        this.srtObjTemp[current - 1].end = TimeLine + ',000'
       }
     },
-    joinSrtFlie(){
-      let appendText=''
-      this.srtObjTemp.forEach((item)=>{
-        appendText+=`${item.index}\n${item.start} --> ${item.end}\n${item.value}\n\n`
+    joinSrtFlie () {
+      let appendText = ''
+      this.srtObjTemp.forEach((item) => {
+        appendText += `${item.index}\n${item.start} --> ${item.end}\n${item.value}\n\n`
       })
       return appendText
     },
-    joinBCCFlie(){
+    joinBCCFlie () {
       let subtitleArr = []
-      this.srtObjTemp.forEach((item)=>{
-        let temp =  {
-          from:item.startSecond,
-          to:item.startSecond+this.splitDuration,
-          location:2,
-          content:item.value
+      this.srtObjTemp.forEach((item) => {
+        let temp = {
+          from: item.startSecond,
+          to: item.startSecond + this.splitDuration,
+          location: 2,
+          content: item.value
         }
         subtitleArr.push(temp)
       })
-      console.log(subtitleArr);
-      
+      console.log(subtitleArr)
+
       this.BCCObj.body = subtitleArr
       return JSON.stringify(this.BCCObj)
     },
@@ -218,44 +213,43 @@ export default {
       // var API_KEY = 'CX7HpOECibS7wIGKXlAyxVA8'
       // var SECRET_KEY = 'TFngd3UfhsdN0NnBm4koUVyeQd67RlGK'
       let {APP_ID, API_KEY, SECRET_KEY} = this.$DB.read().get('recognitionObject').value()
-      console.log('SECRET_KEY: ', SECRET_KEY);
-      console.log('API_KEY: ', API_KEY);
-      console.log('APP_ID: ', APP_ID);      
+      console.log('SECRET_KEY: ', SECRET_KEY)
+      console.log('API_KEY: ', API_KEY)
+      console.log('APP_ID: ', APP_ID)
       this.recognizeIndex = 1
       // 新建一个对象，建议只保存一个对象调用服务接口
-       this.client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
+      this.client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
       this.recognize()
-      
     },
-    recognize(){
-      fs.readFile(`${this.$objectPath}/temp/wav/output_${this.recognizeIndex}.wav`,(err,data)=>{
+    recognize () {
+      fs.readFile(`${this.$objectPath}/temp/wav/output_${this.recognizeIndex}.wav`, (err, data) => {
         let voiceBuffer = new Buffer(data)
         // 识别本地文件
-        this.client.recognize(voiceBuffer, 'wav', 16000).then( (result)=> {
-          if(result.err_no=== 0){
-            this.srtObjTemp[this.recognizeIndex-1].value = result.result[0]
+        this.client.recognize(voiceBuffer, 'wav', 16000).then((result) => {
+          if (result.err_no === 0) {
+            this.srtObjTemp[this.recognizeIndex - 1].value = result.result[0]
           }
-          if(this.recognizeIndex<this.srtObjTemp.length){
+          if (this.recognizeIndex < this.srtObjTemp.length) {
             this.recognizeIndex++
             this.recognize()
-          }else{
+          } else {
             alert('over')
             // 禁止按钮解禁
             this.disableBtn = false
             this.init()
           }
-        }, (err)=> {
-          if(this.recognizeIndex>this.srtObjTemp.length){
+        }, (err) => {
+          if (this.recognizeIndex > this.srtObjTemp.length) {
             this.disableBtn = false
           }
         })
       })
     },
-    exportFile(type){
+    exportFile (type) {
       this.exportType = type
-      setTimeout(()=>{
+      setTimeout(() => {
         ipc.send('save-srt-file-dialog')
-      },100)
+      }, 100)
     }
   }
 }

@@ -23,6 +23,10 @@ $smallTxt:12px;
   color: $sub-text;
 }
 
+.text-lg{
+  font-size: 24px!important;
+}
+
 @mixin textCenter($lineHeight) {
   text-align: center;
   line-height: $lineHeight;

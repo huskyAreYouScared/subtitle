@@ -21,28 +21,28 @@
 <script>
 export default {
   components: {},
-  data() {
+  data () {
     return {
-      baidu:{
-        APP_ID:'',
-        API_KEY:'',
-        SECRET_KEY:''
+      baidu: {
+        APP_ID: '',
+        API_KEY: '',
+        SECRET_KEY: ''
       }
-    };
+    }
   },
   computed: {},
   watch: {},
   methods: {
     // 保存baidu api相关配置
-    setBaiduArgument(){
-      this.$DB.read().set('recognitionObject',this.baidu).write()
+    setBaiduArgument () {
+      this.$DB.read().set('recognitionObject', this.baidu).write()
     },
-    saveSetting(){
+    saveSetting () {
       this.setBaiduArgument()
     }
   },
-  mounted() {
-    this.baidu=this.$DB.read().get('recognitionObject').value()
+  mounted () {
+    this.baidu = this.$DB.read().get('recognitionObject').value()
   }
 }
 </script>

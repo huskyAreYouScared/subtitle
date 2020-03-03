@@ -18,12 +18,12 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    goto(path){
+    goto (path) {
       this.$router.push(path)
     }
   },
   mounted () {
-    
+
   }
 }
 </script>

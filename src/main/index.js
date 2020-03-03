@@ -55,12 +55,11 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
-
   }
 })
 // app.once('ready-to-show', () => {
 //   win.show()
-  
+
 // })
 
 /**

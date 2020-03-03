@@ -2,6 +2,7 @@
 <template>
   <div class='sidebar-container bg' ref="sidebar">
     <div class="top-toolbar">
+      <span class="iconfont icon-yinpin text-lg text toolbar-item" @click="selectAudioFile"></span>
       <span class="iconfont icon-jiahao text toolbar-item" @click="selectLocalFile"></span>
     </div>
     <div class="file-list">
@@ -37,8 +38,21 @@ export default {
     selectLocalFile () {
       ipc.send('open-file-dialog')
     },
+    selectAudioFile () {
+      ipc.send('open-audio-file-dialog')
+    },
     init () {
-      ipc.on('selected-file', (event, file) => {
+      ipc.on('selected-video-file', (event, file) => {
+        let temp = file.filePaths.map(item => {
+          return {
+            name: this.$isWindows ? item.split('\\').pop() : item.split('/').pop(),
+            path: item
+          }
+        })
+        this.filePath = [...this.filePath, ...temp]
+        temp = null
+      })
+      ipc.on('selected-audio-file', (event, file) => {
         let temp = file.filePaths.map(item => {
           return {
             name: this.$isWindows ? item.split('\\').pop() : item.split('/').pop(),
@@ -86,16 +100,16 @@ export default {
       // this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vn -y -acodec copy ${this.$objectPath}/temp/output.aac `, (error, stdout, stderr)=> {
       // this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -codec:a  pcm_f32le -ar 16000 -ac 2 -f f32le ${this.$objectPath}/temp/output.pcm `, (error, stdout, stderr)=> {
       this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -f wav -ac 1 -ar 16000 ${this.$objectPath}/temp/output.wav`, (error, stdout, stderr) => {
-        console.log('stderr: ', stderr);
-        console.log('stdout: ', stdout);
-        console.log('error: ', error);
+        console.log('stderr: ', stderr)
+        console.log('stdout: ', stdout)
+        console.log('error: ', error)
       })
     },
     extractVideo (target) {
       if (!checkAllowFile(target.name)) {
         this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vcodec libx264 -preset fast -crf 20 -y -vf "scale=1920:-1" -acodec libmp3lame -ab 128k ${this.$objectPath}/temp/output.mp4 `, (error, stdout, stderr) => {
-          console.log(error);
-          
+          console.log(error)
+
           this.extractAudio({
             name: 'output.mp4',
             path: `${this.$objectPath}/temp/output.mp4`

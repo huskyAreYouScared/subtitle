@@ -30,11 +30,11 @@ Vue.prototype.$userPath = remote.app.getPath('userData')
 // ffmpeg目录
 const ffmpegPath = require('ffmpeg-static')
 // electron build default app.asar/node_modules change app.asar.unpacked
-Vue.prototype.$ffmpegPath = process.env.NODE_ENV == 'development' ? ffmpegPath : ffmpegPath.replace('app.asar','app.asar.unpacked')
+Vue.prototype.$ffmpegPath = process.env.NODE_ENV == 'development' ? ffmpegPath : ffmpegPath.replace('app.asar', 'app.asar.unpacked')
 
 // exec
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
 Vue.prototype.$exec = exec
 
 // db
