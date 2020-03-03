@@ -1,3 +1,22 @@
+## [0.5.3](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.0...v0.5.3) (2020-03-03)
+
+
+### Bug Fixes
+
+* **main index.js global.js renderer sidebar.vue subtitle.vue main.js:** can use ([7adcfee](https://github.com/huskyAreYouScared/subtitle/commit/7adcfeef542b9dc7f4bcc5d0c6d3ebf5165e902d))
+
+
+### Features
+
+* **main ipc-event renderer sidebar, assets iconfont file:** add audio file correlation function ([94c7ce2](https://github.com/huskyAreYouScared/subtitle/commit/94c7ce2e605dac447f8620f30535cfcaea51be12))
+* **renderer setting and style:** 增加语音识别参数配置 ([5e574b1](https://github.com/huskyAreYouScared/subtitle/commit/5e574b163287b04a4b3509d2132a1fae4efbadea))
+* **renderer setting and style,tool.js,menubar.vue and style:** add setting page ([7c17356](https://github.com/huskyAreYouScared/subtitle/commit/7c173565fa3b6b1e275002bd2388c9001d9c64ad))
+* **renderer subtitle:** 增加文件过滤，保存文件自动处理后缀名 ([eda313c](https://github.com/huskyAreYouScared/subtitle/commit/eda313c400953dc88ad89c3c38f3d5dfe9546449))
+* **renderer subtitle and style file:** add subtitle bcc type file ([e942d7b](https://github.com/huskyAreYouScared/subtitle/commit/e942d7bdd3764008d9cef6045eb01f5da6bfae61))
+* **utils datastore,renderer subtitle main:** add local storage ([8ab22d8](https://github.com/huskyAreYouScared/subtitle/commit/8ab22d80330f4fc2bc18ca4d3390d909c10ad489))
+
+
+
 ## [0.5.2](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.1...v0.5.2) (2020-03-01)
 
 
