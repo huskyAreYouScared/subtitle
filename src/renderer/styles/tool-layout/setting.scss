@@ -1,12 +1,15 @@
 .setting-main{
   position: relative;
   height: calc(100vh - 30px)!important;
+  @include scrollLayoutY;
   .baidu-api-area{
     overflow: hidden;
     width: 98%;
+    margin: 5px auto;
     border: 1px solid $text;
     border-radius: 15px;
     padding: 10px;
+    box-sizing: border-box;
     .header{
       margin-left: 20px;
     }
@@ -31,7 +34,7 @@
   .back-btn{
     @include WH(100px ,30px);
     @include textCenter(30px);
-    @include absolutePositionTool(0,10px,10px,0);
+    @include FixedPositionTool(0,1.5%,10px,0);
     @include cursorPointer;
     border:solid $text 1px;
     border-radius: 4px;
@@ -39,7 +42,7 @@
   .save-btn{
     @include WH(100px ,30px);
     @include textCenter(30px);
-    @include absolutePositionTool(0,140px,10px,0);
+    @include FixedPositionTool(0,140px,10px,0);
     @include cursorPointer;
     border:solid $text 1px;
     border-radius: 4px;

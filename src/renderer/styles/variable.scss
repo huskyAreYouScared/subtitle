@@ -52,6 +52,21 @@ $smallTxt:12px;
     left: $left;
   }
 }
+@mixin FixedPositionTool($top,$right,$bottom,$left) {
+  position: fixed;
+  @if($top!=0){
+    top: $top;
+  }
+  @if($right!=0){
+     right: $right;
+  }
+  @if($bottom!=0){
+    bottom: $bottom;
+  }
+  @if($left!=0){
+    left: $left;
+  }
+}
 
 @mixin WH($w,$h) {
   @if($w){
@@ -59,5 +74,24 @@ $smallTxt:12px;
   }
   @if($h){
     height: $h;
+  }
+}
+
+@mixin scrollLayoutY {
+  overflow: hidden;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 1px; /*对垂直流动条有效*/
+    height: 1px; /*对水平流动条有效*/
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px $tint;
+    background-color: $tint;
+  }
+  &::-webkit-scrollbar-track{
+    box-shadow:inset  $tint 0 0 5px;
+    background-color: $tint 0 0 5px;
+    border-radius: 3px;
   }
 }

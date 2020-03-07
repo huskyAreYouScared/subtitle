@@ -247,9 +247,8 @@ export default {
     },
     exportFile (type) {
       this.exportType = type
-      setTimeout(() => {
-        ipc.send('save-srt-file-dialog')
-      }, 100)
+      ipc.send('save-srt-file-dialog')
+
     }
   }
 }

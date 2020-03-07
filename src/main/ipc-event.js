@@ -1,27 +1,18 @@
 import { ipcMain, dialog } from 'electron'
+import {config} from '../utils/config'
 
 // select video file
 ipcMain.on('open-file-dialog', function (event) {
   dialog.showOpenDialog({
     properties: ['openFile', 'multiSelections'],
     filters: [
-      { name: 'Movies', extensions: ['mkv', 'avi', 'mp4', 'mov'] }
+      { name: 'media', extensions: config.audioFormat.concat(config.videoFormat) }
     ]
   }).then(res => {
-    event.sender.send('selected-video-file', res)
+    event.sender.send('selected-file', res)
   })
 })
-// select audio file
-ipcMain.on('open-audio-file-dialog', function (event) {
-  dialog.showOpenDialog({
-    properties: ['openFile', 'multiSelections'],
-    filters: [
-      { name: 'Audio', extensions: ['wav', 'pcm', 'mp3', 'mov'] }
-    ]
-  }).then(res => {
-    event.sender.send('selected-audio-file', res)
-  })
-})
+
 // save srt file
 ipcMain.on('save-srt-file-dialog', function (event) {
   dialog.showSaveDialog({title: '保存文件',

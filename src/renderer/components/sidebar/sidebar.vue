@@ -2,14 +2,13 @@
 <template>
   <div class='sidebar-container bg' ref="sidebar">
     <div class="top-toolbar">
-      <span class="iconfont icon-yinpin text-lg text toolbar-item" @click="selectAudioFile"></span>
       <span class="iconfont icon-jiahao text toolbar-item" @click="selectLocalFile"></span>
     </div>
     <div class="file-list">
       <p class="file-item text"  @click="selectFile(item)" v-for="(item,index) in filePath" :key="index">
         {{item.name}}
         <span class="item-toolsbar">
-          <span @click="deleteFile(index)" class="iconfont icon-jianhao text"></span>
+          <span @click.stop="deleteFile(index)" class="iconfont icon-jianhao text"></span>
         </span>
       </p>
       <p class="file-item text" v-show="filePath.length==0">支持拖拽选择文件</p>
@@ -19,10 +18,10 @@
 
 <script>
 import { ipcRenderer as ipc} from 'electron'
-import {mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import { checkAllowFile} from '@/utils/tools.js'
 import fs from 'fs'
-import { log } from 'util'
+import { config}  from '@All/utils/config.js'
 export default {
   components: {},
   data () {
@@ -31,31 +30,19 @@ export default {
     }
   },
   computed: {
-    // ...mapMutations(['setFilePath'])
+    
   },
   watch: {},
   methods: {
     selectLocalFile () {
       ipc.send('open-file-dialog')
     },
-    selectAudioFile () {
-      ipc.send('open-audio-file-dialog')
-    },
     init () {
-      ipc.on('selected-video-file', (event, file) => {
+      ipc.on('selected-file', (event, file) => {
         let temp = file.filePaths.map(item => {
           return {
             name: this.$isWindows ? item.split('\\').pop() : item.split('/').pop(),
-            path: item
-          }
-        })
-        this.filePath = [...this.filePath, ...temp]
-        temp = null
-      })
-      ipc.on('selected-audio-file', (event, file) => {
-        let temp = file.filePaths.map(item => {
-          return {
-            name: this.$isWindows ? item.split('\\').pop() : item.split('/').pop(),
+            format:item.split('.')[item.split('.').length-1],
             path: item
           }
         })
@@ -67,9 +54,11 @@ export default {
         e.stopPropagation()
         let tempName = '' // 不支持的文件
         for (const f of e.dataTransfer.files) {
-          if (/\.(mp4|avi|mkv|mov)$/.test(f.name)) {
+          let regexp = new RegExp(`\.(${config.audioFormat.concat(config.videoFormat).join('|')})$`) 
+          if (regexp.test(f.name)) {
             this.filePath.push({
               name: f.name,
+              format:f.path.split('.')[f.path.split('.').length-1],
               path: f.path
             })
           } else {
@@ -90,16 +79,25 @@ export default {
       })
     },
     selectFile (item) {
-      this.$store.commit('setFilePath', item.path)
-      this.extractVideo(item)
+      this.$store.commit('setFilePath', item)
+      // * check file format
+      if(config.audioFormat.includes(item.format)){
+        console.log(123);
+        
+        this.extractAudio(item)
+      }else if(config.videoFormat.includes(item.format)){
+        this.extractVideo(item)
+      }
+      
+      
+
     },
     /**
      * @param targetPath 目标文件路径
      */
     extractAudio (target) {
-      // this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vn -y -acodec copy ${this.$objectPath}/temp/output.aac `, (error, stdout, stderr)=> {
-      // this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -codec:a  pcm_f32le -ar 16000 -ac 2 -f f32le ${this.$objectPath}/temp/output.pcm `, (error, stdout, stderr)=> {
-      this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -f wav -ac 1 -ar 16000 ${this.$objectPath}/temp/output.wav`, (error, stdout, stderr) => {
+      // split audio file wav fomat
+      this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -acodec pcm_s16le -ac 1 -ar 16000 ${this.$objectPath}/temp/output.wav`, (error, stdout, stderr) => {
         console.log('stderr: ', stderr)
         console.log('stdout: ', stdout)
         console.log('error: ', error)
@@ -108,8 +106,6 @@ export default {
     extractVideo (target) {
       if (!checkAllowFile(target.name)) {
         this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vcodec libx264 -preset fast -crf 20 -y -vf "scale=1920:-1" -acodec libmp3lame -ab 128k ${this.$objectPath}/temp/output.mp4 `, (error, stdout, stderr) => {
-          console.log(error)
-
           this.extractAudio({
             name: 'output.mp4',
             path: `${this.$objectPath}/temp/output.mp4`

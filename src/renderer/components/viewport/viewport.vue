@@ -6,7 +6,7 @@
          <subtitle/>
       </div>
       <div class="video-container col-lg-5 col-md-5 col-sm-5 col-xs-5">
-        <showVideo v-if="currentPath !== ''" :currentPath="currentPath"></showVideo>
+        <showVideo v-if="currentFile !== null" :currentPath="currentFile.path"></showVideo>
         <p class="novideo text" v-else>请选择视频文件</p>
       </div>
     </div>
@@ -27,7 +27,7 @@ export default {
   },
   data () {
     return {
-      currentPath: ''
+      currentFile: null
     }
   },
   computed: {
@@ -36,19 +36,13 @@ export default {
   watch: {
     filePath: {
       handler: function (newVal, oldVal) {
-        this.currentPath = newVal.filePath
-        console.log(newVal)
+        this.currentFile = newVal.filePath
       },
       deep: true
     }
   },
   methods: {
-    init () {
-      // ipc.on('file-intend',(event, file) =>{
 
-      //   this.filePath = file
-      // })
-    }
   },
   mounted () {
 
