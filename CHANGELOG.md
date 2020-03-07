@@ -1,3 +1,13 @@
+## [0.5.4](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.2...v0.5.4) (2020-03-07)
+
+
+### Features
+
+* **main ipc-event renderer sidebar, assets iconfont file:** add audio file correlation function ([94c7ce2](https://github.com/huskyAreYouScared/subtitle/commit/94c7ce2e605dac447f8620f30535cfcaea51be12))
+* **new config at utils,setting all file,sidbar.vue viewport.vue ..:** 支持上传音频，format m4a,mp3,wav,pcm ([5f3ec65](https://github.com/huskyAreYouScared/subtitle/commit/5f3ec650c89fcbb2b3580810b7a67336454169a0))
+
+
+
 ## [0.5.3](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.0...v0.5.3) (2020-03-03)
 
 
