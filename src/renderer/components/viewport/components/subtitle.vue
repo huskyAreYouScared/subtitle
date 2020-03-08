@@ -1,9 +1,12 @@
 <template>
   <div style="width:100%">
     <div>
-      <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="splitStep">语音识别</button>
-      <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('srt')">导出字幕srt文件</button>
-      <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('bcc')">导出字幕bcc文件</button>
+      <div class="subtitle-ctrl-container">
+        <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="splitStep">生成字幕</button>
+        <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('srt')">srt</button>
+        <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('bcc')">bcc</button>
+      </div>
+     
       <div class="srt-container">
         <p v-for="audioItem in srtObjTemp" :key="audioItem.index">
           <input class="srt-input bg" type="text" v-model="audioItem.index">

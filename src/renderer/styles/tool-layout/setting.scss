@@ -1,7 +1,7 @@
 .setting-main{
   position: relative;
   height: calc(100vh - 30px)!important;
-  @include scrollLayoutY;
+  @include scrollLayout('y');
   .baidu-api-area{
     overflow: hidden;
     width: 98%;

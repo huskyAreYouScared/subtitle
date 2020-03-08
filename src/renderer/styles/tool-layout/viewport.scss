@@ -5,10 +5,7 @@
     border: solid 1px $tint;
   }
 
-  .subtitle-ctrl-btn{
-    border: 0;
-    color: #fff;
-  }
+  
 
   // video component style
   .video-container{
@@ -22,10 +19,21 @@
       @include textCenter(15px);
     }
   }
+  .subtitle-ctrl-container{
+    width: 100%;
+    height: 25px;
+    @include scrollLayout('x');
+    .subtitle-ctrl-btn{
+      border: 0;
+      color: #fff;
+      margin-left: 5px;
+      
+    }
+  }
   .srt-container{
     width: 100%;
     height: calc(100vh - 80px);
-    @include scrollLayoutY;
+    @include scrollLayout('y');
     color: #fff;
     .srt-input{
       color: #fff;

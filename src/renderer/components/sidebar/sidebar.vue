@@ -11,7 +11,9 @@
           <span @click.stop="deleteFile(index)" class="iconfont icon-jianhao text"></span>
         </span>
       </p>
-      <p class="file-item text" v-show="filePath.length==0">支持拖拽选择文件</p>
+      <div class="file-item-empty text" v-show="filePath.length==0">
+        <span class="filler">支持拖拽上传文件</span>
+      </div>
     </div>
   </div>
 </template>

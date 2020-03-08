@@ -18,7 +18,7 @@
   .file-list{
     width: 100%;
     height: calc(100% - 30px);
-    @include scrollLayoutY;
+    @include scrollLayout('y');
     .file-item{
       font-size: $smallTxt;
       padding: 3px;
@@ -34,6 +34,26 @@
       }
       &:hover{
         background: $deep;
+      }
+    }
+    .file-item-empty{
+      width: 98%;
+      height: 98%;
+      border-radius: 5px;
+      margin: 1% auto;
+      border: $text 1px dashed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .filler{
+        color: $text;
+      }
+      &:hover{
+        border-color: $tint;
+        cursor:crosshair;
+      }
+      &:hover .filler{
+        color: $tint;
       }
     }
   }
