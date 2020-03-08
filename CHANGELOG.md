@@ -1,3 +1,12 @@
+## [0.5.6](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.5...v0.5.6) (2020-03-08)
+
+
+### Bug Fixes
+
+* **renderer sidebar.vue viewport.vue:** ffmpeg 路径中有 空格 bug修复 ([2188286](https://github.com/huskyAreYouScared/subtitle/commit/218828676394f0179affa618580c32deb5ee224d))
+
+
+
 ## [0.5.5](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.4...v0.5.5) (2020-03-08)
 
 
