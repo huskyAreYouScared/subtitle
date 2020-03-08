@@ -45,7 +45,8 @@ export default {
           return {
             name: this.$isWindows ? item.split('\\').pop() : item.split('/').pop(),
             format:item.split('.')[item.split('.').length-1],
-            path: item
+            path: `"${item}"`,
+            showPath : item
           }
         })
         this.filePath = [...this.filePath, ...temp]
@@ -61,7 +62,8 @@ export default {
             this.filePath.push({
               name: f.name,
               format:f.path.split('.')[f.path.split('.').length-1],
-              path: f.path
+              path: `"${f.path}"`,
+              showPath:f.path
             })
           } else {
             tempName += f.name + '\n'
@@ -84,8 +86,6 @@ export default {
       this.$store.commit('setFilePath', item)
       // * check file format
       if(config.audioFormat.includes(item.format)){
-        console.log(123);
-        
         this.extractAudio(item)
       }else if(config.videoFormat.includes(item.format)){
         this.extractVideo(item)

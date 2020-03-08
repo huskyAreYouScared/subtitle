@@ -236,7 +236,10 @@ export default {
             this.recognizeIndex++
             this.recognize()
           } else {
-            alert('over')
+           ipc.send('custom-message', {
+            msg: '识别完成',
+            type: 'info'
+          })
             // 禁止按钮解禁
             this.disableBtn = false
             this.init()
