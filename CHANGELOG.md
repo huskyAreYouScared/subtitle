@@ -1,3 +1,12 @@
+## [0.5.5](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.4...v0.5.5) (2020-03-08)
+
+
+### Features
+
+* **renderer sidebar drag style,subtitle too-bar style:** update sidebar subtitle too-bar style ([fbc7877](https://github.com/huskyAreYouScared/subtitle/commit/fbc78778013f39f2ed8c8305f4b84c560347b4c1))
+
+
+
 ## [0.5.4](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.2...v0.5.4) (2020-03-07)
 
 
