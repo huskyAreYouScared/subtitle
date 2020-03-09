@@ -100,9 +100,9 @@ export default {
     extractAudio (target) {
       // split audio file wav fomat
       this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -acodec pcm_s16le -ac 1 -ar 16000 ${this.$objectPath}/temp/output.wav`, (error, stdout, stderr) => {
-        console.log('stderr: ', stderr)
-        console.log('stdout: ', stdout)
-        console.log('error: ', error)
+        // console.log('stderr: ', stderr)
+        // console.log('stdout: ', stdout)
+        // console.log('error: ', error)
       })
     },
     extractVideo (target) {
