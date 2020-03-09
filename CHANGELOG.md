@@ -1,3 +1,19 @@
+## [0.5.7](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.3...v0.5.7) (2020-03-09)
+
+
+### Bug Fixes
+
+* **renderer sidebar.vue viewport.vue:** ffmpeg 路径中有 空格 bug修复 ([2188286](https://github.com/huskyAreYouScared/subtitle/commit/218828676394f0179affa618580c32deb5ee224d))
+
+
+### Features
+
+* **new config at utils,setting all file,sidbar.vue viewport.vue ..:** 支持上传音频，format m4a,mp3,wav,pcm ([5f3ec65](https://github.com/huskyAreYouScared/subtitle/commit/5f3ec650c89fcbb2b3580810b7a67336454169a0))
+* **renderer sidebar drag style,subtitle too-bar style:** update sidebar subtitle too-bar style ([fbc7877](https://github.com/huskyAreYouScared/subtitle/commit/fbc78778013f39f2ed8c8305f4b84c560347b4c1))
+* **renderer store videinfo.js video.vue:** add video Eventlistener ([d42bc3a](https://github.com/huskyAreYouScared/subtitle/commit/d42bc3afc66a79601f0e390a608f92566b55a8c3))
+
+
+
 ## [0.5.6](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.5...v0.5.6) (2020-03-08)
 
 
