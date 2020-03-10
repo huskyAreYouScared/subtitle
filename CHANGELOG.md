@@ -1,3 +1,12 @@
+## [0.5.8](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.7...v0.5.8) (2020-03-10)
+
+
+### Features
+
+* **add new store currenttime:** add store currentTime ([02ea79f](https://github.com/huskyAreYouScared/subtitle/commit/02ea79fd57452fe6a584696030ff1a0f0cc9e657))
+
+
+
 ## [0.5.7](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.3...v0.5.7) (2020-03-09)
 
 
