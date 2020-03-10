@@ -14,10 +14,16 @@ export default {
         
       },
       deep:true
+    },
+    currentTime:{
+      handler:function(newVal,oldVal){
+        console.log(newVal);
+      },
+      deep:true
     }
   },
   computed:{
-    ...mapState(['videoInfo']),
+    ...mapState(['videoInfo','currentTime']),
   },
   props: {
     currentPath: {
@@ -28,14 +34,18 @@ export default {
   mounted(){
     let videoEL = this.$refs.currentVideo
     // video loading completed
-    this.$refs.currentVideo.addEventListener('loadeddata',()=>{
+   videoEL.addEventListener('loadeddata',()=>{
       this.setVideoInfo({
-        duration:videoEL.duration
+        duration:videoEL.duration,
       })
+      
+    },false)
+    videoEL.addEventListener('timeupdate',()=>{
+      this.setCurrentTime(videoEL.currentTime) 
     },false)
   },
   methods:{
-    ...mapMutations(['setVideoInfo'])
+    ...mapMutations(['setVideoInfo','setCurrentTime'])
   }
 }
 </script>

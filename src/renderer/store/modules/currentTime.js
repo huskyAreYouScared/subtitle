@@ -1,13 +1,10 @@
 const state = {
-  videoInfo:{
-    duration:0,
-    currentTime:0
-  }
+  currentTime:0
 }
 
 const mutations = {
-  setVideoInfo (state, data) {
-    state.videoInfo = data
+  setCurrentTime(state, data) {
+    state.currentTime = data
   }
 }
 
