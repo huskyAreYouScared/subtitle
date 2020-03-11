@@ -25,6 +25,7 @@
 <script>
 import {speech as AipSpeechClient} from 'baidu-aip-sdk'
 import { ipcRenderer as ipc} from 'electron'
+import { mapState } from 'vuex'
 import fs from 'fs'
 export default {
   data () {
@@ -44,13 +45,23 @@ export default {
         'background_alpha': 0.5,
         'background_color': '#9C27B0',
         'Stroke': 'none',
-        'body': [
-
-        ]
+        'body': []
       },
       exportType: 'srt',
-      disableBtn: false
+      disableBtn: true
     }
+  },
+  watch:{
+    videoInfo:{
+      handler:function(newVal,oldVal){
+        this.disableBtn=false
+        
+      },
+      deep :true
+    }
+  },
+  computed:{
+    ...mapState(['videoInfo','currentTime'])
   },
   mounted () {
     ipc.on('save-srt-file', (event, file) => {
@@ -216,9 +227,6 @@ export default {
       // var API_KEY = 'CX7HpOECibS7wIGKXlAyxVA8'
       // var SECRET_KEY = 'TFngd3UfhsdN0NnBm4koUVyeQd67RlGK'
       let {APP_ID, API_KEY, SECRET_KEY} = this.$DB.read().get('recognitionObject').value()
-      console.log('SECRET_KEY: ', SECRET_KEY)
-      console.log('API_KEY: ', API_KEY)
-      console.log('APP_ID: ', APP_ID)
       this.recognizeIndex = 1
       // 新建一个对象，建议只保存一个对象调用服务接口
       this.client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
@@ -236,10 +244,10 @@ export default {
             this.recognizeIndex++
             this.recognize()
           } else {
-           ipc.send('custom-message', {
-            msg: '识别完成',
-            type: 'info'
-          })
+            ipc.send('custom-message', {
+              msg: '识别完成',
+              type: 'info'
+            })
             // 禁止按钮解禁
             this.disableBtn = false
             this.init()

@@ -90,9 +90,6 @@ export default {
       }else if(config.videoFormat.includes(item.format)){
         this.extractVideo(item)
       }
-      
-      
-
     },
     /**
      * @param targetPath 目标文件路径

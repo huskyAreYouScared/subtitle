@@ -15,13 +15,17 @@ ipcMain.on('open-file-dialog', function (event) {
 
 // save srt file
 ipcMain.on('save-srt-file-dialog', function (event) {
-  dialog.showSaveDialog({title: '保存文件',
+  dialog.showSaveDialog({
+    // properties: ['openDirectory'],
+    title: '保存文件',
     filters: [
       { name: 'subtitle', extensions: ['bcc', 'srt'] }
     ],
-    properties: ['openDirectory']
   }).then(res => {
-    event.sender.send('save-srt-file', res)
+    if(!res.canceled){
+      event.sender.send('save-srt-file', res)
+    }
+    
   })
 })
 
