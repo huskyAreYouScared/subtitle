@@ -1,3 +1,12 @@
+## [0.5.9](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.8...v0.5.9) (2020-03-11)
+
+
+### Bug Fixes
+
+* **main ipc-event,renderer subtitle:** export srt cancel show save success bug ([52e0701](https://github.com/huskyAreYouScared/subtitle/commit/52e0701b5aa737a82dca7f43f252b29d767910e8))
+
+
+
 ## [0.5.8](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.7...v0.5.8) (2020-03-10)
 
 
