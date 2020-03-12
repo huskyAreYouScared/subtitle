@@ -1,5 +1,5 @@
 import { ipcMain, dialog } from 'electron'
-import {config} from '../utils/config'
+import { config } from '@All/utils/config.js'
 
 // select video file
 ipcMain.on('open-file-dialog', function (event) {
