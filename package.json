@@ -21,6 +21,12 @@
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "build": {
+    "nsis":{
+      "oneClick":false,
+      "allowToChangeInstallationDirectory":true,
+      "createDesktopShortcut":true,
+      "runAfterFinish":true
+    },
     "productName": "husky-subtitle",
     "appId": "https://huskyareyouscared.github.io/subtitle/",
     "directories": {
@@ -48,7 +54,14 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "extraResources": {
+        "from": "./dist/electron/static/",
+        "to": "./ffmpeg/",
+        "filter": [
+          "**/*"
+        ]
+      }
     },
     "linux": {
       "icon": "build/icons"

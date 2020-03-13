@@ -1,7 +1,7 @@
 'use strict'
 
 process.env.BABEL_ENV = 'renderer'
-
+const os = require('os')
 const path = require('path')
 const { dependencies } = require('../package.json')
 const webpack = require('webpack')
@@ -181,13 +181,25 @@ if (process.env.NODE_ENV !== 'production') {
  */
 if (process.env.NODE_ENV === 'production') {
   rendererConfig.devtool = ''
-
+  var platform = os.platform()
+  var arch = os.arch()
+  var ffmpegPath = path.join(
+    '../node_modules/ffmpeg-static/bin/',
+    platform,
+    arch,
+    platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg'
+  )
   rendererConfig.plugins.push(
     new MinifyPlugin(),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '../static'),
         to: path.join(__dirname, '../dist/electron/static'),
+        ignore: ['.*']
+      },
+      {
+        from: path.join(__dirname, ffmpegPath),
+        to: path.join(__dirname, '../dist/electron/static/ffmpeg'),
         ignore: ['.*']
       }
     ]),
