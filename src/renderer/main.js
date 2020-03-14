@@ -7,6 +7,9 @@ import App from './App'
 import router from './router'
 import store from './store'
 import { quickRouter} from '@/utils/tools.js'
+import appRootDir from 'app-root-dir'
+import os from 'os'
+import path from 'path'
 import db from '../utils/dataStore'
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
@@ -28,9 +31,14 @@ Vue.prototype.$isWindows = remote.getGlobal('isWindows')
 Vue.prototype.$userPath = remote.app.getPath('userData')
 
 // ffmpeg目录
-const ffmpegPath = require('ffmpeg-static')
-// electron build default app.asar/node_modules change app.asar.unpacked
-Vue.prototype.$ffmpegPath = process.env.NODE_ENV == 'development' ? ffmpegPath : ffmpegPath.replace('app.asar', 'app.asar.unpacked')
+let ffmpegPath = ''
+const platform = os.platform()
+if (process.env.NODE_ENV == 'development'){
+  ffmpegPath = require('ffmpeg-static')
+}else{
+  ffmpegPath = path.join(appRootDir.get(), './resources/' + platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg')
+}
+Vue.prototype.$ffmpegPath = ffmpegPath 
 
 // exec
 const util = require('util')

@@ -49,7 +49,8 @@ export default {
         'body': []
       },
       exportType: 'srt',
-      disableBtn: true
+      disableBtn: true,
+      lastNum:2,// 帮助校准结尾时间引入的
     }
   },
   watch:{
@@ -111,13 +112,17 @@ export default {
       try {
         // 用来处理最后结尾的几秒，防止超出
         let isAddsplitDuration = true
+        // 因为最后一个视频需要0KB来结束语音切割，所以要多切割一个音频
+        // 但是结尾的秒数不能错 所以引入这个变量
         if(Math.floor(this.videoInfo.videoInfo.duration)-this.currentSplitSecond<10){
-          isAddsplitDuration = false
+          isAddsplitDuration =false
+          this.lastNum --
         }
         const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
         // 如果返回结果位true代表已经没有音频了
+         console.log(this.fileIndex,stderr);   
         if (/audio:0kB/.test(stderr)) {
-          this.splitStateCtrl(false)         
+          this.splitStateCtrl(false)          
         }
         if (this.splitState) {
           // 文件名加1
@@ -125,7 +130,13 @@ export default {
           if(isAddsplitDuration){
             this.startTimeCtrl(this.splitDuration)
           }else{
-            this.startTimeCtrl(Math.floor(this.videoInfo.videoInfo.duration)-this.currentSplitSecond)
+            if(this.lastNum){
+              this.startTimeCtrl(Math.floor(this.videoInfo.videoInfo.duration)-this.currentSplitSecond)
+            }else{
+              //防止毫秒干扰
+              this.startTimeCtrl(1)
+              this.startTimeCtrl(this.splitDuration)
+            }
           }
           this.srtTiemLineCtrl(this.fileIndex, this.doubleNumberCtrl(), 'end')
           this.fileIndex++
@@ -234,7 +245,7 @@ export default {
     },
     aiAudio () {
       // 因为最后一个文件总是空文件，所以去除
-      // this.srtObjTemp.pop()
+      this.srtObjTemp.pop()
       // 设置APPID/AK/SK
       // var APP_ID = '18336046'
       // var API_KEY = 'CX7HpOECibS7wIGKXlAyxVA8'

@@ -21,11 +21,12 @@
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "build": {
-    "nsis":{
-      "oneClick":false,
-      "allowToChangeInstallationDirectory":true,
-      "createDesktopShortcut":true,
-      "runAfterFinish":true
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "runAfterFinish": true,
+      "createStartMenuShortcut": true
     },
     "productName": "husky-subtitle",
     "appId": "https://huskyareyouscared.github.io/subtitle/",
@@ -56,8 +57,8 @@
     "win": {
       "icon": "build/icons/icon.ico",
       "extraResources": {
-        "from": "./dist/electron/static/",
-        "to": "./ffmpeg/",
+        "from": "./dist/electron/static",
+        "to": "./resources/",
         "filter": [
           "**/*"
         ]
@@ -68,6 +69,7 @@
     }
   },
   "dependencies": {
+    "app-root-dir": "^1.0.2",
     "axios": "^0.18.0",
     "baidu-aip-sdk": "^2.4.5",
     "ffmpeg-static": "^3.0.0",
