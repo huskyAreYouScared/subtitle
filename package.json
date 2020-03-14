@@ -58,7 +58,7 @@
       "icon": "build/icons/icon.ico",
       "extraResources": {
         "from": "./dist/electron/static",
-        "to": "./resources/",
+        "to": "./",
         "filter": [
           "**/*"
         ]

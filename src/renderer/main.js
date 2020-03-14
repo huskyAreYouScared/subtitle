@@ -36,7 +36,7 @@ const platform = os.platform()
 if (process.env.NODE_ENV == 'development') {
   ffmpegPath = require('ffmpeg-static')
 } else {
-  ffmpegPath = path.join(appRootDir.get(), './resources/' + platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg')
+  ffmpegPath = `${appRootDir.get().split('app.asar')[0]}ffmpeg/${platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg'}`
 }
 Vue.prototype.$ffmpegPath = ffmpegPath
 
