@@ -5,25 +5,24 @@
 </template>
 
 <script>
-import {mapState,mapMutations} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 export default {
-  watch:{
-    videoInfo:{
-      handler:function(newVal,oldVal){
-        console.log(newVal);
-        
+  watch: {
+    videoInfo: {
+      handler: function (newVal, oldVal) {
+        console.log(newVal)
       },
-      deep:true
+      deep: true
     },
-    currentTime:{
-      handler:function(newVal,oldVal){
-        console.log(newVal);
+    currentTime: {
+      handler: function (newVal, oldVal) {
+        console.log(newVal)
       },
-      deep:true
+      deep: true
     }
   },
-  computed:{
-    ...mapState(['videoInfo','currentTime']),
+  computed: {
+    ...mapState(['videoInfo', 'currentTime'])
   },
   props: {
     currentPath: {
@@ -31,21 +30,20 @@ export default {
       default: ''
     }
   },
-  mounted(){
+  mounted () {
     let videoEL = this.$refs.currentVideo
     // video loading completed
-   videoEL.addEventListener('loadeddata',()=>{
+    videoEL.addEventListener('loadeddata', () => {
       this.setVideoInfo({
-        duration:videoEL.duration,
+        duration: videoEL.duration
       })
-      
-    },false)
-    videoEL.addEventListener('timeupdate',()=>{
-      this.setCurrentTime(videoEL.currentTime) 
-    },false)
+    }, false)
+    videoEL.addEventListener('timeupdate', () => {
+      this.setCurrentTime(videoEL.currentTime)
+    }, false)
   },
-  methods:{
-    ...mapMutations(['setVideoInfo','setCurrentTime'])
+  methods: {
+    ...mapMutations(['setVideoInfo', 'setCurrentTime'])
   }
 }
 </script>

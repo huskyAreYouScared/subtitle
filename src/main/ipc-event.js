@@ -20,12 +20,11 @@ ipcMain.on('save-srt-file-dialog', function (event) {
     title: '保存文件',
     filters: [
       { name: 'subtitle', extensions: ['bcc', 'srt'] }
-    ],
+    ]
   }).then(res => {
-    if(!res.canceled){
+    if (!res.canceled) {
       event.sender.send('save-srt-file', res)
     }
-    
   })
 })
 

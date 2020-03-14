@@ -33,12 +33,12 @@ Vue.prototype.$userPath = remote.app.getPath('userData')
 // ffmpeg目录
 let ffmpegPath = ''
 const platform = os.platform()
-if (process.env.NODE_ENV == 'development'){
+if (process.env.NODE_ENV == 'development') {
   ffmpegPath = require('ffmpeg-static')
-}else{
+} else {
   ffmpegPath = path.join(appRootDir.get(), './resources/' + platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg')
 }
-Vue.prototype.$ffmpegPath = ffmpegPath 
+Vue.prototype.$ffmpegPath = ffmpegPath
 
 // exec
 const util = require('util')

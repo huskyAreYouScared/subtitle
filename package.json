@@ -72,7 +72,6 @@
     "app-root-dir": "^1.0.2",
     "axios": "^0.18.0",
     "baidu-aip-sdk": "^2.4.5",
-    "ffmpeg-static": "^3.0.0",
     "fs-extra": "^8.1.0",
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0",
@@ -84,6 +83,7 @@
   },
   "devDependencies": {
     "ajv": "^6.5.0",
+    "ffmpeg-static": "^3.0.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",

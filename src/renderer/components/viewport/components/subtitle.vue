@@ -35,7 +35,7 @@ export default {
       splitStartTimeHours: 0,
       splitStartTimeMinutes: 0,
       splitStartTimeSeconds: 0,
-      currentSplitSecond:0,
+      currentSplitSecond: 0,
       fileIndex: 1, // 文件索引
       recognizeIndex: 1, // 识别索引
       splitDuration: 10, // * 切分持续时间
@@ -50,20 +50,19 @@ export default {
       },
       exportType: 'srt',
       disableBtn: true,
-      lastNum:2,// 帮助校准结尾时间引入的
+      lastNum: 2// 帮助校准结尾时间引入的
     }
   },
-  watch:{
-    videoInfo:{
-      handler:function(newVal,oldVal){
-        this.disableBtn=false
-        
+  watch: {
+    videoInfo: {
+      handler: function (newVal, oldVal) {
+        this.disableBtn = false
       },
-      deep :true
+      deep: true
     }
   },
-  computed:{
-    ...mapState(['videoInfo','currentTime'])
+  computed: {
+    ...mapState(['videoInfo', 'currentTime'])
   },
   mounted () {
     ipc.on('save-srt-file', (event, file) => {
@@ -114,26 +113,26 @@ export default {
         let isAddsplitDuration = true
         // 因为最后一个视频需要0KB来结束语音切割，所以要多切割一个音频
         // 但是结尾的秒数不能错 所以引入这个变量
-        if(Math.floor(this.videoInfo.videoInfo.duration)-this.currentSplitSecond<10){
-          isAddsplitDuration =false
-          this.lastNum --
+        if (Math.floor(this.videoInfo.videoInfo.duration) - this.currentSplitSecond < 10) {
+          isAddsplitDuration = false
+          this.lastNum--
         }
         const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
         // 如果返回结果位true代表已经没有音频了
-         console.log(this.fileIndex,stderr);   
+        console.log(this.fileIndex, stderr)
         if (/audio:0kB/.test(stderr)) {
-          this.splitStateCtrl(false)          
+          this.splitStateCtrl(false)
         }
         if (this.splitState) {
           // 文件名加1
           this.srtTiemLineCtrl(this.fileIndex, this.doubleNumberCtrl(), 'start', `output_${this.fileIndex}.wav`)
-          if(isAddsplitDuration){
+          if (isAddsplitDuration) {
             this.startTimeCtrl(this.splitDuration)
-          }else{
-            if(this.lastNum){
-              this.startTimeCtrl(Math.floor(this.videoInfo.videoInfo.duration)-this.currentSplitSecond)
-            }else{
-              //防止毫秒干扰
+          } else {
+            if (this.lastNum) {
+              this.startTimeCtrl(Math.floor(this.videoInfo.videoInfo.duration) - this.currentSplitSecond)
+            } else {
+              // 防止毫秒干扰
               this.startTimeCtrl(1)
               this.startTimeCtrl(this.splitDuration)
             }
@@ -146,8 +145,7 @@ export default {
         }
       } catch (error) {
         this.disableBtn = false
-        console.log(error);
-        
+        console.log(error)
       }
     },
     splitStateCtrl (state) {
@@ -166,7 +164,7 @@ export default {
       if (duration > 20) {
         return
       }
-      this.currentSplitSecond+=duration
+      this.currentSplitSecond += duration
       if ((this.splitStartTimeSeconds + duration) >= 60) {
         this.splitStartTimeMinutes++
         this.splitStartTimeSeconds = this.splitStartTimeSeconds + duration - 60
@@ -239,7 +237,7 @@ export default {
         subtitleArr.push(temp)
       })
       // 处理最后一段音频时间超出的问题
-      subtitleArr[subtitleArr.length-1].to=subtitleArr[subtitleArr.length-1].from + (this.videoInfo.videoInfo.duration%10).toFixed(0)
+      subtitleArr[subtitleArr.length - 1].to = subtitleArr[subtitleArr.length - 1].from + (this.videoInfo.videoInfo.duration % 10).toFixed(0)
       this.BCCObj.body = subtitleArr
       return JSON.stringify(this.BCCObj)
     },
@@ -253,16 +251,15 @@ export default {
       let {APP_ID, API_KEY, SECRET_KEY} = this.$DB.read().get('recognitionObject').value()
       this.recognizeIndex = 1
       // 新建一个对象，建议只保存一个对象调用服务接口
-      if(APP_ID&&API_KEY&&SECRET_KEY){
+      if (APP_ID && API_KEY && SECRET_KEY) {
         this.client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
         this.recognize()
-      }else{
+      } else {
         ipc.send('custom-message', {
           msg: '请前往设置输入语音识别配置信息',
           type: 'info'
         })
       }
-      
     },
     recognize () {
       fs.readFile(`${this.$objectPath}/temp/wav/output_${this.recognizeIndex}.wav`, (err, data) => {
@@ -294,7 +291,6 @@ export default {
     exportFile (type) {
       this.exportType = type
       ipc.send('save-srt-file-dialog')
-
     }
   }
 }

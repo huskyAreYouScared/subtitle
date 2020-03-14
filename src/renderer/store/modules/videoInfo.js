@@ -1,7 +1,7 @@
 const state = {
-  videoInfo:{
-    duration:0,
-    currentTime:0
+  videoInfo: {
+    duration: 0,
+    currentTime: 0
   }
 }
 

@@ -1,9 +1,9 @@
 const state = {
-  currentTime:0
+  currentTime: 0
 }
 
 const mutations = {
-  setCurrentTime(state, data) {
+  setCurrentTime (state, data) {
     state.currentTime = data
   }
 }

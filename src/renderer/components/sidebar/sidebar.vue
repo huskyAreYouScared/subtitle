@@ -23,7 +23,7 @@ import { ipcRenderer as ipc} from 'electron'
 import { mapMutations } from 'vuex'
 import { checkAllowFile} from '@/utils/tools.js'
 import fs from 'fs'
-import { config}  from '@All/utils/config.js'
+import { config} from '@All/utils/config.js'
 export default {
   components: {},
   data () {
@@ -32,7 +32,7 @@ export default {
     }
   },
   computed: {
-    
+
   },
   watch: {},
   methods: {
@@ -44,9 +44,9 @@ export default {
         let temp = file.filePaths.map(item => {
           return {
             name: this.$isWindows ? item.split('\\').pop() : item.split('/').pop(),
-            format:item.split('.')[item.split('.').length-1],
+            format: item.split('.')[item.split('.').length - 1],
             path: `"${item}"`,
-            showPath : item
+            showPath: item
           }
         })
         this.filePath = [...this.filePath, ...temp]
@@ -57,13 +57,13 @@ export default {
         e.stopPropagation()
         let tempName = '' // 不支持的文件
         for (const f of e.dataTransfer.files) {
-          let regexp = new RegExp(`\.(${config.audioFormat.concat(config.videoFormat).join('|')})$`) 
+          let regexp = new RegExp(`\.(${config.audioFormat.concat(config.videoFormat).join('|')})$`)
           if (regexp.test(f.name)) {
             this.filePath.push({
               name: f.name,
-              format:f.path.split('.')[f.path.split('.').length-1],
+              format: f.path.split('.')[f.path.split('.').length - 1],
               path: `"${f.path}"`,
-              showPath:f.path
+              showPath: f.path
             })
           } else {
             tempName += f.name + '\n'
@@ -85,9 +85,9 @@ export default {
     selectFile (item) {
       this.$store.commit('setFilePath', item)
       // * check file format
-      if(config.audioFormat.includes(item.format)){
+      if (config.audioFormat.includes(item.format)) {
         this.extractAudio(item)
-      }else if(config.videoFormat.includes(item.format)){
+      } else if (config.videoFormat.includes(item.format)) {
         this.extractVideo(item)
       }
     },
@@ -108,9 +108,6 @@ export default {
             path: `${this.$objectPath}/temp/output.mp4`
           })
         })
-       
-        
-        
       } else {
         this.extractAudio(target)
       }
