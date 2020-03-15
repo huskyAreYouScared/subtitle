@@ -3,6 +3,8 @@
 import { app, BrowserWindow, remote } from 'electron'
 import './ipc-event'
 import './global'
+import package from '../../package.json'
+import os from 'os'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -41,9 +43,13 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-  // 在开发环境获取项目目录，上线获取用户目录
 }
 
+const platform = os.platform()
+if (platform=== 'win32') {
+  // 配置后windows通知功能可用
+  app.setAppUserModelId(pkg.build.appId)
+}
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {

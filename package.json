@@ -26,7 +26,8 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "runAfterFinish": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "compression": "maximum"
     },
     "productName": "husky-subtitle",
     "appId": "https://huskyareyouscared.github.io/subtitle/",

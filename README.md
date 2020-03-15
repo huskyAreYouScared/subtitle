@@ -1,6 +1,6 @@
 # husky-subtitle
 
-> add subtitle to video
+> speech recognition add subtitle to video
 
 #### Build Setup
 
@@ -19,7 +19,9 @@ npm run build
 npm run lint
 
 ```
-
+#### relative article
+* [address 1](https://husky_are_you_scared.gitee.io/blog/subtitle/)国内访问较快
+* [address 2](https://huskyareyouscared.github.io/blog/subtitle/ )国内访问较慢
 ---
 
 This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[45a3e22](https://github.com/SimulatedGREG/electron-vue/tree/45a3e224e7bb8fc71909021ccfdcfec0f461f634) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).

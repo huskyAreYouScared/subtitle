@@ -8,18 +8,18 @@
 import {mapState, mapMutations} from 'vuex'
 export default {
   watch: {
-    videoInfo: {
-      handler: function (newVal, oldVal) {
-        console.log(newVal)
-      },
-      deep: true
-    },
-    currentTime: {
-      handler: function (newVal, oldVal) {
-        console.log(newVal)
-      },
-      deep: true
-    }
+    // videoInfo: {
+    //   handler: function (newVal, oldVal) {
+
+    //   },
+    //   deep: true
+    // },
+    // currentTime: {
+    //   handler: function (newVal, oldVal) {
+    //     console.log(newVal)
+    //   },
+    //   deep: true
+    // }
   },
   computed: {
     ...mapState(['videoInfo', 'currentTime'])

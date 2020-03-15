@@ -5,9 +5,10 @@
         <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="splitStep">生成字幕</button>
         <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('srt')">srt</button>
         <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('bcc')">bcc</button>
+        <input type="checkbox"  v-model="scrollStateCtrl"/><span class="text">scroll</span>
       </div>
      
-      <div class="srt-container">
+      <div class="srt-container" ref="subtitleContainer">
         <p v-for="audioItem in srtObjTemp" :key="audioItem.index">
           <input class="srt-input bg" type="text" v-model="audioItem.index">
           <br/>
@@ -36,6 +37,7 @@ export default {
       splitStartTimeMinutes: 0,
       splitStartTimeSeconds: 0,
       currentSplitSecond: 0,
+      scrollStateCtrl:false,
       fileIndex: 1, // 文件索引
       recognizeIndex: 1, // 识别索引
       splitDuration: 10, // * 切分持续时间
@@ -57,6 +59,15 @@ export default {
     videoInfo: {
       handler: function (newVal, oldVal) {
         this.disableBtn = false
+      },
+      deep: true
+    },
+    currentTime: {
+      handler: function (newVal, oldVal) {
+        if(this.scrollStateCtrl){
+          this.subtitleAutoScroll(this.videoInfo.videoInfo.duration,
+                newVal.currentTime, this.splitDuration, this.$refs.subtitleContainer)
+        }
       },
       deep: true
     }
@@ -90,6 +101,28 @@ export default {
       this.splitStartTimeHours = 0
       this.splitStartTimeMinutes = 0
       this.splitStartTimeSeconds = 0
+    },
+    /**
+     * @param totalDuration 视频总时长 video total duration
+     * @param current 视频当前播放时长 video current duration
+     * @param splitduration 视频切割时长 video split duration
+     * @param scrollEl 滚动的元素 need scroll element
+     */
+    subtitleAutoScroll ( totalDuration, current, splitduration, scrollEl){
+      if(current < splitduration){
+          return
+        }
+        let strContainer = scrollEl
+        // 获取subtitle-container 总高度
+        let rangeScroll = strContainer.scrollHeight
+        // // 要保证current在第一屏时间范围内不滚动,因为要保证的需要编辑的字幕在可视区域，所以要减去一个splitduration
+        // let noscroll = (strContainer.clientHeight/strContainer.scrollHeight)*totalDuration - splitduration
+        // 每隔一个duration，进行向下滚动
+        if(current>splitduration){
+          let videoProgress = rangeScroll*((current-splitduration)/totalDuration)
+          scrollEl.scrollTop = videoProgress
+        }
+        
     },
     suffixCtrl (path) {
       let pathTempArr = path.split('.')
@@ -145,7 +178,6 @@ export default {
         }
       } catch (error) {
         this.disableBtn = false
-        console.log(error)
       }
     },
     splitStateCtrl (state) {
