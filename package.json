@@ -76,6 +76,7 @@
     "fs-extra": "^8.1.0",
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0",
+    "tencentcloud-sdk-nodejs": "^3.0.130",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",

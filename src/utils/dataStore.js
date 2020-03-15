@@ -23,7 +23,9 @@ if (!db.has('recognitionObject').value()) {
   db.set('recognitionObject', {
     APP_ID: '',
     API_KEY: '',
-    SECRET_KEY: ''
+    SECRET_KEY: '',
+    service:'',
+    region:''
   }).write()
 }
 

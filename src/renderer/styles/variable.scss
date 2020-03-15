@@ -6,10 +6,12 @@ $tint:rgb(68, 68, 68);
 $text:#F5F5F5;
 $sub-text:#BDBDBD;
 $smallTxt:12px;
+$test:rgb(26, 26, 26);
 
 .bg{
   background: $primary;
 }
+
 .bg-tint{
   background: $tint;
 }
@@ -29,6 +31,9 @@ $smallTxt:12px;
 
 .text-huge{
   font-size: 100px!important;
+}
+@mixin bg-alpha($color1,$color2,$color3,$alpha){
+ background: rgba($color1, $color1,$color3, $alpha)
 }
 
 @mixin textCenter($lineHeight) {

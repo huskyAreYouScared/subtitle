@@ -5,9 +5,8 @@
         <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="splitStep">生成字幕</button>
         <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('srt')">srt</button>
         <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('bcc')">bcc</button>
-        <input type="checkbox"  v-model="scrollStateCtrl"/><span class="text">scroll</span>
+        <input type="checkbox" id="scrollCtrl"  v-model="scrollStateCtrl"/><label for="scrollCtrl"><span class="text">scroll</span></label>
       </div>
-     
       <div class="srt-container" ref="subtitleContainer">
         <p v-for="audioItem in srtObjTemp" :key="audioItem.index">
           <input class="srt-input bg" type="text" v-model="audioItem.index">
@@ -27,6 +26,7 @@
 import {speech as AipSpeechClient} from 'baidu-aip-sdk'
 import { ipcRenderer as ipc} from 'electron'
 import { mapState } from 'vuex'
+import {aiAudio} from '@/utils/recognize'
 import fs from 'fs'
 export default {
   data () {
@@ -96,11 +96,13 @@ export default {
   },
   methods: {
     init () {
+      this.lastNum = 2 // const 固定值为二
       this.fileIndex = 1 // 文件索引
       this.recognizeIndex = 1 // 识别索引
       this.splitStartTimeHours = 0
       this.splitStartTimeMinutes = 0
       this.splitStartTimeSeconds = 0
+      this.srtObjTemp = [] // 清空之前的切分信息数组
     },
     /**
      * @param totalDuration 视频总时长 video total duration
@@ -115,14 +117,11 @@ export default {
         let strContainer = scrollEl
         // 获取subtitle-container 总高度
         let rangeScroll = strContainer.scrollHeight
-        // // 要保证current在第一屏时间范围内不滚动,因为要保证的需要编辑的字幕在可视区域，所以要减去一个splitduration
-        // let noscroll = (strContainer.clientHeight/strContainer.scrollHeight)*totalDuration - splitduration
         // 每隔一个duration，进行向下滚动
         if(current>splitduration){
           let videoProgress = rangeScroll*((current-splitduration)/totalDuration)
           scrollEl.scrollTop = videoProgress
         }
-        
     },
     suffixCtrl (path) {
       let pathTempArr = path.split('.')
@@ -134,7 +133,6 @@ export default {
       return path
     },
     splitStep () {
-      this.srtObjTemp = [], // 清空之前的切分信息数组
       this.disableBtn = true
       this.splitStateCtrl(true)
       this.newTempFolder(`${this.$objectPath}/temp/wav`)
@@ -152,21 +150,27 @@ export default {
         }
         const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
         // 如果返回结果位true代表已经没有音频了
-        console.log(this.fileIndex, stderr)
+        console.log(stderr);
+        
         if (/audio:0kB/.test(stderr)) {
-          this.splitStateCtrl(false)
+          this.splitStateCtrl(false) 
         }
         if (this.splitState) {
           // 文件名加1
-          this.srtTiemLineCtrl(this.fileIndex, this.doubleNumberCtrl(), 'start', `output_${this.fileIndex}.wav`)
+          // let reg = new RegExp()
+          /audio:(\d{0,3})kB/g.test(stderr)
+          let currentAudioSize = parseInt(RegExp.$1*1024)
+          console.log(currentAudioSize);
+          
+          this.srtTiemLineCtrl(this.fileIndex, this.doubleNumberCtrl(), 'start',currentAudioSize, `output_${this.fileIndex}.wav`)
           if (isAddsplitDuration) {
             this.startTimeCtrl(this.splitDuration)
           } else {
             if (this.lastNum) {
-              this.startTimeCtrl(Math.floor(this.videoInfo.videoInfo.duration) - this.currentSplitSecond)
+              this.startTimeCtrl(parseFloat((this.videoInfo.videoInfo.duration - this.currentSplitSecond-0.001).toFixed(3)))
             } else {
               // 防止毫秒干扰
-              this.startTimeCtrl(1)
+              this.startTimeCtrl(2)
               this.startTimeCtrl(this.splitDuration)
             }
           }
@@ -174,7 +178,18 @@ export default {
           this.fileIndex++
           this.splitAudio()
         } else {
-          this.aiAudio()
+          // 因为最后一个文件总是空文件，所以去除
+          // this.srtObjTemp.pop()
+          // this.aiAudio()
+          console.log(789);
+          console.log(aiAudio());
+          
+          aiAudio().then(res=>{
+            console.log(res);
+            
+          },err=>{
+            new Error(err)
+          })
         }
       } catch (error) {
         this.disableBtn = false
@@ -236,7 +251,7 @@ export default {
      * @param type 'start'或者 'end' 开始时间线或者结束时间线
      * @param fileName 音频文件名
      */
-    srtTiemLineCtrl (current, TimeLine, type, fileName) {
+    srtTiemLineCtrl (current, TimeLine, type, audioSize,fileName,) {
       if (type == 'start') {
         this.srtObjTemp.push({
           index: current,
@@ -244,10 +259,12 @@ export default {
           end: '',
           value: '',
           audioFlieName: fileName,
-          startSecond: (current - 1) * 10
+          startSecond: (current - 1) * 10,
+          size:audioSize
         })
       } else {
-        this.srtObjTemp[current - 1].end = TimeLine + ',000'
+        this.srtObjTemp[current - 1].end =/\./.test(TimeLine)? TimeLine.toString().replace('.',',')
+                                                                            :TimeLine+',000'
       }
     },
     joinSrtFlie () {
@@ -269,30 +286,25 @@ export default {
         subtitleArr.push(temp)
       })
       // 处理最后一段音频时间超出的问题
-      subtitleArr[subtitleArr.length - 1].to = subtitleArr[subtitleArr.length - 1].from + (this.videoInfo.videoInfo.duration % 10).toFixed(0)
+      subtitleArr[subtitleArr.length - 1].to = subtitleArr[subtitleArr.length - 1].from + parseFloat((this.videoInfo.videoInfo.duration % 10).toFixed(3))
       this.BCCObj.body = subtitleArr
       return JSON.stringify(this.BCCObj)
     },
-    aiAudio () {
-      // 因为最后一个文件总是空文件，所以去除
-      this.srtObjTemp.pop()
-      // 设置APPID/AK/SK
-      // var APP_ID = '18336046'
-      // var API_KEY = 'CX7HpOECibS7wIGKXlAyxVA8'
-      // var SECRET_KEY = 'TFngd3UfhsdN0NnBm4koUVyeQd67RlGK'
-      let {APP_ID, API_KEY, SECRET_KEY} = this.$DB.read().get('recognitionObject').value()
-      this.recognizeIndex = 1
-      // 新建一个对象，建议只保存一个对象调用服务接口
-      if (APP_ID && API_KEY && SECRET_KEY) {
-        this.client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
-        this.recognize()
-      } else {
-        ipc.send('custom-message', {
-          msg: '请前往设置输入语音识别配置信息',
-          type: 'info'
-        })
-      }
-    },
+    // aiAudio () {
+      
+    //   let {APP_ID, API_KEY, SECRET_KEY} = this.$DB.read().get('recognitionObject').value()
+    //   this.recognizeIndex = 1
+    //   // 新建一个对象，建议只保存一个对象调用服务接口
+    //   if (APP_ID && API_KEY && SECRET_KEY) {
+    //     this.client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
+    //     this.recognize()
+    //   } else {
+    //     ipc.send('custom-message', {
+    //       msg: '请前往设置输入语音识别配置信息',
+    //       type: 'info'
+    //     })
+    //   }
+    // },
     recognize () {
       fs.readFile(`${this.$objectPath}/temp/wav/output_${this.recognizeIndex}.wav`, (err, data) => {
         let voiceBuffer = new Buffer(data)
@@ -321,6 +333,13 @@ export default {
       })
     },
     exportFile (type) {
+      if(this.srtObjTemp.length==0){
+        ipc.send('custom-message', {
+          msg: '还没有字幕，请先语音识别',
+          type: 'info'
+        })
+        return
+      }
       this.exportType = type
       ipc.send('save-srt-file-dialog')
     }

@@ -10,11 +10,6 @@ export default new Router({
       component: require('@/views/main/main_page.vue').default
     },
     {
-      path: '/setting',
-      name: '设置',
-      component: require('@/views/setting/setting.vue').default
-    },
-    {
       path: '*',
       redirect: '/'
     }

@@ -5,7 +5,7 @@
       <span class="iconfont icon-jiahao text toolbar-item" @click="selectLocalFile"></span>
     </div>
     <div class="file-list">
-      <p class="file-item text"  @click="selectFile(item)" v-for="(item,index) in filePath" :key="index">
+      <p class="file-item text" :title="item.name"  @click="selectFile(item)" v-for="(item,index) in filePath" :key="index">
         {{item.name}}
         <span class="item-toolsbar">
           <span @click.stop="deleteFile(index)" class="iconfont icon-jianhao text"></span>

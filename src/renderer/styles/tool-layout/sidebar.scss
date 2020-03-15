@@ -23,11 +23,16 @@
       font-size: $smallTxt;
       padding: 3px;
       position: relative;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-break: break-all;
       @include cursorPointer;
       .item-toolsbar{
         display: none;
         position: absolute;
         right: 1px;
+        background: #000;
       }
       &:hover .item-toolsbar{
         display: inline-block;

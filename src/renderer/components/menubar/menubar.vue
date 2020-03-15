@@ -1,25 +1,36 @@
 <!--  -->
 <template>
   <div class='container menubar-container bg-deep'>
-    <div class="menu-item text" @click="goto('/setting')">
+    <div class="menu-item text" @click="open('setting')">
       设置
     </div>
+    <setting v-if="settingDialog" @closeDialog="closeDialogEvent"/>
   </div>
 </template>
 
 <script>
+import setting from './setting/setting'
 export default {
-  components: {},
+  components: {
+    setting
+  },
   data () {
     return {
-
+      settingDialog:false
     }
   },
   computed: {},
   watch: {},
   methods: {
-    goto (path) {
-      this.$router.push(path)
+    open (menubarItem) {
+      if(menubarItem === 'setting'){
+        this.settingDialog = true
+      }
+    },
+    closeDialogEvent(menubarItem){
+      if(menubarItem === 'setting'){
+        this.settingDialog = false
+      }
     }
   },
   mounted () {
