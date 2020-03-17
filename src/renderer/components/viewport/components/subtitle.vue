@@ -26,7 +26,7 @@
 import {speech as AipSpeechClient} from 'baidu-aip-sdk'
 import { ipcRenderer as ipc} from 'electron'
 import { mapState } from 'vuex'
-import {aiAudio} from '@/utils/recognize'
+import { aiAudio, baiduRecognize} from '@/utils/recognize'
 import fs from 'fs'
 export default {
   data () {
@@ -103,6 +103,7 @@ export default {
       this.splitStartTimeMinutes = 0
       this.splitStartTimeSeconds = 0
       this.srtObjTemp = [] // 清空之前的切分信息数组
+      this.disableBtn = false
     },
     /**
      * @param totalDuration 视频总时长 video total duration
@@ -150,8 +151,6 @@ export default {
         }
         const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
         // 如果返回结果位true代表已经没有音频了
-        console.log(stderr);
-        
         if (/audio:0kB/.test(stderr)) {
           this.splitStateCtrl(false) 
         }
@@ -159,9 +158,7 @@ export default {
           // 文件名加1
           // let reg = new RegExp()
           /audio:(\d{0,3})kB/g.test(stderr)
-          let currentAudioSize = parseInt(RegExp.$1*1024)
-          console.log(currentAudioSize);
-          
+          let currentAudioSize = parseInt(RegExp.$1*1024)  
           this.srtTiemLineCtrl(this.fileIndex, this.doubleNumberCtrl(), 'start',currentAudioSize, `output_${this.fileIndex}.wav`)
           if (isAddsplitDuration) {
             this.startTimeCtrl(this.splitDuration)
@@ -178,21 +175,24 @@ export default {
           this.fileIndex++
           this.splitAudio()
         } else {
-          // 因为最后一个文件总是空文件，所以去除
-          // this.srtObjTemp.pop()
-          // this.aiAudio()
-          console.log(789);
-          console.log(aiAudio());
-          
           aiAudio().then(res=>{
-            console.log(res);
-            
+            this.client = res
+            let returnData =  baiduRecognize(this.client,this.srtObjTemp)
+            console.log(returnData);
+            // if()
+            // returnData.then(res=>{
+            //    this.srtObjTemp = res
+            //    this.init()
+            // },()=>{
+            //   this.init()
+            // })
           },err=>{
-            new Error(err)
+            ipc.send('custom-message', {msg: '请前往设置查看配置是否有误，可以点击教程，查看具体配置',type: 'error'})
           })
         }
       } catch (error) {
         this.disableBtn = false
+        ipc.send('custom-message', {msg: '抱歉，程序出错',type: 'error'})
       }
     },
     splitStateCtrl (state) {
@@ -290,21 +290,6 @@ export default {
       this.BCCObj.body = subtitleArr
       return JSON.stringify(this.BCCObj)
     },
-    // aiAudio () {
-      
-    //   let {APP_ID, API_KEY, SECRET_KEY} = this.$DB.read().get('recognitionObject').value()
-    //   this.recognizeIndex = 1
-    //   // 新建一个对象，建议只保存一个对象调用服务接口
-    //   if (APP_ID && API_KEY && SECRET_KEY) {
-    //     this.client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
-    //     this.recognize()
-    //   } else {
-    //     ipc.send('custom-message', {
-    //       msg: '请前往设置输入语音识别配置信息',
-    //       type: 'info'
-    //     })
-    //   }
-    // },
     recognize () {
       fs.readFile(`${this.$objectPath}/temp/wav/output_${this.recognizeIndex}.wav`, (err, data) => {
         let voiceBuffer = new Buffer(data)
@@ -335,7 +320,7 @@ export default {
     exportFile (type) {
       if(this.srtObjTemp.length==0){
         ipc.send('custom-message', {
-          msg: '还没有字幕，请先语音识别',
+          msg: '还没有字幕，请先生成字幕',
           type: 'info'
         })
         return

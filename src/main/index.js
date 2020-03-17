@@ -3,7 +3,7 @@
 import { app, BrowserWindow, remote } from 'electron'
 import './ipc-event'
 import './global'
-import package from '../../package.json'
+import pak from '../../package.json'
 import os from 'os'
 /**
  * Set `__static` path to static files in production
@@ -48,7 +48,7 @@ function createWindow () {
 const platform = os.platform()
 if (platform=== 'win32') {
   // 配置后windows通知功能可用
-  app.setAppUserModelId(pkg.build.appId)
+  app.setAppUserModelId(pak.build.appId)
 }
 app.on('ready', createWindow)
 
