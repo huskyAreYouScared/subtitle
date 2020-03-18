@@ -175,20 +175,7 @@ export default {
           this.fileIndex++
           this.splitAudio()
         } else {
-          aiAudio().then(res=>{
-            this.client = res
-            let returnData =  baiduRecognize(this.client,this.srtObjTemp)
-            console.log(returnData);
-            // if()
-            // returnData.then(res=>{
-            //    this.srtObjTemp = res
-            //    this.init()
-            // },()=>{
-            //   this.init()
-            // })
-          },err=>{
-            ipc.send('custom-message', {msg: '请前往设置查看配置是否有误，可以点击教程，查看具体配置',type: 'error'})
-          })
+          aiAudio(this.srtObjTemp)
         }
       } catch (error) {
         this.disableBtn = false
