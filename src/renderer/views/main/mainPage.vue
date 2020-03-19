@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import sidebar from '@/components/sidebar/sidebar'
-import viewport from '@/components/viewport/viewport'
+import sidebar from '@/views/sidebar/sidebar'
+import viewport from '@/views/viewport/viewport'
 
 export default {
   components: {

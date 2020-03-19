@@ -8,21 +8,10 @@
 import {mapState, mapMutations} from 'vuex'
 export default {
   watch: {
-    // videoInfo: {
-    //   handler: function (newVal, oldVal) {
-
-    //   },
-    //   deep: true
-    // },
-    // currentTime: {
-    //   handler: function (newVal, oldVal) {
-    //     console.log(newVal)
-    //   },
-    //   deep: true
-    // }
+ 
   },
   computed: {
-    ...mapState(['videoInfo', 'currentTime'])
+    ...mapState(['duration', 'currentTime'])
   },
   props: {
     currentPath: {
@@ -34,7 +23,7 @@ export default {
     let videoEL = this.$refs.currentVideo
     // video loading completed
     videoEL.addEventListener('loadeddata', () => {
-      this.setVideoInfo({
+      this.setDuration({
         duration: parseFloat((videoEL.duration-0.001).toFixed(3)) 
       })
     }, false)
@@ -43,7 +32,7 @@ export default {
     }, false)
   },
   methods: {
-    ...mapMutations(['setVideoInfo', 'setCurrentTime'])
+    ...mapMutations(['setDuration', 'setCurrentTime'])
   }
 }
 </script>

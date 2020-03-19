@@ -1,10 +1,10 @@
 export default {
   state: {
-    filePath: ''
+    loading: false
   },
   mutations: {
-    setFilePath (state, data) {
-      state.filePath = data
+    setLoading (state, data) {
+      state.loading = data
     }
   },
   actions :{

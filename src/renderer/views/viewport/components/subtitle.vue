@@ -54,7 +54,7 @@ export default {
     }
   },
   watch: {
-    videoInfo: {
+    duration: {
       handler: function (newVal, oldVal) {
         this.disableBtn = false
       },
@@ -63,7 +63,7 @@ export default {
     currentTime: {
       handler: function (newVal, oldVal) {
         if(this.scrollStateCtrl){
-          this.subtitleAutoScroll(this.videoInfo.videoInfo.duration,
+          this.subtitleAutoScroll(this.videoDuration,
                 newVal.currentTime, this.splitDuration, this.$refs.subtitleContainer)
         }
       },
@@ -71,7 +71,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['videoInfo', 'currentTime'])
+    ...mapState(['duration', 'currentTime']),
+    videoDuration(){
+      return this.duration.duration.duration
+    }
   },
   mounted () {
     ipc.on('save-srt-file', (event, file) => {
@@ -79,7 +82,7 @@ export default {
       if (this.exportType === 'srt') {
         subtitleConetnt = joinSrtFlie(this.srtObjTemp)
       } else if (this.exportType === 'bcc') {
-        subtitleConetnt = joinBCCFlie(this.srtObjTemp,this.splitDuration,this.videoInfo.videoInfo.duration)
+        subtitleConetnt = joinBCCFlie(this.srtObjTemp,this.splitDuration,this.videoDuration)
       }
       let path = this.suffixCtrl(file.filePath)
       fs.writeFile(path, subtitleConetnt, {flag: 'w'}, (err, data) => {
@@ -143,7 +146,7 @@ export default {
         let isAddsplitDuration = true
         // 因为最后一个视频需要0KB来结束语音切割，所以要多切割一个音频
         // 但是结尾的秒数不能错 所以引入这个变量
-        if (Math.floor(this.videoInfo.videoInfo.duration) - this.currentSplitSecond < 10) {
+        if (Math.floor(this.videoDuration) - this.currentSplitSecond < 10) {
           isAddsplitDuration = false
           this.lastNum--
         }
@@ -162,7 +165,7 @@ export default {
             this.startTimeCtrl(this.splitDuration)
           } else {
             if (this.lastNum) {
-              this.startTimeCtrl(parseFloat((this.videoInfo.videoInfo.duration - this.currentSplitSecond-0.001).toFixed(3)))
+              this.startTimeCtrl(parseFloat((this.videoDuration - this.currentSplitSecond-0.001).toFixed(3)))
             } else {
               // 防止毫秒干扰
               this.startTimeCtrl(2)

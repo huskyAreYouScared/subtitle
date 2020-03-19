@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import menubar from '@/components/menubar/menubar'
+  import menubar from '@/views/menubar/menubar'
   export default {
     name: 'husky-subtitle',
     components: {

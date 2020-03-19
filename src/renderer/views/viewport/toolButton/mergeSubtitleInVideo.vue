@@ -17,7 +17,10 @@ export default {
     },
   },
   computed: {
-    ...mapState(['filePath'])
+    ...mapState(['filePath']),
+    filePathStore(){
+      return this.filePath.filePath.path
+    }
   },
   methods:{
     mergeSubtitleInVideo(){
@@ -43,7 +46,7 @@ export default {
         fs.writeFile(path, subtitleConetnt, {flag: 'w'}, async(err, data) => {
           if (!err) {
             try {
-              const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.filePath.filePath.path} -vf subtitles='${path}' '${file.filePath}' `)
+              const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.filePathStore} -vf subtitles='${path}' '${file.filePath}' `)
               if(stdout){
                 ipc.send('custom-message', {
                   msg: '完成，请查收',
