@@ -7,7 +7,7 @@ export default new Router({
     {
       path: '/',
       name: '首页',
-      component: require('@/views/main/main_page.vue').default
+      component: require('@/views/main/mainPage.vue').default
     },
     {
       path: '*',

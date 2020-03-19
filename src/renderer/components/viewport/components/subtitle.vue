@@ -5,6 +5,7 @@
         <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="splitStep">生成字幕</button>
         <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('srt')">srt</button>
         <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('bcc')">bcc</button>
+        <mergeSubtitleInVideo :subtitleData="srtObjTemp"/>
         <input type="checkbox" id="scrollCtrl"  v-model="scrollStateCtrl"/><label for="scrollCtrl"><span class="text">scroll</span></label>
       </div>
       <div class="srt-container" ref="subtitleContainer">
@@ -23,12 +24,17 @@
 </template>
 
 <script>
-import {speech as AipSpeechClient} from 'baidu-aip-sdk'
+import mergeSubtitleInVideo from '../toolButton/mergeSubtitleInVideo'
 import { ipcRenderer as ipc} from 'electron'
 import { mapState } from 'vuex'
 import { aiAudio, baiduRecognize} from '@/utils/recognize'
+import { joinSrtFlie } from '@/utils/tools'
 import fs from 'fs'
 export default {
+  name:'subtitle',
+  components:{
+    mergeSubtitleInVideo
+  },
   data () {
     return {
       srtObjTemp: [], // 切分信息数组
@@ -42,14 +48,6 @@ export default {
       recognizeIndex: 1, // 识别索引
       splitDuration: 10, // * 切分持续时间
       client: null, // * baiduapi instance
-      BCCObj: {
-        'font_size': 0.4,
-        'font_color': '#FFFFFF',
-        'background_alpha': 0.5,
-        'background_color': '#9C27B0',
-        'Stroke': 'none',
-        'body': []
-      },
       exportType: 'srt',
       disableBtn: true,
       lastNum: 2// 帮助校准结尾时间引入的
@@ -79,9 +77,9 @@ export default {
     ipc.on('save-srt-file', (event, file) => {
       let subtitleConetnt = ''
       if (this.exportType === 'srt') {
-        subtitleConetnt = this.joinSrtFlie()
+        subtitleConetnt = joinSrtFlie(this.srtObjTemp)
       } else if (this.exportType === 'bcc') {
-        subtitleConetnt = this.joinBCCFlie()
+        subtitleConetnt = joinBCCFlie(this.srtObjTemp,this.splitDuration,this.videoInfo.videoInfo.duration)
       }
       let path = this.suffixCtrl(file.filePath)
       fs.writeFile(path, subtitleConetnt, {flag: 'w'}, (err, data) => {
@@ -253,56 +251,6 @@ export default {
         this.srtObjTemp[current - 1].end =/\./.test(TimeLine)? TimeLine.toString().replace('.',',')
                                                                             :TimeLine+',000'
       }
-    },
-    joinSrtFlie () {
-      let appendText = ''
-      this.srtObjTemp.forEach((item) => {
-        appendText += `${item.index}\n${item.start} --> ${item.end}\n${item.value}\n\n`
-      })
-      return appendText
-    },
-    joinBCCFlie () {
-      let subtitleArr = []
-      this.srtObjTemp.forEach((item) => {
-        let temp = {
-          from: item.startSecond,
-          to: item.startSecond + this.splitDuration,
-          location: 2,
-          content: item.value
-        }
-        subtitleArr.push(temp)
-      })
-      // 处理最后一段音频时间超出的问题
-      subtitleArr[subtitleArr.length - 1].to = subtitleArr[subtitleArr.length - 1].from + parseFloat((this.videoInfo.videoInfo.duration % 10).toFixed(3))
-      this.BCCObj.body = subtitleArr
-      return JSON.stringify(this.BCCObj)
-    },
-    recognize () {
-      fs.readFile(`${this.$objectPath}/temp/wav/output_${this.recognizeIndex}.wav`, (err, data) => {
-        let voiceBuffer = new Buffer(data)
-        // 识别本地文件
-        this.client.recognize(voiceBuffer, 'wav', 16000).then((result) => {
-          if (result.err_no === 0) {
-            this.srtObjTemp[this.recognizeIndex - 1].value = result.result[0]
-          }
-          if (this.recognizeIndex < this.srtObjTemp.length) {
-            this.recognizeIndex++
-            this.recognize()
-          } else {
-            ipc.send('custom-message', {
-              msg: '识别完成',
-              type: 'info'
-            })
-            // 禁止按钮解禁
-            this.disableBtn = false
-            this.init()
-          }
-        }, (err) => {
-          if (this.recognizeIndex > this.srtObjTemp.length) {
-            this.disableBtn = false
-          }
-        })
-      })
     },
     exportFile (type) {
       if(this.srtObjTemp.length==0){

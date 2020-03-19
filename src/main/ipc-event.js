@@ -13,7 +13,7 @@ ipcMain.on('open-file-dialog', function (event) {
   })
 })
 
-// save srt file
+// save srt or bcc file
 ipcMain.on('save-srt-file-dialog', function (event) {
   dialog.showSaveDialog({
     // properties: ['openDirectory'],
@@ -24,6 +24,21 @@ ipcMain.on('save-srt-file-dialog', function (event) {
   }).then(res => {
     if (!res.canceled) {
       event.sender.send('save-srt-file', res)
+    }
+  })
+})
+
+// save video file
+ipcMain.on('save-video-file-dialog', function (event) {
+  dialog.showSaveDialog({
+    // properties: ['openDirectory'],
+    title: '保存文件',
+    filters: [
+      { name: 'video', extensions: ['mp4'] }
+    ]
+  }).then(res => {
+    if (!res.canceled) {
+      event.sender.send('save-video-file', res)
     }
   })
 })

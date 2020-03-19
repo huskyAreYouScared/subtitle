@@ -24,6 +24,7 @@ async function baiduInstance(APP_ID,API_KEY,SECRET_KEY,srtObjTemp){
   if (APP_ID && API_KEY && SECRET_KEY) {
     let client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
     await baiduRecognize(client,srtObjTemp)
+    alert(123)
   } else {
     ipc.send('custom-message', {
       msg: '请前往设置输入语音识别配置信息',
@@ -84,7 +85,7 @@ function tencentInstance(APP_ID, API_KEY, SECRET_KEY, region,srtObjTemp){
   let client = new AsrClient(cred, region, clientProfile);
 
   if (APP_ID && API_KEY && SECRET_KEY && region) {
-    tencentRecognize(APP_ID,client,srtObjTemp)
+   tencentRecognize(APP_ID,client,srtObjTemp)
   } else {
     ipc.send('custom-message', {
       msg: '请前往设置输入语音识别配置信息',
