@@ -24,7 +24,7 @@ export default {
     // video loading completed
     videoEL.addEventListener('loadeddata', () => {
       this.setDuration({
-        duration: parseFloat((videoEL.duration-0.001).toFixed(3)) 
+        duration: parseFloat((videoEL.duration).toFixed(3)) 
       })
     }, false)
     videoEL.addEventListener('timeupdate', () => {

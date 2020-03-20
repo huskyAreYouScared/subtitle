@@ -4,6 +4,7 @@ import { ipcRenderer as ipc } from 'electron'
 import nodeUUId from 'node-uuid'
 import fs from 'fs'
 import Vue from 'vue'
+import store from '@/store/index'
 // split audio file name output_1.wav recursion finish restore recognizeIndex 0
 let recognizeIndex = 1
 
@@ -24,7 +25,6 @@ async function baiduInstance(APP_ID,API_KEY,SECRET_KEY,srtObjTemp){
   if (APP_ID && API_KEY && SECRET_KEY) {
     let client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
     await baiduRecognize(client,srtObjTemp)
-    alert(123)
   } else {
     ipc.send('custom-message', {
       msg: '请前往设置输入语音识别配置信息',
@@ -56,6 +56,8 @@ export function baiduRecognize (client,srtObjTemp) {
           type: 'info'
         })
         recognizeIndex = 1
+        // loading cancel
+        store.commit('setLoading', false)
       }
     }, (err) => {
       if (recognizeIndex >srtObjTemp.length) {
@@ -136,6 +138,8 @@ export function tencentRecognize (APP_ID,client,srtObjTemp) {
           type: 'info'
         })
         recognizeIndex = 1
+        // loading cancel
+        store.commit('setLoading', false)
       }
     });
   })

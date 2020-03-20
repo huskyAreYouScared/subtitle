@@ -26,7 +26,7 @@
 <script>
 import mergeSubtitleInVideo from '../toolButton/mergeSubtitleInVideo'
 import { ipcRenderer as ipc} from 'electron'
-import { mapState } from 'vuex'
+import { mapState,mapMutations } from 'vuex'
 import { aiAudio, baiduRecognize} from '@/utils/recognize'
 import { joinSrtFlie } from '@/utils/tools'
 import fs from 'fs'
@@ -47,7 +47,6 @@ export default {
       fileIndex: 1, // 文件索引
       recognizeIndex: 1, // 识别索引
       splitDuration: 10, // * 切分持续时间
-      client: null, // * baiduapi instance
       exportType: 'srt',
       disableBtn: true,
       lastNum: 2// 帮助校准结尾时间引入的
@@ -68,10 +67,10 @@ export default {
         }
       },
       deep: true
-    }
+    },
   },
   computed: {
-    ...mapState(['duration', 'currentTime']),
+    ...mapState(['duration', 'currentTime','loading']),
     videoDuration(){
       return this.duration.duration.duration
     }
@@ -96,6 +95,7 @@ export default {
     })
   },
   methods: {
+    ...mapMutations(['setLoading']),
     init () {
       this.lastNum = 2 // const 固定值为二
       this.fileIndex = 1 // 文件索引
@@ -103,8 +103,8 @@ export default {
       this.splitStartTimeHours = 0
       this.splitStartTimeMinutes = 0
       this.splitStartTimeSeconds = 0
+      this.currentSplitSecond = 0
       this.srtObjTemp = [] // 清空之前的切分信息数组
-      this.disableBtn = false
     },
     /**
      * @param totalDuration 视频总时长 video total duration
@@ -135,12 +135,14 @@ export default {
       return path
     },
     splitStep () {
+      this.init()
       this.disableBtn = true
       this.splitStateCtrl(true)
       this.newTempFolder(`${this.$objectPath}/temp/wav`)
       this.splitAudio()
     },
     async splitAudio () {
+      this.setLoading(true)
       try {
         // 用来处理最后结尾的几秒，防止超出
         let isAddsplitDuration = true
@@ -165,7 +167,9 @@ export default {
             this.startTimeCtrl(this.splitDuration)
           } else {
             if (this.lastNum) {
-              this.startTimeCtrl(parseFloat((this.videoDuration - this.currentSplitSecond-0.001).toFixed(3)))
+              console.log(this.floatFormat(this.videoDuration - this.currentSplitSecond,3));
+              
+              this.startTimeCtrl(this.floatFormat(this.videoDuration - this.currentSplitSecond,3))
             } else {
               // 防止毫秒干扰
               this.startTimeCtrl(2)
@@ -176,15 +180,23 @@ export default {
           this.fileIndex++
           this.splitAudio()
         } else {
+          //@@
+          this.setLoading(false)
+          return
           aiAudio(this.srtObjTemp)
         }
       } catch (error) {
         this.disableBtn = false
+        console.log(error);
+        
         ipc.send('custom-message', {msg: '抱歉，程序出错',type: 'error'})
       }
     },
     splitStateCtrl (state) {
       this.splitState = state
+    },
+    floatFormat(floatNumber,digit){
+      return parseFloat((floatNumber).toFixed(digit))
     },
     newTempFolder (path) {
       fs.mkdir(path, (err, data) => {
@@ -199,12 +211,12 @@ export default {
       if (duration > 20) {
         return
       }
-      this.currentSplitSecond += duration
+      this.currentSplitSecond = this.floatFormat(this.currentSplitSecond+duration,3)
       if ((this.splitStartTimeSeconds + duration) >= 60) {
         this.splitStartTimeMinutes++
-        this.splitStartTimeSeconds = this.splitStartTimeSeconds + duration - 60
+        this.splitStartTimeSeconds = this.floatFormat(this.splitStartTimeSeconds + duration - 60,3)
       } else {
-        this.splitStartTimeSeconds += duration
+        this.splitStartTimeSeconds = this.floatFormat(this.splitStartTimeSeconds+ duration,3)
       }
       if ((this.splitStartTimeMinutes) >= 60) {
         this.splitStartTimeHours++
@@ -251,8 +263,8 @@ export default {
           size:audioSize
         })
       } else {
-        this.srtObjTemp[current - 1].end =/\./.test(TimeLine)? TimeLine.toString().replace('.',',')
-                                                                            :TimeLine+',000'
+        this.srtObjTemp[current - 1].end =/\./.test(TimeLine)? 
+                              TimeLine.toString().replace('.',','):TimeLine+',000'
       }
     },
     exportFile (type) {

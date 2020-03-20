@@ -4,9 +4,11 @@
 
 <script>
 import { ipcRenderer as ipc} from 'electron'
-import { mapState } from 'vuex'
+import { mapState,mapMutations } from 'vuex'
 import { joinSrtFlie } from '@/utils/tools'
 import fs from 'fs'
+import os from 'os'
+
 export default {
   props:{
     subtitleData:{
@@ -23,6 +25,7 @@ export default {
     }
   },
   methods:{
+    ...mapMutations(['setLoading']),
     mergeSubtitleInVideo(){
       if(this.subtitleData.length==0){
         ipc.send('custom-message', {
@@ -41,19 +44,30 @@ export default {
     },
     init(){
       ipc.on('save-video-file', (event, file) => {
+        this.setLoading(true)
         let subtitleConetnt = joinSrtFlie(this.subtitleData)
         let path = this.suffixCtrl(file.filePath)
+        let subtitlePath = ''
         fs.writeFile(path, subtitleConetnt, {flag: 'w'}, async(err, data) => {
+          // windows path Transfer ':'
+          
           if (!err) {
             try {
-              const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.filePathStore} -vf subtitles='${path}' '${file.filePath}' `)
-              if(stdout){
-                ipc.send('custom-message', {
-                  msg: '完成，请查收',
-                  type: 'error'
-                })
+
+              // await this.$exec(`${this.$ffmpegPath} -y -i ${path} ${path.replace(/srt$/,'ass')}`)
+              if(os.platform() === 'win32' ){
+                // issuse https://superuser.com/questions/1251296/get-error-while-adding-subtitles-with-ffmpeg
+                subtitlePath = path.replace(/\\/g,'/').replace(':','\\:')
+                // .replace(/srt$/,'ass')
               }
+              const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y -i ${this.filePathStore} -vf "subtitles='${subtitlePath}'" ${file.filePath}`)
+              ipc.send('custom-message', {
+                msg: '完成，请查收',
+                type: 'info'
+              })
+              this.setLoading(false)
             } catch (error) {
+              this.setLoading(false)
               ipc.send('custom-message', {
                 msg: '生成失败，请稍后再是，如果持续失败，请重启软件，或者在关于中找到问题反馈与作者联系，谢谢您，为了更好的软件而努力',
                 type: 'error'
