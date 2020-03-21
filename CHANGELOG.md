@@ -1,3 +1,31 @@
+## [0.5.10](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.6...v0.5.10) (2020-03-21)
+
+
+### Bug Fixes
+
+* **main ipc-event,renderer subtitle:** export srt cancel show save success bug ([52e0701](https://github.com/huskyAreYouScared/subtitle/commit/52e0701b5aa737a82dca7f43f252b29d767910e8))
+* **renderer main.js:** ffmpeg production path error bug fix ([ac62622](https://github.com/huskyAreYouScared/subtitle/commit/ac626223bf337de0cc68032cf712f454216aa1ea))
+* **renderer subtitle:** 修复语音切割bug ([807669e](https://github.com/huskyAreYouScared/subtitle/commit/807669e9d5181ceba285c62ab6c0b14105592dc1))
+* **renderer subtitle video mergesubtitlevideo loading recognize:** merge subtitle,digit correct fix ([343b8dd](https://github.com/huskyAreYouScared/subtitle/commit/343b8dd104d18bd42d138eb314263ff95faddf5d))
+
+
+### Features
+
+* **add new store currenttime:** add store currentTime ([02ea79f](https://github.com/huskyAreYouScared/subtitle/commit/02ea79fd57452fe6a584696030ff1a0f0cc9e657))
+* **new mergesubtitleinvideo.vue ,utils in tools, renderer subtitle:** add merge srt file in video ([dbe13e2](https://github.com/huskyAreYouScared/subtitle/commit/dbe13e24e29c0a946a20d01e59d26e58c3ea1a5f))
+* **package.json:** with user select install path ([01dc287](https://github.com/huskyAreYouScared/subtitle/commit/01dc2876d88a24d09627fdd830f32312940ddac9))
+* **recognize.js subtitle.vue:** add tencent Cloud audio recognize api ([f023856](https://github.com/huskyAreYouScared/subtitle/commit/f023856223ae592c7b544d15702f43ae1f9f5dde))
+* **renderer merge... subtitle ,utils tools recognize:** merge subtitle in video extra content wrap ([89d25a2](https://github.com/huskyAreYouScared/subtitle/commit/89d25a28f6822eef65bf54db7ba3a8d676fd7b79))
+* **renderer setting subtitle viewport,utils datastore.js:** audio cutting time dynamic config ([4f5ab80](https://github.com/huskyAreYouScared/subtitle/commit/4f5ab809dba81d21090576e41bf78937e8b7b1d3))
+* **renderer store videinfo.js video.vue:** add video Eventlistener ([d42bc3a](https://github.com/huskyAreYouScared/subtitle/commit/d42bc3afc66a79601f0e390a608f92566b55a8c3))
+* **renderer subtitle.vue:** 增加字幕容器跟所视频进度移动功能 ([c38aa58](https://github.com/huskyAreYouScared/subtitle/commit/c38aa589dc44c8337bbd16c4c509c2f63e1cf047))
+* **renderer subtitle.vue recognize.js:** audio recognize  abstract to function ([67a9460](https://github.com/huskyAreYouScared/subtitle/commit/67a946037f7c1065cb42eb9ba363594823ff4283))
+* **renderer utils subtitle sidebar:** last audio time cross question bug fix ([f1b87dc](https://github.com/huskyAreYouScared/subtitle/commit/f1b87dcffa4a6e4614c0bf7bb06030a5c23e2a46))
+* **setting change dialog,subtitle date error bug fix:** 将配置改为dialog，修复字幕时间不准bug，接入腾讯云准备 ([2fa5d8e](https://github.com/huskyAreYouScared/subtitle/commit/2fa5d8e919be264e1769a60b40b6f53ed68ad75e))
+* **store state relate file change:** update store manage ([f8e295f](https://github.com/huskyAreYouScared/subtitle/commit/f8e295f66467d0c0de1966f70139cd4b6d4288b0))
+
+
+
 ## [0.5.9](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.8...v0.5.9) (2020-03-11)
 
 
