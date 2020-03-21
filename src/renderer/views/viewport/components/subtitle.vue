@@ -2,9 +2,9 @@
   <div style="width:100%">
     <div>
       <div class="subtitle-ctrl-container">
-        <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="splitStep">生成字幕</button>
-        <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('srt')">srt</button>
-        <button type="button" class="subtitle-ctrl-btn bg-tint" :disabled="disableBtn" @click="exportFile('bcc')">bcc</button>
+        <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="splitStep">生成字幕</button>
+        <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="exportFile('srt')">srt</button>
+        <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="exportFile('bcc')">bcc</button>
         <mergeSubtitleInVideo :subtitleData="srtObjTemp"/>
         <input type="checkbox" id="scrollCtrl"  v-model="scrollStateCtrl"/><label for="scrollCtrl"><span class="text">scroll</span></label>
       </div>
@@ -28,7 +28,7 @@ import mergeSubtitleInVideo from '../toolButton/mergeSubtitleInVideo'
 import { ipcRenderer as ipc} from 'electron'
 import { mapState,mapMutations } from 'vuex'
 import { aiAudio, baiduRecognize} from '@/utils/recognize'
-import { joinSrtFlie } from '@/utils/tools'
+import { joinSrtFlie ,joinBCCFlie} from '@/utils/tools'
 import fs from 'fs'
 export default {
   name:'subtitle',
@@ -48,14 +48,12 @@ export default {
       recognizeIndex: 1, // 识别索引
       splitDuration: 10, // * 切分持续时间
       exportType: 'srt',
-      disableBtn: true,
       lastNum: 2// 帮助校准结尾时间引入的
     }
   },
   watch: {
     duration: {
       handler: function (newVal, oldVal) {
-        this.disableBtn = false
       },
       deep: true
     },
@@ -145,10 +143,17 @@ export default {
     splitStep () {
       this.updateSubtitleConfig()
       this.init()
-      this.disableBtn = true
       this.splitStateCtrl(true)
       this.newTempFolder(`${this.$objectPath}/temp/wav`)
       this.splitAudio()
+    },
+    checkIsSubtitle(subtitleData){
+      if(subtitleData.length<=0){
+        ipc.send('custom-message', {msg: '还没有字幕，请先生成字幕',type: 'info'})
+        return false
+      }else{
+        return true
+      }
     },
     async splitAudio () {
       this.setLoading(true)
@@ -190,9 +195,6 @@ export default {
           aiAudio(this.srtObjTemp)
         }
       } catch (error) {
-        this.disableBtn = false
-        console.log(error);
-        
         ipc.send('custom-message', {msg: '抱歉，程序出错',type: 'error'})
       }
     },
@@ -273,11 +275,7 @@ export default {
       }
     },
     exportFile (type) {
-      if(this.srtObjTemp.length==0){
-        ipc.send('custom-message', {
-          msg: '还没有字幕，请先生成字幕',
-          type: 'info'
-        })
+      if(!this.checkIsSubtitle(this.srtObjTemp)){
         return
       }
       this.exportType = type

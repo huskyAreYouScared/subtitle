@@ -66,3 +66,12 @@ export function joinBCCFlie (subtitleData,splitDuration,totalDuration) {
   BCCObj.body = subtitleArr
   return JSON.stringify(BCCObj)
 }
+
+export function subtitleContentFormat(subtitle){
+  let length = subtitle.length
+  let tempArr = subtitle.split('')
+  for (let i = 1; i < Math.ceil(length / 30); i++) {
+    tempArr.splice(i*30,0,'\n')
+  }
+  return tempArr.join('')
+}

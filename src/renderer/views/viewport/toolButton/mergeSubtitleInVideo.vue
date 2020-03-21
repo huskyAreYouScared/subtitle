@@ -56,12 +56,12 @@ export default {
               // await this.$exec(`${this.$ffmpegPath} -y -i ${path} ${path.replace(/srt$/,'ass')}`)
               if(os.platform() === 'win32' ){
                 // issuse https://superuser.com/questions/1251296/get-error-while-adding-subtitles-with-ffmpeg
-                subtitlePath = path.replace(/\\/g,'/').replace(':','\\:')
+                subtitlePath = path.replace(/\\/g,'/').replace(/\:/g,'\\:')
                 // .replace(/srt$/,'ass')
               }else{
                 subtitlePath = path
               }
-              const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y -i ${this.filePathStore} -vf "subtitles='${subtitlePath}'" ${file.filePath}`)
+              const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y -i ${this.filePathStore} -vf "subtitles='${subtitlePath}':force_style='OutlineColour=&H80000000,BorderStyle=3,Outline=1,Shadow=0,MarginV=20'" ${file.filePath}`)
               ipc.send('custom-message', {
                 msg: '完成，请查收',
                 type: 'info'

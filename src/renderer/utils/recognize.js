@@ -5,6 +5,7 @@ import nodeUUId from 'node-uuid'
 import fs from 'fs'
 import Vue from 'vue'
 import store from '@/store/index'
+import { subtitleContentFormat } from '@/utils/tools'
 // split audio file name output_1.wav recursion finish restore recognizeIndex 0
 let recognizeIndex = 1
 
@@ -44,7 +45,7 @@ export function baiduRecognize (client,srtObjTemp) {
     // recognize local file
     client.recognize(voiceBuffer, 'wav', 16000).then((result) => {
       if (result.err_no === 0) {
-        srtObjTemp[recognizeIndex - 1].value = result.result[0]
+        srtObjTemp[recognizeIndex - 1].value = subtitleContentFormat(result.result[0])
       }
       if (recognizeIndex < srtObjTemp.length) {
         recognizeIndex++
@@ -127,7 +128,7 @@ export function tencentRecognize (APP_ID,client,srtObjTemp) {
           })
         }
       }else{
-        srtObjTemp[recognizeIndex - 1].value = result.Result
+        srtObjTemp[recognizeIndex - 1].value = subtitleContentFormat(result.Result)
       }
       if (recognizeIndex < srtObjTemp.length) {
         recognizeIndex++
