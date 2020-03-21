@@ -166,9 +166,7 @@ export default {
           if (isAddsplitDuration) {
             this.startTimeCtrl(this.splitDuration)
           } else {
-            if (this.lastNum) {
-              console.log(this.floatFormat(this.videoDuration - this.currentSplitSecond,3));
-              
+            if (this.lastNum) {              
               this.startTimeCtrl(this.floatFormat(this.videoDuration - this.currentSplitSecond,3))
             } else {
               // 防止毫秒干扰
@@ -180,15 +178,10 @@ export default {
           this.fileIndex++
           this.splitAudio()
         } else {
-          //@@
-          this.setLoading(false)
-          return
           aiAudio(this.srtObjTemp)
         }
       } catch (error) {
         this.disableBtn = false
-        console.log(error);
-        
         ipc.send('custom-message', {msg: '抱歉，程序出错',type: 'error'})
       }
     },
