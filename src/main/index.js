@@ -5,6 +5,7 @@ import './ipc-event'
 import './global'
 import pak from '../../package.json'
 import os from 'os'
+import checkVersion from './updateChecker'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -19,6 +20,7 @@ const winURL = process.env.NODE_ENV === 'development'
   : `file://${__dirname}/index.html`
 
 function createWindow () {
+  checkVersion()
   /**
    * Initial window options
    */
@@ -29,7 +31,7 @@ function createWindow () {
     frame: true,
     width: 1000,
     center: true,
-    backgroundColor: '#1d1d1d',
+    backgroundColor: '#000000',
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
@@ -39,7 +41,9 @@ function createWindow () {
   })
 
   mainWindow.loadURL(winURL)
-  mainWindow.webContents.openDevTools()
+  if (process.env.NODE_ENV === 'production'){
+    mainWindow.webContents.openDevTools()
+  }
   mainWindow.on('closed', () => {
     mainWindow = null
   })

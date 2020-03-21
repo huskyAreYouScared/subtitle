@@ -20,6 +20,25 @@ export const aiAudio=(srtObjTemp)=> {
   }
 }
 
+
+/**
+ * init recognize
+ * @param {Number} type 
+ */
+function recognizeInit(state){
+  let resultState = {
+    0:'识别完成',
+    3302:'鉴权失败，请查看配置是否有误'
+  }
+  ipc.send('custom-message', {
+    msg: resultState[state] ? resultState[state]:'请查看配置，是否有误',
+    type: 'info'
+  })
+  recognizeIndex = 1
+  // loading cancel
+  store.commit('setLoading', false)
+}
+
 // baidu
 async function baiduInstance(APP_ID,API_KEY,SECRET_KEY,srtObjTemp){
   // 新建一个对象，建议只保存一个对象调用服务接口
@@ -46,19 +65,15 @@ export function baiduRecognize (client,srtObjTemp) {
     client.recognize(voiceBuffer, 'wav', 16000).then((result) => {
       if (result.err_no === 0) {
         srtObjTemp[recognizeIndex - 1].value = subtitleContentFormat(result.result[0])
+      } else if (result.err_no === 3302){
+        recognizeInit(result.err_no)
+        return 
       }
       if (recognizeIndex < srtObjTemp.length) {
         recognizeIndex++
         baiduRecognize(client,srtObjTemp)
       } else {
-        
-        ipc.send('custom-message', {
-          msg: '识别完成',
-          type: 'info'
-        })
-        recognizeIndex = 1
-        // loading cancel
-        store.commit('setLoading', false)
+        recognizeInit(0)
       }
     }, (err) => {
       if (recognizeIndex >srtObjTemp.length) {
@@ -90,11 +105,7 @@ function tencentInstance(APP_ID, API_KEY, SECRET_KEY, region,srtObjTemp){
   if (APP_ID && API_KEY && SECRET_KEY && region) {
    tencentRecognize(APP_ID,client,srtObjTemp)
   } else {
-    ipc.send('custom-message', {
-      msg: '请前往设置输入语音识别配置信息',
-      type: 'info'
-    })
-    throw new Error('配置出错')
+    recognizeInit(3302)
   }
 }
 
@@ -121,12 +132,8 @@ export function tencentRecognize (APP_ID,client,srtObjTemp) {
     req.from_json_string(params);
     client.SentenceRecognition(req, function(errMsg, result) {
       if (errMsg) {
-        if (recognizeIndex >srtObjTemp.length) {
-          ipc.send('custom-message', {
-            msg: '部分识别有误',
-            type: 'info'
-          })
-        }
+        recognizeInit(3302)
+        return
       }else{
         srtObjTemp[recognizeIndex - 1].value = subtitleContentFormat(result.Result)
       }
@@ -134,13 +141,7 @@ export function tencentRecognize (APP_ID,client,srtObjTemp) {
         recognizeIndex++
         tencentRecognize(APP_ID,client,srtObjTemp)
       } else {
-        ipc.send('custom-message', {
-          msg: '识别完成',
-          type: 'info'
-        })
-        recognizeIndex = 1
-        // loading cancel
-        store.commit('setLoading', false)
+        recognizeInit(0)
       }
     });
   })
