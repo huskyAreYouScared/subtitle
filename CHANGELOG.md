@@ -1,3 +1,12 @@
+## [0.5.11](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.10...v0.5.11) (2020-03-21)
+
+
+### Features
+
+* **main updatechecker,renderer utils recognize,travis.yml appveyor.yml:** add auto update,add CI ([d210b69](https://github.com/huskyAreYouScared/subtitle/commit/d210b692f6bd63b0f70be320a7418d556620689e))
+
+
+
 ## [0.5.10](https://github.com/huskyAreYouScared/subtitle/compare/v0.5.6...v0.5.10) (2020-03-21)
 
 
