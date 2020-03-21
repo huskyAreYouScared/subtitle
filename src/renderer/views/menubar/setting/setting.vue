@@ -26,6 +26,12 @@
       <input v-model="recognitionSetting.SECRET_KEY" type="password" class="baidu-input text">
       <br>
     </div>
+    <div class="baidu-api-area">
+      <p class="header text">字幕-视频-配置</p>
+      <label for="" class="text input-label">自定义语音切割时间（split duration）:</label>
+      <input v-model="subtitleConfig.splitDuration" class="baidu-input text">
+      <br>
+    </div>
     <div class="back-btn text" @click="closeDialog">返回(back)</div>
     <div class="save-btn text" @click="saveSetting">保存(save)</div>
   </div>
@@ -43,6 +49,9 @@ export default {
         SECRET_KEY: '',
         service:'',
         region:''
+      },
+      subtitleConfig:{
+        splitDuration:''
       },
       regionList:[
         {
@@ -85,6 +94,7 @@ export default {
   methods: {
     setArgument () {
       this.$DB.read().set('recognitionObject', this.recognitionSetting).write()
+      this.$DB.read().set('subtitleConfig', this.subtitleConfig).write()
     },
     saveSetting () {
       this.setArgument()
@@ -109,6 +119,7 @@ export default {
       }
     },
     init(){
+      this.subtitleConfig = this.$DB.read().get('subtitleConfig').value()
       this.recognitionSetting = this.$DB.read().get('recognitionObject').value()
       this.changeForm(this.recognitionSetting.service)
     }

@@ -76,26 +76,30 @@ export default {
     }
   },
   mounted () {
-    ipc.on('save-srt-file', (event, file) => {
-      let subtitleConetnt = ''
-      if (this.exportType === 'srt') {
-        subtitleConetnt = joinSrtFlie(this.srtObjTemp)
-      } else if (this.exportType === 'bcc') {
-        subtitleConetnt = joinBCCFlie(this.srtObjTemp,this.splitDuration,this.videoDuration)
-      }
-      let path = this.suffixCtrl(file.filePath)
-      fs.writeFile(path, subtitleConetnt, {flag: 'w'}, (err, data) => {
-        if (!err) {
-          ipc.send('custom-message', {
-            msg: '保存成功',
-            type: 'info'
-          })
-        }
-      })
-    })
+    this.updateSubtitleConfig()
+    this.ipcInit()
   },
   methods: {
     ...mapMutations(['setLoading']),
+    ipcInit(){
+      ipc.on('save-srt-file', (event, file) => {
+        let subtitleConetnt = ''
+        if (this.exportType === 'srt') {
+          subtitleConetnt = joinSrtFlie(this.srtObjTemp)
+        } else if (this.exportType === 'bcc') {
+          subtitleConetnt = joinBCCFlie(this.srtObjTemp,this.splitDuration,this.videoDuration)
+        }
+        let path = this.suffixCtrl(file.filePath)
+        fs.writeFile(path, subtitleConetnt, {flag: 'w'}, (err, data) => {
+          if (!err) {
+            ipc.send('custom-message', {
+              msg: '保存成功',
+              type: 'info'
+            })
+          }
+        })
+      })
+    },
     init () {
       this.lastNum = 2 // const 固定值为二
       this.fileIndex = 1 // 文件索引
@@ -134,7 +138,12 @@ export default {
       }
       return path
     },
+    // 更新subtitle config
+    updateSubtitleConfig(){
+      this.splitDuration = parseInt(this.$DB.read().get('subtitleConfig').value().splitDuration)
+    },
     splitStep () {
+      this.updateSubtitleConfig()
       this.init()
       this.disableBtn = true
       this.splitStateCtrl(true)
@@ -148,7 +157,7 @@ export default {
         let isAddsplitDuration = true
         // 因为最后一个视频需要0KB来结束语音切割，所以要多切割一个音频
         // 但是结尾的秒数不能错 所以引入这个变量
-        if (Math.floor(this.videoDuration) - this.currentSplitSecond < 10) {
+        if (Math.floor(this.videoDuration) - this.currentSplitSecond < this.splitDuration) {
           isAddsplitDuration = false
           this.lastNum--
         }
@@ -182,6 +191,8 @@ export default {
         }
       } catch (error) {
         this.disableBtn = false
+        console.log(error);
+        
         ipc.send('custom-message', {msg: '抱歉，程序出错',type: 'error'})
       }
     },
@@ -189,6 +200,7 @@ export default {
       this.splitState = state
     },
     floatFormat(floatNumber,digit){
+
       return parseFloat((floatNumber).toFixed(digit))
     },
     newTempFolder (path) {

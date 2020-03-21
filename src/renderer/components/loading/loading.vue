@@ -11,10 +11,6 @@ import {mapState} from 'vuex'
 export default {
   computed:{
     ...mapState(['loading'])
-  },
-  mounted(){
-    console.log(this.loading);
-    
   }
 }
 </script>

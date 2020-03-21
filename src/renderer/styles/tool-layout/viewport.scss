@@ -15,8 +15,14 @@
       height: auto;
     }
     .novideo{
-      margin: 5px;
-      @include textCenter(15px);
+      border: 1px dashed #fff;
+      width: 98%;
+      height: 200px;
+      border-radius: 4px;
+      margin: 5px auto 0;
+      @include textCenter(200px);
+      font-weight: bold;
+      font-size: 2em;
     }
   }
   .subtitle-ctrl-container{

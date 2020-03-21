@@ -28,6 +28,11 @@ if (!db.has('recognitionObject').value()) {
     region:''
   }).write()
 }
+if (!db.has('subtitleConfig').value()) {
+  db.set('subtitleConfig', {
+    splitDuration:10
+  }).write()
+}
 
 export default db
 

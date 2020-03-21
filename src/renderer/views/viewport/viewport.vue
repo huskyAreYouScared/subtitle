@@ -7,7 +7,7 @@
       </div>
       <div class="video-container col-lg-5 col-md-5 col-sm-5 col-xs-5">
         <showVideo v-if="currentFile !== null" :currentPath="currentFile.showPath"></showVideo>
-        <p class="novideo text" v-else>请选择视频文件</p>
+        <div class="novideo text" v-else>请选择视频文件</div>
       </div>
     </div>
    
