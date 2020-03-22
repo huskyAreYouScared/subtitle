@@ -5,7 +5,7 @@ language: c
 matrix:
   include:
   - os: osx
-  - os: linux
+  #- os: linux
     env: CC=clang CXX=clang++ npm_config_clang=1
     compiler: clang
 cache:
@@ -24,14 +24,14 @@ before_install:
   | tar -xz -C /tmp/git-lfs --strip-components 1 && /tmp/git-lfs/git-lfs pull
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils; fi
 install:
-- nvm install 10
+- nvm install 12
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
 - npm install -g xvfb-maybe
 - yarn
 script:
 #- yarn run build
-- yarn run release
+- npm run release
 branches:
   only:
   - master

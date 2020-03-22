@@ -1,9 +1,9 @@
 {
   "name": "husky-subtitle",
-  "version": "0.5.11",
+  "version": "0.1.0",
   "author": "huskyareyouscared <1710632585@qq.com>",
   "description": "add subtitle to video",
-  "license": null,
+  "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",

@@ -41,7 +41,7 @@ function createWindow () {
   })
 
   mainWindow.loadURL(winURL)
-  if (process.env.NODE_ENV === 'production'){
+  if (process.env.NODE_ENV !== 'production'){
     mainWindow.webContents.openDevTools()
   }
   mainWindow.on('closed', () => {
@@ -49,8 +49,19 @@ function createWindow () {
   })
 }
 
+// once instance
+const shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore()
+    mainWindow.focus()
+  }
+})
+if (shouldQuit) {
+  app.quit()
+}
+
 const platform = os.platform()
-if (platform=== 'win32') {
+if (platform === 'win32') {
   // 配置后windows通知功能可用
   app.setAppUserModelId(pak.build.appId)
 }
