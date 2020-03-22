@@ -7,7 +7,7 @@ export default {
       state.loading = data
     }
   },
-  actions :{
-  
-  },
+  actions: {
+
+  }
 }

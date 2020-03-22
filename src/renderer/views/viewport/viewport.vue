@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { ipcRenderer as ipc, remote} from 'electron'
 import showVideo from './components/video'
 import subtitle from './components/subtitle'
 import {mapState} from 'vuex'

@@ -1,13 +1,13 @@
 export default {
-  state : {
-    duration: 0,
+  state: {
+    duration: 0
   },
-  mutations : {
+  mutations: {
     setDuration (state, data) {
       state.duration = data
     }
   },
-  actions : {
+  actions: {
 
   }
 }

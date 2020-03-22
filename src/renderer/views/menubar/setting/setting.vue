@@ -47,45 +47,45 @@ export default {
         APP_ID: '',
         API_KEY: '',
         SECRET_KEY: '',
-        service:'',
-        region:''
+        service: '',
+        region: ''
       },
-      subtitleConfig:{
-        splitDuration:''
+      subtitleConfig: {
+        splitDuration: ''
       },
-      regionList:[
+      regionList: [
         {
-          name:'华东地区（上海）',
-          value:'ap-shanghai'
+          name: '华东地区（上海）',
+          value: 'ap-shanghai'
         },
         {
-          name:'华北地区（北京）',
-          value:'ap-beijing'
+          name: '华北地区（北京）',
+          value: 'ap-beijing'
         },
         {
-          name:'西南地区（重庆）',
-          value:'ap-chongqing'
+          name: '西南地区（重庆）',
+          value: 'ap-chongqing'
         },
         {
-          name:'华南地区（广州）',
-          value:'ap-guangzhou'
-        },
-      ],
-      serviceList:[
-        {
-          name:'百度云',
-          value:'baidu'
-        },
-        {
-          name:'腾讯云',
-          value:'tencent'
+          name: '华南地区（广州）',
+          value: 'ap-guangzhou'
         }
       ],
-      formConfig:{
-        isRegion:false,
-        appIdName:'',
-        apiKeyName:'',
-        secretKeyName:''
+      serviceList: [
+        {
+          name: '百度云',
+          value: 'baidu'
+        },
+        {
+          name: '腾讯云',
+          value: 'tencent'
+        }
+      ],
+      formConfig: {
+        isRegion: false,
+        appIdName: '',
+        apiKeyName: '',
+        secretKeyName: ''
       }
     }
   },
@@ -99,26 +99,26 @@ export default {
     saveSetting () {
       this.setArgument()
       ipc.send('custom-message', {
-      msg: '保存成功',
-      type: 'info'
-    })
+        msg: '保存成功',
+        type: 'info'
+      })
     },
-    closeDialog(){
-      this.$emit('closeDialog','setting')
+    closeDialog () {
+      this.$emit('closeDialog', 'setting')
     },
-    changeService(){
+    changeService () {
       this.changeForm(this.recognitionSetting.service)
     },
-    changeForm(serviceName){
-      if(serviceName === 'baidu'){
-        this.formConfig={isRegion:false,appIdName:'App_id',apiKeyName:'Api_Key',secretKeyName:'SecretKey'}
-      } else if(serviceName === 'tencent'){
-        this.formConfig={isRegion:true,appIdName:'ProjectId',apiKeyName:'SecretId',secretKeyName:'SecretKey'}
+    changeForm (serviceName) {
+      if (serviceName === 'baidu') {
+        this.formConfig = {isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey'}
+      } else if (serviceName === 'tencent') {
+        this.formConfig = {isRegion: true, appIdName: 'ProjectId', apiKeyName: 'SecretId', secretKeyName: 'SecretKey'}
       } else {
-        this.formConfig={isRegion:false,appIdName:'App_id',apiKeyName:'Api_Key',secretKeyName:'SecretKey'}
+        this.formConfig = {isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey'}
       }
     },
-    init(){
+    init () {
       this.subtitleConfig = this.$DB.read().get('subtitleConfig').value()
       this.recognitionSetting = this.$DB.read().get('recognitionObject').value()
       this.changeForm(this.recognitionSetting.service)

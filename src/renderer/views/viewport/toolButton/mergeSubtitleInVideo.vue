@@ -3,31 +3,32 @@
 </template>
 
 <script>
-import { ipcRenderer as ipc} from 'electron'
-import { mapState,mapMutations } from 'vuex'
+
+import { ipcRenderer as ipc } from 'electron'
+import { mapState, mapMutations } from 'vuex'
 import { joinSrtFlie } from '@/utils/tools'
 import fs from 'fs'
 import os from 'os'
 
 export default {
-  props:{
-    subtitleData:{
-      type:Array,
-      default:function(){
+  props: {
+    subtitleData: {
+      type: Array,
+      default: function () {
         return []
       }
-    },
+    }
   },
   computed: {
     ...mapState(['filePath']),
-    filePathStore(){
+    filePathStore () {
       return this.filePath.filePath.path
     }
   },
-  methods:{
+  methods: {
     ...mapMutations(['setLoading']),
-    mergeSubtitleInVideo(){
-      if(this.subtitleData.length==0){
+    mergeSubtitleInVideo () {
+      if (this.subtitleData.length === 0) {
         ipc.send('custom-message', {
           msg: '还没有字幕，请先生成字幕',
           type: 'info'
@@ -42,26 +43,26 @@ export default {
       pathTempArr[pathTempArr.length - 1] = 'srt'
       return pathTempArr.join('.')
     },
-    init(){
+    init () {
       ipc.on('save-video-file', (event, file) => {
         this.setLoading(true)
         let subtitleConetnt = joinSrtFlie(this.subtitleData)
         let path = this.suffixCtrl(file.filePath)
         let subtitlePath = ''
-        fs.writeFile(path, subtitleConetnt, {flag: 'w'}, async(err, data) => {
+        fs.writeFile(path, subtitleConetnt, {flag: 'w'}, async (err, data) => {
           // windows path Transfer ':'
-          
+
           if (!err) {
             try {
               // await this.$exec(`${this.$ffmpegPath} -y -i ${path} ${path.replace(/srt$/,'ass')}`)
-              if(os.platform() === 'win32' ){
+              if (os.platform() === 'win32') {
                 // issuse https://superuser.com/questions/1251296/get-error-while-adding-subtitles-with-ffmpeg
-                subtitlePath = path.replace(/\\/g,'/').replace(/\:/g,'\\:')
+                subtitlePath = path.replace(/\\/g, '/').replace(/:/g, '\\:')
                 // .replace(/srt$/,'ass')
-              }else{
+              } else {
                 subtitlePath = path
               }
-              const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y -i ${this.filePathStore} -vf "subtitles='${subtitlePath}':force_style='OutlineColour=&H80000000,BorderStyle=3,Outline=1,Shadow=0,MarginV=20'" ${file.filePath}`)
+              await this.$exec(`${this.$ffmpegPath} -y -i ${this.filePathStore} -vf "subtitles='${subtitlePath}':force_style='OutlineColour=&H80000000,BorderStyle=3,Outline=1,Shadow=0,MarginV=20'" ${file.filePath}`)
               ipc.send('custom-message', {
                 msg: '完成，请查收',
                 type: 'info'
@@ -75,15 +76,12 @@ export default {
                 type: 'error'
               })
             }
-            
           }
         })
       })
-      
-      
     }
   },
-  mounted(){
+  mounted () {
     this.init()
   }
 }

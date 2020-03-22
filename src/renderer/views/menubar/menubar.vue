@@ -16,19 +16,19 @@ export default {
   },
   data () {
     return {
-      settingDialog:false
+      settingDialog: false
     }
   },
   computed: {},
   watch: {},
   methods: {
     open (menubarItem) {
-      if(menubarItem === 'setting'){
+      if (menubarItem === 'setting') {
         this.settingDialog = true
       }
     },
-    closeDialogEvent(menubarItem){
-      if(menubarItem === 'setting'){
+    closeDialogEvent (menubarItem) {
+      if (menubarItem === 'setting') {
         this.settingDialog = false
       }
     }

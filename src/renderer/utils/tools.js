@@ -2,7 +2,7 @@ import route from '@/router'
 import {config} from '@All/utils/config.js'
 // mp4,webm,ogg
 export function checkAllowFile (file) {
-  let regexp = new RegExp(`\.(${config.audioFormat.concat(config.videoFormat).join('|')})$`)
+  let regexp = new RegExp(`.(${config.audioFormat.concat(config.videoFormat).join('|')})$`)
   return regexp.test(file)
 }
 
@@ -20,13 +20,13 @@ export function timeLineProcess (second) {
   let hours = UTCDate.getHours()
   let minutes = UTCDate.getMinutes()
   let seconds = UTCDate.getSeconds()
-  let millisecond = UTCDate.getUTCMilliseconds()
+  // let millisecond = UTCDate.getUTCMilliseconds()
   return `${hours >= 10 ? hours : '0' + hours.toString()}:${minutes >= 10 ? minutes : '0' + minutes.toString()}:${seconds >= 10 ? seconds : '0' + seconds.toString()}`
 }
 
 /**
- * 
- * @param {Array} subtitleData 
+ *
+ * @param {Array} subtitleData
  */
 export function joinSrtFlie (subtitleData) {
   let appendText = ''
@@ -37,13 +37,13 @@ export function joinSrtFlie (subtitleData) {
 }
 
 /**
- * 
- * @param {Array} subtitleData 
+ *
+ * @param {Array} subtitleData
  * @param {Number} splitDuration  切割的时间
  * @param {Number} totalDuration 总时长
  */
-export function joinBCCFlie (subtitleData,splitDuration,totalDuration) {
-  let BCCObj={
+export function joinBCCFlie (subtitleData, splitDuration, totalDuration) {
+  let BCCObj = {
     'font_size': 0.4,
     'font_color': '#FFFFFF',
     'background_alpha': 0.5,
@@ -67,11 +67,11 @@ export function joinBCCFlie (subtitleData,splitDuration,totalDuration) {
   return JSON.stringify(BCCObj)
 }
 
-export function subtitleContentFormat(subtitle){
+export function subtitleContentFormat (subtitle) {
   let length = subtitle.length
   let tempArr = subtitle.split('')
   for (let i = 1; i < Math.ceil(length / 30); i++) {
-    tempArr.splice(i*30,0,'\n')
+    tempArr.splice(i * 30, 0, '\n')
   }
   return tempArr.join('')
 }

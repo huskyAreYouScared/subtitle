@@ -24,13 +24,13 @@ if (!db.has('recognitionObject').value()) {
     APP_ID: '',
     API_KEY: '',
     SECRET_KEY: '',
-    service:'',
-    region:''
+    service: '',
+    region: ''
   }).write()
 }
 if (!db.has('subtitleConfig').value()) {
   db.set('subtitleConfig', {
-    splitDuration:10
+    splitDuration: 10
   }).write()
 }
 

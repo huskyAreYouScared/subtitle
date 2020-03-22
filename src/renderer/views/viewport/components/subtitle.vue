@@ -25,14 +25,14 @@
 
 <script>
 import mergeSubtitleInVideo from '../toolButton/mergeSubtitleInVideo'
-import { ipcRenderer as ipc} from 'electron'
-import { mapState,mapMutations } from 'vuex'
-import { aiAudio, baiduRecognize} from '@/utils/recognize'
-import { joinSrtFlie ,joinBCCFlie} from '@/utils/tools'
+import { ipcRenderer as ipc } from 'electron'
+import { mapState, mapMutations } from 'vuex'
+import { aiAudio } from '@/utils/recognize'
+import { joinSrtFlie, joinBCCFlie } from '@/utils/tools'
 import fs from 'fs'
 export default {
-  name:'subtitle',
-  components:{
+  name: 'subtitle',
+  components: {
     mergeSubtitleInVideo
   },
   data () {
@@ -43,7 +43,7 @@ export default {
       splitStartTimeMinutes: 0,
       splitStartTimeSeconds: 0,
       currentSplitSecond: 0,
-      scrollStateCtrl:false,
+      scrollStateCtrl: false,
       fileIndex: 1, // 文件索引
       recognizeIndex: 1, // 识别索引
       splitDuration: 10, // * 切分持续时间
@@ -59,17 +59,17 @@ export default {
     },
     currentTime: {
       handler: function (newVal, oldVal) {
-        if(this.scrollStateCtrl){
+        if (this.scrollStateCtrl) {
           this.subtitleAutoScroll(this.videoDuration,
-                newVal.currentTime, this.splitDuration, this.$refs.subtitleContainer)
+            newVal.currentTime, this.splitDuration, this.$refs.subtitleContainer)
         }
       },
       deep: true
-    },
+    }
   },
   computed: {
-    ...mapState(['duration', 'currentTime','loading']),
-    videoDuration(){
+    ...mapState(['duration', 'currentTime', 'loading']),
+    videoDuration () {
       return this.duration.duration.duration
     }
   },
@@ -79,13 +79,13 @@ export default {
   },
   methods: {
     ...mapMutations(['setLoading']),
-    ipcInit(){
+    ipcInit () {
       ipc.on('save-srt-file', (event, file) => {
         let subtitleConetnt = ''
         if (this.exportType === 'srt') {
           subtitleConetnt = joinSrtFlie(this.srtObjTemp)
         } else if (this.exportType === 'bcc') {
-          subtitleConetnt = joinBCCFlie(this.srtObjTemp,this.splitDuration,this.videoDuration)
+          subtitleConetnt = joinBCCFlie(this.srtObjTemp, this.splitDuration, this.videoDuration)
         }
         let path = this.suffixCtrl(file.filePath)
         fs.writeFile(path, subtitleConetnt, {flag: 'w'}, (err, data) => {
@@ -114,30 +114,30 @@ export default {
      * @param splitduration 视频切割时长 video split duration
      * @param scrollEl 滚动的元素 need scroll element
      */
-    subtitleAutoScroll ( totalDuration, current, splitduration, scrollEl){
-      if(current < splitduration){
-          return
-        }
-        let strContainer = scrollEl
-        // 获取subtitle-container 总高度
-        let rangeScroll = strContainer.scrollHeight
-        // 每隔一个duration，进行向下滚动
-        if(current>splitduration){
-          let videoProgress = rangeScroll*((current-splitduration)/totalDuration)
-          scrollEl.scrollTop = videoProgress
-        }
+    subtitleAutoScroll (totalDuration, current, splitduration, scrollEl) {
+      if (current < splitduration) {
+        return
+      }
+      let strContainer = scrollEl
+      // 获取subtitle-container 总高度
+      let rangeScroll = strContainer.scrollHeight
+      // 每隔一个duration，进行向下滚动
+      if (current > splitduration) {
+        let videoProgress = rangeScroll * ((current - splitduration) / totalDuration)
+        scrollEl.scrollTop = videoProgress
+      }
     },
     suffixCtrl (path) {
       let pathTempArr = path.split('.')
       // 因为默认给bcc文件后缀，所以只判断了srt文件
-      if (this.exportType == 'srt') {
+      if (this.exportType === 'srt') {
         pathTempArr[pathTempArr.length - 1] = 'srt'
         return pathTempArr.join('.')
       }
       return path
     },
     // 更新subtitle config
-    updateSubtitleConfig(){
+    updateSubtitleConfig () {
       this.splitDuration = parseInt(this.$DB.read().get('subtitleConfig').value().splitDuration)
     },
     splitStep () {
@@ -147,11 +147,11 @@ export default {
       this.newTempFolder(`${this.$objectPath}/temp/wav`)
       this.splitAudio()
     },
-    checkIsSubtitle(subtitleData){
-      if(subtitleData.length<=0){
-        ipc.send('custom-message', {msg: '还没有字幕，请先生成字幕',type: 'info'})
+    checkIsSubtitle (subtitleData) {
+      if (subtitleData.length <= 0) {
+        ipc.send('custom-message', {msg: '还没有字幕，请先生成字幕', type: 'info'})
         return false
-      }else{
+      } else {
         return true
       }
     },
@@ -166,22 +166,22 @@ export default {
           isAddsplitDuration = false
           this.lastNum--
         }
-        const { stdout, stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
+        const { stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
         // 如果返回结果位true代表已经没有音频了
         if (/audio:0kB/.test(stderr)) {
-          this.splitStateCtrl(false) 
+          this.splitStateCtrl(false)
         }
         if (this.splitState) {
           // 文件名加1
           // let reg = new RegExp()
           /audio:(\d{0,3})kB/g.test(stderr)
-          let currentAudioSize = parseInt(RegExp.$1*1024)  
-          this.srtTiemLineCtrl(this.fileIndex, this.doubleNumberCtrl(), 'start',currentAudioSize, `output_${this.fileIndex}.wav`)
+          let currentAudioSize = parseInt(RegExp.$1 * 1024)
+          this.srtTiemLineCtrl(this.fileIndex, this.doubleNumberCtrl(), 'start', currentAudioSize, `output_${this.fileIndex}.wav`)
           if (isAddsplitDuration) {
             this.startTimeCtrl(this.splitDuration)
           } else {
-            if (this.lastNum) {              
-              this.startTimeCtrl(this.floatFormat(this.videoDuration - this.currentSplitSecond,3))
+            if (this.lastNum) {
+              this.startTimeCtrl(this.floatFormat(this.videoDuration - this.currentSplitSecond, 3))
             } else {
               // 防止毫秒干扰
               this.startTimeCtrl(2)
@@ -195,35 +195,36 @@ export default {
           aiAudio(this.srtObjTemp)
         }
       } catch (error) {
-        ipc.send('custom-message', {msg: '抱歉，程序出错',type: 'error'})
+        ipc.send('custom-message', {msg: '抱歉，程序出错', type: 'error'})
       }
     },
     splitStateCtrl (state) {
       this.splitState = state
     },
-    floatFormat(floatNumber,digit){
-
+    floatFormat (floatNumber, digit) {
       return parseFloat((floatNumber).toFixed(digit))
     },
     newTempFolder (path) {
       fs.mkdir(path, (err, data) => {
-        let files = fs.readdirSync(path)
-        files.forEach((file, index) => {
-          let curPath = path + '/' + file
-          fs.unlinkSync(curPath) // 删除文件
-        })
+        if (!err) {
+          let files = fs.readdirSync(path)
+          files.forEach((file, index) => {
+            let curPath = path + '/' + file
+            fs.unlinkSync(curPath) // 删除文件
+          })
+        }
       })
     },
     startTimeCtrl (duration) {
       if (duration > 20) {
         return
       }
-      this.currentSplitSecond = this.floatFormat(this.currentSplitSecond+duration,3)
+      this.currentSplitSecond = this.floatFormat(this.currentSplitSecond + duration, 3)
       if ((this.splitStartTimeSeconds + duration) >= 60) {
         this.splitStartTimeMinutes++
-        this.splitStartTimeSeconds = this.floatFormat(this.splitStartTimeSeconds + duration - 60,3)
+        this.splitStartTimeSeconds = this.floatFormat(this.splitStartTimeSeconds + duration - 60, 3)
       } else {
-        this.splitStartTimeSeconds = this.floatFormat(this.splitStartTimeSeconds+ duration,3)
+        this.splitStartTimeSeconds = this.floatFormat(this.splitStartTimeSeconds + duration, 3)
       }
       if ((this.splitStartTimeMinutes) >= 60) {
         this.splitStartTimeHours++
@@ -258,8 +259,8 @@ export default {
      * @param type 'start'或者 'end' 开始时间线或者结束时间线
      * @param fileName 音频文件名
      */
-    srtTiemLineCtrl (current, TimeLine, type, audioSize,fileName,) {
-      if (type == 'start') {
+    srtTiemLineCtrl (current, TimeLine, type, audioSize, fileName) {
+      if (type === 'start') {
         this.srtObjTemp.push({
           index: current,
           start: TimeLine + ',000',
@@ -267,15 +268,15 @@ export default {
           value: '',
           audioFlieName: fileName,
           startSecond: (current - 1) * 10,
-          size:audioSize
+          size: audioSize
         })
       } else {
-        this.srtObjTemp[current - 1].end =/\./.test(TimeLine)? 
-                              TimeLine.toString().replace('.',','):TimeLine+',000'
+        this.srtObjTemp[current - 1].end = /\./.test(TimeLine)
+          ? TimeLine.toString().replace('.', ',') : TimeLine + ',000'
       }
     },
     exportFile (type) {
-      if(!this.checkIsSubtitle(this.srtObjTemp)){
+      if (!this.checkIsSubtitle(this.srtObjTemp)) {
         return
       }
       this.exportType = type

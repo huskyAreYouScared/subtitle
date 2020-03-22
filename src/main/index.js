@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow, remote } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import './ipc-event'
 import './global'
 import pak from '../../package.json'
@@ -41,7 +41,7 @@ function createWindow () {
   })
 
   mainWindow.loadURL(winURL)
-  if (process.env.NODE_ENV !== 'production'){
+  if (process.env.NODE_ENV !== 'production') {
     mainWindow.webContents.openDevTools()
   }
   mainWindow.on('closed', () => {
@@ -50,14 +50,17 @@ function createWindow () {
 }
 
 // once instance
-const shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {
-  if (mainWindow) {
-    if (mainWindow.isMinimized()) mainWindow.restore()
-    mainWindow.focus()
-  }
-})
-if (shouldQuit) {
+const gotTheLock = app.requestSingleInstanceLock()
+if (!gotTheLock) {
   app.quit()
+} else {
+  app.on('second-instance', () => {
+    // 当运行第二个实例时,将会聚焦到myWindow这个窗口
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+    }
+  })
 }
 
 const platform = os.platform()

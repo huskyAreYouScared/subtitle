@@ -1,15 +1,14 @@
 
-
 export default {
-  state : {
+  state: {
     currentTime: 0
   },
-  mutations : {
+  mutations: {
     setCurrentTime (state, data) {
       state.currentTime = data
     }
   },
-  actions : {
-  
+  actions: {
+
   }
 }

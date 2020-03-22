@@ -7,7 +7,7 @@ export default {
       state.filePath = data
     }
   },
-  actions :{
-  
-  },
+  actions: {
+
+  }
 }
