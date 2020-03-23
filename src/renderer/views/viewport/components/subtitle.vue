@@ -166,7 +166,7 @@ export default {
           isAddsplitDuration = false
           this.lastNum--
         }
-        const { stderr } = await this.$exec(`${this.$ffmpegPath} -y  -i ${this.$objectPath}/temp/output.wav -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy ${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav`)
+        const { stderr } = await this.$exec(`"${this.$ffmpegPath}" -y  -i "${this.$objectPath}/temp/output.wav" -ss ${this.doubleNumberCtrl()}  -t ${this.splitDuration} -c copy "${this.$objectPath}/temp/wav/output_${this.fileIndex}.wav"`)
         // 如果返回结果位true代表已经没有音频了
         if (/audio:0kB/.test(stderr)) {
           this.splitStateCtrl(false)
@@ -195,6 +195,7 @@ export default {
           aiAudio(this.srtObjTemp)
         }
       } catch (error) {
+        console.log(error)
         ipc.send('custom-message', {msg: '抱歉，程序出错', type: 'error'})
       }
     },

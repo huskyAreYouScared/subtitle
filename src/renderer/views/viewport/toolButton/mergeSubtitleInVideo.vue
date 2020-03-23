@@ -62,7 +62,7 @@ export default {
               } else {
                 subtitlePath = path
               }
-              await this.$exec(`${this.$ffmpegPath} -y -i ${this.filePathStore} -vf "subtitles='${subtitlePath}':force_style='OutlineColour=&H80000000,BorderStyle=3,Outline=1,Shadow=0,MarginV=20'" ${file.filePath}`)
+              await this.$exec(`"${this.$ffmpegPath}" -y -i "${this.filePathStore}" -vf "subtitles='${subtitlePath}':force_style='OutlineColour=&H80000000,BorderStyle=3,Outline=1,Shadow=0,MarginV=20'" "${file.filePath}"`)
               ipc.send('custom-message', {
                 msg: '完成，请查收',
                 type: 'info'
@@ -70,7 +70,6 @@ export default {
               this.setLoading(false)
             } catch (error) {
               this.setLoading(false)
-              console.log(error)
               ipc.send('custom-message', {
                 msg: '生成失败，请稍后再是，如果持续失败，请重启软件，或者在关于中找到问题反馈与作者联系，谢谢您，为了更好的软件而努力',
                 type: 'error'

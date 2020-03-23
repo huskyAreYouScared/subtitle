@@ -94,13 +94,13 @@ export default {
      */
     extractAudio (target) {
       // split audio file wav fomat
-      this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -acodec pcm_s16le -ac 1 -ar 16000 ${this.$objectPath}/temp/output.wav`, () => {
+      this.$exec(`"${this.$ffmpegPath}" -y -i "${target.path}" -acodec pcm_s16le -ac 1 -ar 16000 "${this.$objectPath}/temp/output.wav"`, () => {
 
       })
     },
     extractVideo (target) {
       if (!checkAllowFile(target.name)) {
-        this.$exec(`${this.$ffmpegPath} -y -i ${target.path} -vcodec libx264 -preset fast -crf 20 -y -vf "scale=1920:-1" -acodec libmp3lame -ab 128k ${this.$objectPath}/temp/output.mp4 `, () => {
+        this.$exec(`"${this.$ffmpegPath}" -y -i "${target.path}" -vcodec libx264 -preset fast -crf 20 -y -vf "scale=1920:-1" -acodec libmp3lame -ab 128k "${this.$objectPath}/temp/output.mp4"`, () => {
           this.extractAudio({
             name: 'output.mp4',
             path: `${this.$objectPath}/temp/output.mp4`

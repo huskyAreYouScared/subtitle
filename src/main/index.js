@@ -41,8 +41,8 @@ function createWindow () {
   })
 
   mainWindow.loadURL(winURL)
+  mainWindow.webContents.openDevTools()
   if (process.env.NODE_ENV !== 'production') {
-    mainWindow.webContents.openDevTools()
   }
   mainWindow.on('closed', () => {
     mainWindow = null
