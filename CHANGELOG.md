@@ -1,3 +1,7 @@
+## [0.1.1](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.1-alpha.0...v0.1.1) (2020-03-23)
+
+
+
 ## 0.0.2 (2020-03-21)
 
 
