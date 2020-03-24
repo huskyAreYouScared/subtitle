@@ -18,8 +18,7 @@ addons:
     packages:
     - libgnome-keyring-dev
     - icnsutils
-before_install:
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo snap install snapcraft --classic; fi
+#before_install:
 install:
 - nvm install 12
 - curl -o- -L https://yarnpkg.com/install.sh | bash
