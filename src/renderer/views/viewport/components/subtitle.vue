@@ -141,11 +141,18 @@ export default {
       this.splitDuration = parseInt(this.$DB.read().get('subtitleConfig').value().splitDuration)
     },
     splitStep () {
-      this.updateSubtitleConfig()
-      this.init()
-      this.splitStateCtrl(true)
-      this.newTempFolder(`${this.$objectPath}/temp/wav`)
-      this.splitAudio()
+      if (this.videoDuration) {
+        this.updateSubtitleConfig()
+        this.init()
+        this.splitStateCtrl(true)
+        this.newTempFolder(`${this.$objectPath}/temp/wav`)
+        this.splitAudio()
+      } else {
+        ipc.send('custom-message', {
+          msg: '请先选择视频，或者音频文件',
+          type: 'error'
+        })
+      }
     },
     checkIsSubtitle (subtitleData) {
       if (subtitleData.length <= 0) {

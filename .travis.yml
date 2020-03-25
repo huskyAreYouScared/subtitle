@@ -18,6 +18,8 @@ addons:
     packages:
     - libgnome-keyring-dev
     - icnsutils
+    - snapd
+    - snapcraft
 #before_install:
 install:
 - nvm install 12

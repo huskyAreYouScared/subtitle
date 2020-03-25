@@ -76,7 +76,14 @@
       }
     },
     "linux": {
-      "icon": "build/icons"
+      "icon": "build/icons",
+      "extraResources": {
+        "from": "./dist/electron/static",
+        "to": "./",
+        "filter": [
+          "**/*"
+        ]
+      }
     }
   },
   "dependencies": {
