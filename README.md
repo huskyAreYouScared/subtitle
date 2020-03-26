@@ -1,27 +1,33 @@
-# husky-subtitle
+<div align="center">
 
-> speech recognition add subtitle to video
+![github](https://raw.githubusercontent.com/huskyareyouscared/subtitle/master/build/icons/256x256.png)
+# HuskySubtitle
+[![github](https://badgen.net/github/release/huskyareyouscared/subtitle)](https://github.com/huskyAreYouScared/subtitle/releases)
+[![github](https://badgen.net/github/assets-dl/huskyAreYouScared/subtitle)](https://github.com/huskyAreYouScared/subtitle/releases)
+[![github](https://badgen.net/github/license/huskyAreYouScared/subtitle)](https://www.mit-license.org/)
+<center>speech recognition add subtitle to video
+<center>
+</div>
 
-#### Build Setup
+## Abstract
+* speech recognize ,speech to subtitle
+* Add subtitles to the video
 
-``` bash
-# install dependencies
-npm install
+## speech recognize platform (current)
+* baiduCloud
+* tencentCloud
+## Article
+* [address 1](https://husky_are_you_scared.gitee.io/blog/subtitle/) gitee pages blog
+* [address 2](https://huskyareyouscared.github.io/blog/subtitle/ ) github pages blog
 
-# serve with hot reload at localhost:9080
-npm run dev
+## Download
+*Windows download `exe`file.
 
-# build electron application for production
-npm run build
+*macOS download `dmg`file.
 
+Linux download `AppImage`file.
 
-# lint all JS/Vue component files in `src/`
-npm run lint
+## MIT
 
-```
-#### relative article
-* [address 1](https://husky_are_you_scared.gitee.io/blog/subtitle/)国内访问较快
-* [address 2](https://huskyareyouscared.github.io/blog/subtitle/ )国内访问较慢
----
-
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[45a3e22](https://github.com/SimulatedGREG/electron-vue/tree/45a3e224e7bb8fc71909021ccfdcfec0f461f634) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+[MIT](http://opensource.org/licenses/MIT)
+Copyright (c) 2019 - 2020 Huskyareyouscared
