@@ -1,9 +1,13 @@
+$rightMenu:3;
 .menubar-container{
   height: 30px;
   -webkit-app-region: drag;
   box-shadow:1px 1px 1px $tint; 
   display: flex;
+  justify-content: flex-start;
+  position: relative;
   .menu-item{
+    -webkit-app-region: no-drag;
     width: 40px;
     height: 30px;
     font-size: 12px;
@@ -11,4 +15,11 @@
     text-align: center;
     @include cursorPointer;
   }
+  @for $item from 0 to $rightMenu {
+    .menu-right-#{$item}{
+      width: 20px;
+      @include absolutePositionTool(0, 30px * $item + 5px, 0, 0)
+    }
+  }
+  
 }

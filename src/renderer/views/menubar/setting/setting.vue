@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class='setting-main bg-alpha'>
-    <div class="baidu-api-area">
+    <div class="round-area">
       <p class="header text">设置语音识别基础参数:</p>
       <label for="" class="text input-label">云服务商:</label>
       <select v-model="recognitionSetting.service" class="baidu-input text" @change="changeService">
@@ -26,13 +26,13 @@
       <input v-model="recognitionSetting.SECRET_KEY" type="password" class="baidu-input text">
       <br>
     </div>
-    <div class="baidu-api-area">
+    <div class="round-area">
       <p class="header text">字幕-视频-配置</p>
       <label for="" class="text input-label">自定义语音切割时间（split duration）:</label>
       <input v-model="subtitleConfig.splitDuration" class="baidu-input text">
       <br>
     </div>
-    <div class="back-btn text" @click="closeDialog">返回(back)</div>
+    <div class="back-btn text" @click="closeDialog('setting')">返回(back)</div>
     <div class="save-btn text" @click="saveSetting">保存(save)</div>
   </div>
 </template>
@@ -103,8 +103,8 @@ export default {
         type: 'info'
       })
     },
-    closeDialog () {
-      this.$emit('closeDialog', 'setting')
+    closeDialog (closeType) {
+      this.$emit('closeDialog', closeType)
     },
     changeService () {
       this.changeForm(this.recognitionSetting.service)

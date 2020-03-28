@@ -1,4 +1,4 @@
-import { ipcMain, dialog } from 'electron'
+import { ipcMain, dialog, app } from 'electron'
 import { config } from '@All/utils/config.js'
 
 // select video file
@@ -51,3 +51,25 @@ ipcMain.on('custom-message', function (event, data) {
     buttons: data.buttons || ['确认']
   })
 })
+
+export function basicWindowEvent (mainWindow) {
+  ipcMain.on('main-event', function (event, data) {
+    switch (data) {
+      case 'quit':
+        app.quit()
+        break
+      case 'minimize':
+        mainWindow.minimize()
+        break
+      case 'maximize':
+        if (mainWindow.isMaximized()) {
+          mainWindow.restore()
+        } else {
+          mainWindow.maximize()
+        }
+        break
+      default:
+        break
+    }
+  })
+}

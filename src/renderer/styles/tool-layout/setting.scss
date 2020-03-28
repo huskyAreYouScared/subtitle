@@ -7,7 +7,7 @@
   height: 100vh!important;
   @include bg-alpha(26,26,26,0.95);
   @include scrollLayout('y');
-  .baidu-api-area{
+  .round-area{
     overflow: hidden;
     width: 98%;
     margin: 5px auto;
@@ -15,8 +15,17 @@
     border-radius: 15px;
     padding: 10px;
     box-sizing: border-box;
+    position: relative;
     .header{
       margin-left: 20px;
+    }
+    .about-logo{
+      display: inline-block;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18vh;
     }
     .input-label{
       display: block;

@@ -31,7 +31,18 @@ $test:rgb(26, 26, 26);
 
 .text-huge{
   font-size: 100px!important;
+  border-bottom:1px  ;
 }
+
+@mixin fontCustom($size, $color) {
+  @if($size!=0){
+    font-size: $size;
+  }
+  @if($color!=0){
+    color: $color;
+  }
+}
+
 @mixin bg-alpha($color1,$color2,$color3,$alpha){
  background: rgba($color1, $color1,$color3, $alpha)
 }
@@ -108,4 +119,11 @@ $test:rgb(26, 26, 26);
     background-color: $tint 0 0 5px;
     border-radius: 3px;
   }
+}
+
+.hyperlink{
+  @include cursorPointer;
+}
+.hyperlink:hover{
+  border-bottom: $text 1px dashed;
 }

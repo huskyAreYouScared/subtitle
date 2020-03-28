@@ -1,7 +1,7 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
-import './ipc-event'
+import { basicWindowEvent } from './ipc-event'
 import './global'
 import pak from '../../package.json'
 import os from 'os'
@@ -15,6 +15,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow
+
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -27,11 +28,13 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     show: true, // 防止初次出现闪烁 在ready-to-show进行加载
     height: 563,
-    useContentSize: true,
-    frame: true,
     width: 1000,
+    minWidth: 1000,
+    minHeight: 600,
+    useContentSize: true,
+    frame: false,
     center: true,
-    // titleBarStyle: 'hidden',
+    titleBarStyle: 'hidden',
     backgroundColor: '#000000',
     webPreferences: {
       nodeIntegration: true,
@@ -48,6 +51,7 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+  basicWindowEvent(mainWindow)
 }
 
 // once instance

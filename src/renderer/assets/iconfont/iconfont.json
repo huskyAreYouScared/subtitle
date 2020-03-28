@@ -6,6 +6,62 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "538896",
+      "name": "最大化",
+      "font_class": "zuidahua",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "1272733",
+      "name": "选择滚动",
+      "font_class": "select-tb",
+      "unicode": "e652",
+      "unicode_decimal": 58962
+    },
+    {
+      "icon_id": "1621543",
+      "name": "关闭",
+      "font_class": "guanbi1",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "1817747",
+      "name": "弹幕",
+      "font_class": "danmu",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "5330863",
+      "name": "最小化",
+      "font_class": "zuixiaohua",
+      "unicode": "e7d4",
+      "unicode_decimal": 59348
+    },
+    {
+      "icon_id": "6296159",
+      "name": "nlsshortasrbag 一句话识别",
+      "font_class": "nlsshortasrbag",
+      "unicode": "e8d6",
+      "unicode_decimal": 59606
+    },
+    {
+      "icon_id": "6966906",
+      "name": "合并",
+      "font_class": "hebing",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "12600908",
+      "name": "srt",
+      "font_class": "srt",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
       "icon_id": "2471403",
       "name": "音频",
       "font_class": "yinpin",

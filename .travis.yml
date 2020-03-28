@@ -22,7 +22,8 @@ addons:
     - name: aws-cli
       confinement: classic
       channel: edge
-#before_install:
+before_install:
+  snap --version && snap install snapcraft --classic
 install:
 - nvm install 12
 - curl -o- -L https://yarnpkg.com/install.sh | bash
