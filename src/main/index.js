@@ -34,7 +34,7 @@ function createWindow () {
     useContentSize: true,
     frame: false,
     center: true,
-    titleBarStyle: 'hidden',
+    titleBarStyle: 'default',
     backgroundColor: '#000000',
     webPreferences: {
       nodeIntegration: true,
