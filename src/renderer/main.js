@@ -41,13 +41,12 @@ if (process.env.NODE_ENV === 'development') {
 // mac platform ffmpegPath chmod
 if (process.env.NODE_ENV !== 'development' && os.platform() !== 'win32') {
   fs.stat(ffmpegPath, (err, stats) => {
-    console.log(1, err)
     if (err) return
     if (stats) {
       fs.chmod(ffmpegPath, 0o777, (err) => {
         if (err) {
           ipc.send('custom-message', {
-            msg: '生成失败，请稍后再是，如果持续失败，请重启软件，或者在关于中找到问题反馈与作者联系，谢谢您，为了更好的软件而努力',
+            msg: '授权失败！，如果持续失败，请重启软件，或者在关于中找到问题反馈与作者联系，谢谢您，为了更好的软件而努力',
             type: 'error'
           })
         }

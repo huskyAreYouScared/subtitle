@@ -1,6 +1,6 @@
 osx_image: xcode10.2
 sudo: required
-dist: xenial
+dist: bionic
 language: c
 matrix:
   include:
@@ -22,8 +22,8 @@ addons:
     - name: aws-cli
       confinement: classic
       channel: edge
-before_install:
-  snap --version && snap install snapcraft --classic
+#before_install:
+  # snap --version && snap install snapcraft --classic
 install:
 - nvm install 12
 - curl -o- -L https://yarnpkg.com/install.sh | bash
