@@ -79,6 +79,10 @@ export default {
         {
           name: '腾讯云',
           value: 'tencent'
+        },
+        {
+          name: '科大讯飞',
+          value: 'xunfei'
         }
       ],
       formConfig: {
@@ -114,6 +118,8 @@ export default {
         this.formConfig = {isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey'}
       } else if (serviceName === 'tencent') {
         this.formConfig = {isRegion: true, appIdName: 'ProjectId', apiKeyName: 'SecretId', secretKeyName: 'SecretKey'}
+      } else if (serviceName === 'xunfei') {
+        this.formConfig = {isRegion: false, appIdName: 'APPID', apiKeyName: 'APIKey', secretKeyName: 'APISecret'}
       } else {
         this.formConfig = {isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey'}
       }

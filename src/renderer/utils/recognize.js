@@ -3,6 +3,8 @@ import tencentcloud from 'tencentcloud-sdk-nodejs'
 import { ipcRenderer as ipc } from 'electron'
 import nodeUUId from 'node-uuid'
 import fs from 'fs'
+import CryptoJS from 'crypto-js'
+import WebSocket from 'ws'
 import Vue from 'vue'
 import store from '@/store/index'
 import { subtitleContentFormat } from '@/utils/tools'
@@ -17,12 +19,14 @@ export const aiAudio = (srtObjTemp) => {
     baiduInstance(APP_ID, API_KEY, SECRET_KEY, srtObjTemp)
   } else if (service === 'tencent') {
     tencentInstance(APP_ID, API_KEY, SECRET_KEY, region, srtObjTemp)
+  } else if (service === 'xunfei') {
+    xunfeiInstance(APP_ID, API_KEY, SECRET_KEY, srtObjTemp)
   }
 }
 
 /**
  * init recognize
- * @param {Number} type
+ * @param {Number} state
  */
 function recognizeInit (state) {
   let resultState = {
@@ -151,5 +155,147 @@ export function tencentRecognize (APP_ID, client, srtObjTemp) {
         recognizeInit(0)
       }
     })
+  })
+}
+
+// xunfeiCloud
+// 系统配置
+let config = {
+  // 请求地址
+  hostUrl: 'wss://iat-api.xfyun.cn/v2/iat',
+  host: 'iat-api.xfyun.cn',
+  // 在控制台-我的应用-语音听写（流式版）获取
+  appid: '5e636a09',
+  // 在控制台-我的应用-语音听写（流式版）获取
+  apiSecret: '47c9c2ff0ba771ff1efb3705e50916c7',
+  // 在控制台-我的应用-语音听写（流式版）获取
+  apiKey: '9d303a05d82608bfddadd373ec5e48dd',
+  uri: '/v2/iat',
+  highWaterMark: 1280
+}
+const FRAME = {
+  STATUS_FIRST_FRAME: 0,
+  STATUS_CONTINUE_FRAME: 1,
+  STATUS_LAST_FRAME: 2
+}
+function xunfeiInstance (APP_ID, API_KEY, SECRET_KEY, srtObjTemp) {
+  config.appid = APP_ID
+  config.apiSecret = SECRET_KEY
+  config.apiKey = API_KEY
+  xunfeiRecognize(srtObjTemp)
+}
+// 鉴权签名
+function getAuthStr (date) {
+  let signatureOrigin = `host: ${config.host}\ndate: ${date}\nGET ${config.uri} HTTP/1.1`
+  let signatureSha = CryptoJS.HmacSHA256(signatureOrigin, config.apiSecret)
+  let signature = CryptoJS.enc.Base64.stringify(signatureSha)
+  let authorizationOrigin = `api_key="${config.apiKey}", algorithm="hmac-sha256", headers="host date request-line", signature="${signature}"`
+  let authStr = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(authorizationOrigin))
+  return authStr
+}
+export function xunfeiRecognize (srtObjTemp) {
+  let wssUrl = config.hostUrl + '?authorization=' + getAuthStr(new Date().toUTCString()) + '&date=' + new Date().toUTCString() + '&host=' + config.host
+  let ws = new WebSocket(wssUrl)
+  // 设置当前临时状态为初始化
+  let status = FRAME.STATUS_FIRST_FRAME
+  // 记录本次识别用sid
+  // let currentSid = ''
+  // 识别结果
+  let iatResult = []
+  // 连接建立完毕，读取数据进行识别
+  ws.on('open', (event) => {
+    var readerStream = fs.createReadStream(`${vueInstance.$objectPath}/temp/wav/output_${recognizeIndex}.wav`, {
+      highWaterMark: config.highWaterMark
+    })
+    readerStream.on('data', function (chunk) {
+      send(chunk)
+    })
+    // 最终帧发送结束
+    readerStream.on('end', function () {
+      status = FRAME.STATUS_LAST_FRAME
+      send('')
+    })
+  })
+
+  // 建连错误
+  ws.on('error', (err) => {
+    console.log('websocket connect err: ' + err)
+  })
+  // 得到识别结果后进行处理，仅供参考，具体业务具体对待
+  ws.on('message', (data, err) => {
+    let str = ''
+    if (err) {
+      console.log(`err:${err}`)
+    }
+    let res = JSON.parse(data)
+    if (res.code !== 0) {
+      console.log(`error code ${res.code}, reason ${res.message}`)
+    }
+    if (res.data.status === '2') {
+    // res.data.status ==2 说明数据全部返回完毕，可以关闭连接，释放资源
+      // currentSid = res.sid
+      ws.close()
+    }
+    iatResult[res.data.result.sn] = res.data.result
+    if (res.data.result.pgs === 'rpl') {
+      res.data.result.rg.forEach(i => {
+        iatResult[i] = null
+      })
+    }
+    iatResult.forEach(i => {
+      if (i != null) {
+        i.ws.forEach(j => {
+          j.cw.forEach(k => {
+            str += k.w
+          })
+        })
+      }
+    })
+    srtObjTemp[recognizeIndex - 1].value = str
+  })
+  // 传输数据
+  function send (data) {
+    let frame = null
+    let frameDataSection = {
+      'status': status,
+      'format': 'audio/L16;rate=16000',
+      'audio': data.toString('base64'),
+      'encoding': 'raw'
+    }
+    switch (status) {
+      case FRAME.STATUS_FIRST_FRAME:
+        frame = {// 填充common
+          common: {
+            app_id: config.appid
+          },
+          // 填充business
+          business: {
+            language: 'zh_cn',
+            domain: 'iat',
+            accent: 'mandarin',
+            dwa: 'wpgs' // 可选参数，动态修正
+          }, // 填充data
+          data: frameDataSection
+        }
+        status = FRAME.STATUS_CONTINUE_FRAME
+        break
+      case FRAME.STATUS_CONTINUE_FRAME:
+      case FRAME.STATUS_LAST_FRAME:
+        // 填充frame
+        frame = {
+          data: frameDataSection
+        }
+        break
+    }
+    ws.send(JSON.stringify(frame))
+  }
+  // 资源释放
+  ws.on('close', () => {
+    if (recognizeIndex < srtObjTemp.length) {
+      recognizeIndex++
+      xunfeiRecognize(srtObjTemp)
+    } else {
+      recognizeInit(0)
+    }
   })
 }
