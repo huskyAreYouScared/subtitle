@@ -6,6 +6,8 @@ import fs from 'fs'
 import CryptoJS from 'crypto-js'
 import WebSocket from 'ws'
 import Vue from 'vue'
+import axios from 'axios'
+import qs from 'qs'
 import store from '@/store/index'
 import { subtitleContentFormat } from '@/utils/tools'
 // split audio file name output_1.wav recursion finish restore recognizeIndex 0
@@ -21,6 +23,8 @@ export const aiAudio = (srtObjTemp) => {
     tencentInstance(APP_ID, API_KEY, SECRET_KEY, region, srtObjTemp)
   } else if (service === 'xunfei') {
     xunfeiInstance(APP_ID, API_KEY, SECRET_KEY, srtObjTemp)
+  } else if (service === 'tianyi') {
+    tianyiRecognize(APP_ID, API_KEY, srtObjTemp)
   }
 }
 
@@ -64,8 +68,13 @@ async function baiduInstance (APP_ID, API_KEY, SECRET_KEY, srtObjTemp) {
 export function baiduRecognize (client, srtObjTemp) {
   fs.readFile(`${vueInstance.$objectPath}/temp/wav/output_${recognizeIndex}.wav`, (err, data) => {
     if (err) {
-      recognizeIndex++
-      baiduRecognize(client, srtObjTemp)
+      if (recognizeIndex < srtObjTemp.length) {
+        recognizeIndex++
+        baiduRecognize(client, srtObjTemp)
+      } else {
+        recognizeInit(0)
+      }
+      return
     }
     let voiceBuffer = Buffer.from(data)
     // recognize local file
@@ -125,8 +134,13 @@ export function tencentRecognize (APP_ID, client, srtObjTemp) {
   let req = new models.SentenceRecognitionRequest()
   fs.readFile(`${vueInstance.$objectPath}/temp/wav/output_${recognizeIndex}.wav`, (err, data) => {
     if (err) {
-      recognizeIndex++
-      tencentRecognize(APP_ID, client, srtObjTemp)
+      if (recognizeIndex < srtObjTemp.length) {
+        recognizeIndex++
+        tencentRecognize(APP_ID, client, srtObjTemp)
+      } else {
+        recognizeInit(0)
+      }
+      return
     }
     let voiceBuffer = Buffer.from(data)
     let voiceBase64 = Buffer.from(data).toString('base64')
@@ -297,5 +311,59 @@ export function xunfeiRecognize (srtObjTemp) {
     } else {
       recognizeInit(0)
     }
+  })
+}
+
+// tianyiCloud
+function getUTCtimeStamp () {
+  let now = new Date()
+  let d2 = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds())
+  return Math.floor(d2 / 1000)
+}
+function getXParam () {
+  let param = {
+    engine_type: 'sms16k',
+    aue: 'raw'
+  }
+  // 对编码的字符串转化base64
+  return btoa(JSON.stringify(param))
+}
+function getCheckMD5 (API_KEY, curtime, param) {
+  return CryptoJS.MD5(API_KEY + curtime + param)
+}
+export function tianyiRecognize (APP_ID, API_KEY, srtObjTemp) {
+  let curtime = getUTCtimeStamp()
+  let tianyiAxios = axios.create({
+    headers: {
+      'X-appid': APP_ID,
+      'X-Param': getXParam(),
+      'X-CurTime': curtime,
+      'X-CheckSum': getCheckMD5(API_KEY, curtime, getXParam()),
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    }
+  })
+  fs.readFile(`${vueInstance.$objectPath}/temp/wav/output_${recognizeIndex}.wav`, (err, data) => {
+    if (err) {
+      if (recognizeIndex < srtObjTemp.length) {
+        recognizeIndex++
+        tianyiRecognize(APP_ID, API_KEY, srtObjTemp)
+      } else {
+        recognizeInit(0)
+      }
+      return
+    }
+    let voiceBase64EncodeURI = encodeURI(Buffer.from(data).toString('base64'))
+    // recognize local file
+    tianyiAxios.post('https://api.xfyun.cn/v1/service/v1/iat', qs.stringify({audio: voiceBase64EncodeURI})).then(res => {
+      if (res.data.code === '0') {
+        srtObjTemp[recognizeIndex - 1].value = res.data.data
+      }
+      if (recognizeIndex < srtObjTemp.length) {
+        recognizeIndex++
+        tianyiRecognize(APP_ID, API_KEY, srtObjTemp)
+      } else {
+        recognizeInit(0)
+      }
+    })
   })
 }

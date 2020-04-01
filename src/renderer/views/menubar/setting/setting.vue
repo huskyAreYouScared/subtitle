@@ -22,9 +22,11 @@
       <label for="" class="text input-label">{{formConfig.apiKeyName}}:</label>
       <input v-model="recognitionSetting.API_KEY" type="text" class="baidu-input text">
       <br>
-      <label for="" class="text input-label">{{formConfig.secretKeyName}}:</label>
-      <input v-model="recognitionSetting.SECRET_KEY" type="password" class="baidu-input text">
-      <br>
+      <div v-if="formConfig.isSecret">
+        <label for="" class="text input-label">{{formConfig.secretKeyName}}:</label>
+        <input v-model="recognitionSetting.SECRET_KEY" type="password" class="baidu-input text">
+        <br>
+      </div>
     </div>
     <div class="round-area">
       <p class="header text">字幕-视频-配置</p>
@@ -81,15 +83,20 @@ export default {
           value: 'tencent'
         },
         {
-          name: '科大讯飞',
+          name: '讯飞云',
           value: 'xunfei'
+        },
+        {
+          name: '天翼飞',
+          value: 'tianyi'
         }
       ],
       formConfig: {
         isRegion: false,
         appIdName: '',
         apiKeyName: '',
-        secretKeyName: ''
+        secretKeyName: '',
+        isSecret: true
       }
     }
   },
@@ -115,13 +122,15 @@ export default {
     },
     changeForm (serviceName) {
       if (serviceName === 'baidu') {
-        this.formConfig = {isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey'}
+        this.formConfig = {isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey', isSecret: true}
       } else if (serviceName === 'tencent') {
-        this.formConfig = {isRegion: true, appIdName: 'ProjectId', apiKeyName: 'SecretId', secretKeyName: 'SecretKey'}
+        this.formConfig = {isRegion: true, appIdName: 'ProjectId', apiKeyName: 'SecretId', secretKeyName: 'SecretKey', isSecret: true}
       } else if (serviceName === 'xunfei') {
-        this.formConfig = {isRegion: false, appIdName: 'APPID', apiKeyName: 'APIKey', secretKeyName: 'APISecret'}
+        this.formConfig = {isRegion: false, appIdName: 'APPID', apiKeyName: 'APIKey', secretKeyName: 'APISecret', isSecret: true}
+      } else if (serviceName === 'tianyi') {
+        this.formConfig = {isRegion: false, appIdName: 'APPID', apiKeyName: 'APIKey', secretKeyName: 'APISecret', isSecret: false}
       } else {
-        this.formConfig = {isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey'}
+        this.formConfig = {isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey', isSecret: true}
       }
     },
     init () {
