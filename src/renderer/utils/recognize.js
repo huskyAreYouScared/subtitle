@@ -316,9 +316,8 @@ export function xunfeiRecognize (srtObjTemp) {
 
 // tianyiCloud
 function getUTCtimeStamp () {
-  let now = new Date()
-  let d2 = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds())
-  return Math.floor(d2 / 1000)
+  let now = new Date().getTime()
+  return Math.floor(now / 1000)
 }
 function getXParam () {
   let param = {
