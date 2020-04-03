@@ -22,6 +22,7 @@
 import { ipcRenderer as ipc } from 'electron'
 import { checkAllowFile } from '@/utils/tools.js'
 import { config } from '@All/utils/config.js'
+import { mapState, mapMutations } from 'vuex'
 export default {
   components: {},
   data () {
@@ -30,10 +31,11 @@ export default {
     }
   },
   computed: {
-
+    ...mapState(['loading']),
   },
   watch: {},
   methods: {
+    ...mapMutations(['setLoading']),
     selectLocalFile () {
       ipc.send('open-file-dialog')
     },
@@ -82,6 +84,7 @@ export default {
     },
     selectFile (item) {
       this.$store.commit('setFilePath', item)
+      this.setLoading(true)
       // * check file format
       if (config.audioFormat.includes(item.format)) {
         this.extractAudio(item)
@@ -90,12 +93,12 @@ export default {
       }
     },
     /**
-     * @param targetPath 目标文件路径
+     * @param target 目标文件路径
      */
     extractAudio (target) {
       // split audio file wav fomat
       this.$exec(`"${this.$ffmpegPath}" -y -i "${target.path}" -acodec pcm_s16le -ac 1 -ar 16000 "${this.$objectPath}/temp/output.wav"`, () => {
-
+        this.setLoading(false)
       })
     },
     extractVideo (target) {

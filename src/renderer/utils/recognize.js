@@ -12,7 +12,9 @@ import store from '@/store/index'
 import { subtitleContentFormat } from '@/utils/tools'
 // split audio file name output_1.wav recursion finish restore recognizeIndex 0
 let recognizeIndex = 1
-
+function loadingHide () {
+  store.commit('setLoading', false)
+}
 const vueInstance = Vue.prototype
 export const aiAudio = (srtObjTemp) => {
   let { APP_ID, API_KEY, SECRET_KEY, service, region } = vueInstance.$DB.read().get('recognitionObject').value()
@@ -43,7 +45,7 @@ function recognizeInit (state) {
   })
   recognizeIndex = 1
   // loading cancel
-  store.commit('setLoading', false)
+  loadingHide()
 }
 
 // baidu
@@ -57,6 +59,7 @@ async function baiduInstance (APP_ID, API_KEY, SECRET_KEY, srtObjTemp) {
       msg: '请前往设置输入语音识别配置信息',
       type: 'info'
     })
+    loadingHide()
     throw new Error('配置出错')
   }
 }
@@ -98,6 +101,7 @@ export function baiduRecognize (client, srtObjTemp) {
           type: 'info'
         })
       }
+      loadingHide()
     })
   })
 }
@@ -233,6 +237,13 @@ export function xunfeiRecognize (srtObjTemp) {
 
   // 建连错误
   ws.on('error', (err) => {
+    if (recognizeIndex > srtObjTemp.length) {
+      ipc.send('custom-message', {
+        msg: '部分识别有误',
+        type: 'info'
+      })
+      loadingHide()
+    }
     console.log('websocket connect err: ' + err)
   })
   // 得到识别结果后进行处理，仅供参考，具体业务具体对待
@@ -331,6 +342,14 @@ function getCheckMD5 (API_KEY, curtime, param) {
   return CryptoJS.MD5(API_KEY + curtime + param)
 }
 export function tianyiRecognize (APP_ID, API_KEY, srtObjTemp) {
+  if (APP_ID === '' && API_KEY === '') {
+    ipc.send('custom-message', {
+      msg: '请前往设置输入语音识别配置信息',
+      type: 'info'
+    })
+    loadingHide()
+    return
+  }
   let curtime = getUTCtimeStamp()
   let tianyiAxios = axios.create({
     headers: {
