@@ -276,7 +276,7 @@ export function xunfeiRecognize (srtObjTemp) {
         })
       }
     })
-    srtObjTemp[recognizeIndex - 1].value = str
+    srtObjTemp[recognizeIndex - 1].value = subtitleContentFormat(str)
   })
   // 传输数据
   function send (data) {
@@ -374,7 +374,7 @@ export function tianyiRecognize (APP_ID, API_KEY, srtObjTemp) {
     // recognize local file
     tianyiAxios.post('https://api.xfyun.cn/v1/service/v1/iat', qs.stringify({audio: voiceBase64EncodeURI})).then(res => {
       if (res.data.code === '0') {
-        srtObjTemp[recognizeIndex - 1].value = res.data.data
+        srtObjTemp[recognizeIndex - 1].value = subtitleContentFormat(res.data.data)
       }
       if (recognizeIndex < srtObjTemp.length) {
         recognizeIndex++

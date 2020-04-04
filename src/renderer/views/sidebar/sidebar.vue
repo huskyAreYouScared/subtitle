@@ -31,7 +31,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['loading']),
+    ...mapState(['loading'])
   },
   watch: {},
   methods: {
@@ -45,7 +45,7 @@ export default {
           return {
             name: this.$isWindows ? item.split('\\').pop() : item.split('/').pop(),
             format: item.split('.')[item.split('.').length - 1],
-            path: `"${item}"`,
+            path: item,
             showPath: item
           }
         })
@@ -62,7 +62,7 @@ export default {
             this.filePath.push({
               name: f.name,
               format: f.path.split('.')[f.path.split('.').length - 1],
-              path: `"${f.path}"`,
+              path: f.path,
               showPath: f.path
             })
           } else {
@@ -97,7 +97,13 @@ export default {
      */
     extractAudio (target) {
       // split audio file wav fomat
-      this.$exec(`"${this.$ffmpegPath}" -y -i "${target.path}" -acodec pcm_s16le -ac 1 -ar 16000 "${this.$objectPath}/temp/output.wav"`, () => {
+      this.$exec(`"${this.$ffmpegPath}" -y -i "${target.path}" -acodec pcm_s16le -ac 1 -ar 16000 "${this.$objectPath}/temp/output.wav"`, (err) => {
+        if (err) {
+          ipc.send('custom-message', {
+            msg: '文件名不能包含特殊符号，包括空格@#￥%等符号',
+            type: 'error'
+          })
+        }
         this.setLoading(false)
       })
     },
