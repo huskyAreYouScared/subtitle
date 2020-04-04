@@ -87,7 +87,7 @@ export default {
           value: 'xunfei'
         },
         {
-          name: '天翼飞',
+          name: '天翼云',
           value: 'tianyi'
         }
       ],
