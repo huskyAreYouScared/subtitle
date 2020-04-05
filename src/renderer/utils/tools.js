@@ -66,6 +66,27 @@ export function joinBCCFlie (subtitleData, splitDuration, totalDuration) {
   BCCObj.body = subtitleArr
   return JSON.stringify(BCCObj)
 }
+/**
+ *
+ * @param {Array} subtitleData
+ */
+export function joinAssFile (subtitleData) {
+  let assTemplate = `[Script Info]
+Title:husky-subtitle provide
+Original Script:https://github.com/huskyAreYouScared/subtitle
+ScriptType:v4.00+
+PlayResX:1920
+PlayResY:1080
+Timer:100.0000
+Collisions:'Reverse'
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,方正黑体_GBK,20,&H00FFFFFF,&HF0000000,&H00000000,&H32000000,0,0,0,0,100,100,0,0.00,1,2,1,2,5,5,2,134
+
+`
+  return assTemplate
+}
 
 export function subtitleContentFormat (subtitle) {
   let length = subtitle.length

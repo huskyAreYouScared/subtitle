@@ -32,7 +32,7 @@ function createWindow () {
     minWidth: 1000,
     minHeight: 600,
     useContentSize: true,
-    frame: false,
+    frame: process.env.NODE_ENV === 'development',
     center: true,
     titleBarStyle: 'default',
     backgroundColor: '#000000',

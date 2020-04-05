@@ -45,7 +45,6 @@ export default {
       currentSplitSecond: 0,
       scrollStateCtrl: false,
       fileIndex: 1, // 文件索引
-      recognizeIndex: 1, // 识别索引
       splitDuration: 10, // * 切分持续时间
       exportType: 'srt',
       lastNum: 2// 帮助校准结尾时间引入的
@@ -101,7 +100,6 @@ export default {
     init () {
       this.lastNum = 2 // const 固定值为二
       this.fileIndex = 1 // 文件索引
-      this.recognizeIndex = 1 // 识别索引
       this.splitStartTimeHours = 0
       this.splitStartTimeMinutes = 0
       this.splitStartTimeSeconds = 0
