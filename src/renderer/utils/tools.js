@@ -67,10 +67,9 @@ export function joinBCCFlie (subtitleData, splitDuration, totalDuration) {
   return JSON.stringify(BCCObj)
 }
 /**
- *
  * @param {Array} subtitleData
  */
-export function joinAssFile (subtitleData) {
+export function joinAssFile (subtitleData = []) {
   let assTemplate = `[Script Info]
 Title:husky-subtitle provide
 Original Script:https://github.com/huskyAreYouScared/subtitle
@@ -82,10 +81,22 @@ Collisions:'Reverse'
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,方正黑体_GBK,20,&H00FFFFFF,&HF0000000,&H00000000,&H32000000,0,0,0,0,100,100,0,0.00,1,2,1,2,5,5,2,134
+Style: Default,方正黑体_GBK,40,&H00FFFFFF,&HF0000000,&H00000000,&H32000000,0,0,0,0,100,100,0,0.00,1,2,1,2,5,5,2,134
 
-`
+[Events]
+Format: Layer, Start, End, Style, Actor, MarginL, MarginR, MarginV, Effect, Text\n`
+
+  subtitleData.forEach(subtitleItem => {
+    assTemplate += `Dialogue: 0,${srt2AssReplace(subtitleItem.start)},${srt2AssReplace(subtitleItem.end)},*Default,NTP,0000,0000,0000,,${deleteNewLine(subtitleItem.value)}\n`
+  })
   return assTemplate
+}
+
+function deleteNewLine (subtitle) {
+  return subtitle.replace(/\n/g, '\\N')
+}
+function srt2AssReplace (date) {
+  return date.replace(',', '.')
 }
 
 export function subtitleContentFormat (subtitle) {
@@ -95,4 +106,10 @@ export function subtitleContentFormat (subtitle) {
     tempArr.splice(i * 30, 0, '\n')
   }
   return tempArr.join('')
+}
+
+export function suffixCtrl (path, suffic) {
+  let pathTempArr = path.split('.')
+  pathTempArr[pathTempArr.length - 1] = suffic
+  return pathTempArr.join('.')
 }

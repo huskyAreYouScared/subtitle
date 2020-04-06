@@ -19,11 +19,25 @@ ipcMain.on('save-srt-file-dialog', function (event) {
     // properties: ['openDirectory'],
     title: '保存文件',
     filters: [
-      { name: 'subtitle', extensions: ['bcc', 'srt'] }
+      { name: 'subtitle', extensions: ['bcc', 'srt', 'ass'] }
     ]
   }).then(res => {
     if (!res.canceled) {
       event.sender.send('save-srt-file', res)
+    }
+  })
+})
+// save ass file
+ipcMain.on('save-ass-file-dialog', function (event) {
+  dialog.showSaveDialog({
+    // properties: ['openDirectory'],
+    title: '保存文件',
+    filters: [
+      { name: 'subtitle', extensions: ['ass', 'srt', 'bcc'] }
+    ]
+  }).then(res => {
+    if (!res.canceled) {
+      event.sender.send('save-ass-file', res)
     }
   })
 })

@@ -5,6 +5,7 @@
         <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="splitStep">生成字幕</button>
         <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="exportFile('srt')">srt</button>
         <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="exportFile('bcc')">bcc</button>
+        <assExport :subtitleData="srtObjTemp"/>
         <mergeSubtitleInVideo :subtitleData="srtObjTemp"/>
         <input type="checkbox" id="scrollCtrl"  v-model="scrollStateCtrl"/><label for="scrollCtrl"><span class="text">scroll</span></label>
       </div>
@@ -24,7 +25,8 @@
 </template>
 
 <script>
-import mergeSubtitleInVideo from '../toolButton/mergeSubtitleInVideo'
+import mergeSubtitleInVideo from '@/views/viewport/toolButton/mergeSubtitleInVideo'
+import assExport from '@/views/viewport/toolButton/assExport'
 import { ipcRenderer as ipc } from 'electron'
 import { mapState, mapMutations } from 'vuex'
 import { aiAudio } from '@/utils/recognize'
@@ -33,7 +35,8 @@ import fs from 'fs'
 export default {
   name: 'subtitle',
   components: {
-    mergeSubtitleInVideo
+    mergeSubtitleInVideo,
+    assExport
   },
   data () {
     return {
