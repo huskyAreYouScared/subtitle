@@ -30,8 +30,8 @@
     </div>
     <div class="round-area">
       <p class="header text">字幕-视频-配置</p>
-      <label for="" class="text input-label">自定义语音切割时间（split duration）:</label>
-      <input v-model="subtitleConfig.splitDuration" class="baidu-input text">
+      <label for="" class="text input-label">自定义语音切割时间（建议以10s作为分割时长，分割时长不能超过30s）:</label>
+      <input v-model="subtitleConfig.splitDuration" maxlength="2" class="baidu-input text">
       <br>
     </div>
     <div class="back-btn text" @click="closeDialog('setting')">返回(back)</div>
@@ -101,7 +101,20 @@ export default {
     }
   },
   computed: {},
-  watch: {},
+  watch: {
+    subtitleConfig: {
+      handler: function () {
+        if (parseInt(this.subtitleConfig.splitDuration) > 30) {
+          this.subtitleConfig.splitDuration = 30
+          ipc.send('custom-message', {
+            msg: '语音分割时间不能够超过30s',
+            type: 'info'
+          })
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
     setArgument () {
       this.$DB.read().set('recognitionObject', this.recognitionSetting).write()

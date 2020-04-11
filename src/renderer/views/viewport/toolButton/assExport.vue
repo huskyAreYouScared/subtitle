@@ -17,13 +17,13 @@ export default {
       }
     }
   },
-  data:()=>{
+  data: () => {
     return {
-      fileType:'ass'
+      fileType: 'ass'
     }
   },
-  methods:{
-    exportAssSubtitle(){
+  methods: {
+    exportAssSubtitle () {
       if (this.subtitleData.length === 0) {
         ipc.send('custom-message', {
           msg: '还没有字幕，请先生成字幕',
@@ -33,24 +33,24 @@ export default {
       }
       ipc.send('save-ass-file-dialog')
     },
-    ipcInit(){
+    ipcInit () {
       ipc.on('save-ass-file', (event, file) => {
         let path = suffixCtrl(file.filePath, this.fileType)
-        fsWriteStream(path,this.subtitleData,this.fileType).then(res=>{
+        fsWriteStream(path, this.subtitleData, this.fileType).then(res => {
           ipc.send('custom-message', {
             msg: '成功',
             type: 'info'
           })
-        },err=>{
+        }, () => {
           ipc.send('custom-message', {
             msg: '失败',
             type: 'error'
           })
         })
       })
-    },
+    }
   },
-  mounted(){
+  mounted () {
     this.ipcInit()
   }
 }
