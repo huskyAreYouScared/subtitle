@@ -25,7 +25,10 @@ if (!db.has('recognitionObject').value()) {
     API_KEY: '',
     SECRET_KEY: '',
     service: '',
-    region: ''
+    region: '',
+    appIdInputType: 'text',
+    keyInputType: 'password',
+    secretInputType: 'password'
   }).write()
 }
 if (!db.has('subtitleConfig').value()) {

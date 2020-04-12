@@ -33,7 +33,7 @@
       margin-top: 10px;
       font-size: 14px;
     }
-    .baidu-input{
+    .setting-input{
       background: $tint;
       border: 0;
       width: 60%;
@@ -43,6 +43,13 @@
       margin-top:  5px;
       min-width: 400px;
       text-indent: 4px;
+    }
+    .close-icon{
+      font-size: 20px;
+      position: relative;
+      right: 30px;
+      top: 5px;
+      @include cursorPointer;
     }
   }
   .back-btn{

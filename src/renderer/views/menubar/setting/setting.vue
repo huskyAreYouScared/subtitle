@@ -2,36 +2,40 @@
 <template>
   <div class='setting-main bg-alpha'>
     <div class="round-area">
-      <p class="header text">设置语音识别基础参数:</p>
-      <label for="" class="text input-label">云服务商:</label>
-      <select v-model="recognitionSetting.service" class="baidu-input text" @change="changeService">
-        <option :value ="serviceItem.value" v-for="(serviceItem,index) in serviceList" :key="index">{{serviceItem.name}}</option>
-      </select>
-      <br>
-      <div v-if="formConfig.isRegion">
-        <label for="" class="text input-label">选择大区:</label>
-        <select  v-model="recognitionSetting.region" class="baidu-input text">
-          <option :value ="regionItem.value" v-for="(regionItem,index) in regionList" :key="index">{{regionItem.name}}</option>
+      <details class="header text">
+        <summary>设置语音识别基础参数</summary>
+        <label for="" class="text input-label">云服务商:</label>
+        <select v-model="recognitionSetting.service" class="setting-input text" @change="changeService">
+          <option :value ="serviceItem.value" v-for="(serviceItem,index) in serviceList" :key="index">{{serviceItem.name}}</option>
         </select>
         <br>
-      </div>
-      
-      <label for="" class="text input-label">{{formConfig.appIdName}}:</label>
-      <input v-model="recognitionSetting.APP_ID" type="text" class="baidu-input text">
-      <br>
-      <label for="" class="text input-label">{{formConfig.apiKeyName}}:</label>
-      <input v-model="recognitionSetting.API_KEY" type="text" class="baidu-input text">
-      <br>
-      <div v-if="formConfig.isSecret">
-        <label for="" class="text input-label">{{formConfig.secretKeyName}}:</label>
-        <input v-model="recognitionSetting.SECRET_KEY" type="password" class="baidu-input text">
+        <div v-if="formConfig.isRegion">
+          <label for="" class="text input-label">选择大区:</label>
+          <select  v-model="recognitionSetting.region" class="setting-input text">
+            <option :value ="regionItem.value" v-for="(regionItem,index) in regionList" :key="index">{{regionItem.name}}</option>
+          </select>
+          <br>
+        </div>
+        <label for="" class="text input-label">{{formConfig.appIdName}}:</label>
+        <input v-model="recognitionSetting.APP_ID" :type="recognitionSetting.appIdInputType" class="setting-input text">
+        <i class="iconfont close-icon" :class="{'icon-biyanjing':recognitionSetting.appIdInputType === 'password','icon-yanjing':recognitionSetting.appIdInputType === 'text'}" @click="toggleDisplay('appIdInputType')"></i>
         <br>
-      </div>
+        <label for="" class="text input-label">{{formConfig.apiKeyName}}:</label>
+        <input v-model="recognitionSetting.API_KEY" :type="recognitionSetting.keyInputType" class="setting-input text">
+        <i class="iconfont close-icon" :class="{'icon-biyanjing':recognitionSetting.keyInputType === 'password','icon-yanjing':recognitionSetting.keyInputType === 'text'}" @click="toggleDisplay('keyInputType')"></i>
+        <br>
+        <div v-if="formConfig.isSecret">
+          <label for="" class="text input-label">{{formConfig.secretKeyName}}:</label>
+          <input v-model="recognitionSetting.SECRET_KEY" :type="recognitionSetting.secretInputType" class="setting-input text">
+          <i class="iconfont close-icon" :class="{'icon-biyanjing':recognitionSetting.secretInputType === 'password','icon-yanjing':recognitionSetting.secretInputType === 'text'}" @click="toggleDisplay('secretInputType')"></i>
+          <br>
+        </div>
+      </details>
     </div>
     <div class="round-area">
       <p class="header text">字幕-视频-配置</p>
       <label for="" class="text input-label">自定义语音切割时间（建议以10s作为分割时长，分割时长不能超过30s）:</label>
-      <input v-model="subtitleConfig.splitDuration" maxlength="2" class="baidu-input text">
+      <input v-model="subtitleConfig.splitDuration" maxlength="2" class="setting-input text">
       <br>
     </div>
     <div class="back-btn text" @click="closeDialog('setting')">返回(back)</div>
@@ -50,7 +54,10 @@ export default {
         API_KEY: '',
         SECRET_KEY: '',
         service: '',
-        region: ''
+        region: '',
+        appIdInputType: 'text',
+        keyInputType: 'text',
+        secretInputType: 'password'
       },
       subtitleConfig: {
         splitDuration: ''
@@ -132,6 +139,10 @@ export default {
     },
     changeService () {
       this.changeForm(this.recognitionSetting.service)
+    },
+    toggleDisplay (inputName) {
+      console.log(inputName)
+      this.recognitionSetting[inputName] = this.recognitionSetting[inputName] === 'password' ? 'text' : 'password'
     },
     changeForm (serviceName) {
       if (serviceName === 'baidu') {

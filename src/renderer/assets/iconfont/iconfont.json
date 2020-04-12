@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "2127132",
+      "name": "下拉-打开",
+      "font_class": "less",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "2127137",
+      "name": "下拉-未打开",
+      "font_class": "more_unfold",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "4354835",
+      "name": "闭眼睛",
+      "font_class": "biyanjing",
+      "unicode": "e901",
+      "unicode_decimal": 59649
+    },
+    {
+      "icon_id": "5330665",
+      "name": "眼睛",
+      "font_class": "yanjing",
+      "unicode": "e7b4",
+      "unicode_decimal": 59316
+    },
+    {
       "icon_id": "538896",
       "name": "最大化",
       "font_class": "zuidahua",
