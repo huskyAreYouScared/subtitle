@@ -1,3 +1,7 @@
+@mixin settingBorder {
+  border: 1px dashed $text;
+  border-radius: 15px;
+}
 .setting-main{
   position: fixed;
   z-index: 10;
@@ -8,49 +12,92 @@
   @include bg-alpha(26,26,26,0.95);
   @include scrollLayout('y');
   .round-area{
+    user-select: none;
     overflow: hidden;
     width: 98%;
     margin: 5px auto;
-    border: 1px solid $text;
-    border-radius: 15px;
     padding: 10px;
     box-sizing: border-box;
     position: relative;
-    .header{
-      margin-left: 20px;
+    @include settingBorder;
+  }
+
+  .preview-config-container{
+    width: 55%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 5px;
+    padding: 10px;
+    @include settingBorder;
+    .preview-config-item{
+      width: 49%;
     }
-    .about-logo{
-      display: inline-block;
+    .radius-input{
+      border-radius: 5px;
+    }
+  }
+  .preview-container{
+    position: fixed;
+    z-index: 11;
+    width: 40%;
+    min-width: 400px;
+    height: 45vh;
+    background: $tint;
+    // min-height: 300px;
+    @include settingBorder;
+    top: 10px;
+    right: 10px;
+    .adjustPosition{
       position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 18vh;
+      bottom: 10px;
+      text-align: center;
+      width: 100%;
     }
-    .input-label{
-      display: block;
-      margin-left: 20px;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-    .setting-input{
-      background: $tint;
-      border: 0;
-      width: 60%;
-      height: 30px;
-      line-height: 30px;
-      margin-left:  20px;
-      margin-top:  5px;
-      min-width: 400px;
-      text-indent: 4px;
-    }
-    .close-icon{
-      font-size: 20px;
-      position: relative;
-      right: 30px;
-      top: 5px;
-      @include cursorPointer;
-    }
+  }
+  
+  .header{
+    margin-left: 20px;
+  }
+  .about-logo{
+    display: inline-block;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18vh;
+  }
+  .input-label{
+    display: block;
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  .setting-input{
+    background: $tint;
+    border: 0;
+    width: 60%;
+    height: 30px;
+    line-height: 30px;
+    margin-left:  20px;
+    margin-top:  5px;
+    text-indent: 4px;
+  }
+  .setting-full-input{
+    width: 80%;
+    background: $tint;
+    border: 0;
+    height: 30px;
+    line-height: 30px;
+    margin-left:  20px;
+    margin-top:  5px;
+    text-indent: 4px;
+  }
+  .close-icon{
+    font-size: 20px;
+    position: relative;
+    right: 30px;
+    top: 5px;
+    @include cursorPointer;
   }
   .back-btn{
     @include WH(100px ,30px);

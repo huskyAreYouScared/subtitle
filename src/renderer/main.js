@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import axios from 'axios'
-
 import './styles/index.scss'
 import '@/assets/iconfont/iconfont.css'
 import App from './App'
@@ -11,6 +10,7 @@ import appRootDir from 'app-root-dir'
 import os from 'os'
 import { ipcRenderer as ipc } from 'electron'
 import db from '../utils/dataStore'
+import inputOnlyNumber from '@/vue-plugins/inputOnlyNumber/index'
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
@@ -68,6 +68,10 @@ Vue.prototype.$DB = db
 // quickRouter
 Vue.prototype.$quickRouter = quickRouter
 /* eslint-disable no-new */
+
+// add vue plugins
+Vue.use(inputOnlyNumber)
+
 new Vue({
   components: { App },
   router,
