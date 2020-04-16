@@ -111,5 +111,6 @@ export function subtitleContentFormat (subtitle) {
 export function suffixCtrl (path, suffic) {
   let pathTempArr = path.split('.')
   pathTempArr[pathTempArr.length - 1] = suffic
+  console.log(pathTempArr)
   return pathTempArr.join('.')
 }

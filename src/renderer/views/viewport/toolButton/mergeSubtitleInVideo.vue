@@ -6,7 +6,7 @@
 
 import { ipcRenderer as ipc } from 'electron'
 import { mapState, mapMutations } from 'vuex'
-import { joinSrtFlie } from '@/utils/tools'
+import { joinAssFile, suffixCtrl } from '@/utils/tools'
 import fs from 'fs'
 import os from 'os'
 
@@ -37,17 +37,12 @@ export default {
       }
       ipc.send('save-video-file-dialog')
     },
-    suffixCtrl (path) {
-      let pathTempArr = path.split('.')
-      // 因为默认给bcc文件后缀，所以只判断了srt文件
-      pathTempArr[pathTempArr.length - 1] = 'srt'
-      return pathTempArr.join('.')
-    },
     init () {
       ipc.on('save-video-file', (event, file) => {
         this.setLoading(true)
-        let subtitleConetnt = joinSrtFlie(this.subtitleData)
-        let path = this.suffixCtrl(file.filePath)
+        let subtitleConetnt = joinAssFile(this.subtitleData)
+        let path = suffixCtrl(file.filePath, 'ass')
+        console.log(path)
         let subtitlePath = ''
         fs.writeFile(path, subtitleConetnt, {flag: 'w'}, async (err, data) => {
           // windows path Transfer ':'
@@ -62,7 +57,7 @@ export default {
               } else {
                 subtitlePath = path
               }
-              await this.$exec(`"${this.$ffmpegPath}" -y -i "${this.filePathStore}" -vf "subtitles='${subtitlePath}':force_style='OutlineColour=&H80000000,BorderStyle=3,Outline=1,Shadow=0,MarginV=20'" "${file.filePath}"`)
+              await this.$exec(`"${this.$ffmpegPath}" -y -i "${this.filePathStore}" -vf "subtitles='${subtitlePath}'" "${file.filePath}"`)
               ipc.send('custom-message', {
                 msg: '完成，请查收',
                 type: 'info'
