@@ -36,7 +36,15 @@ if (!db.has('subtitleConfig').value()) {
     splitDuration: 10
   }).write()
 }
-
+if (!db.has('assStyleConfig').value()) {
+  db.set('assStyleConfig', {
+    fontSize: 30,
+    color: '#ffffff',
+    outLine: 0,
+    outLineColor: '#000000',
+    outLineBlur: 0
+  }).write()
+}
 export default db
 
 // 作者：Molunerfinn

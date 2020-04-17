@@ -1,9 +1,10 @@
 <!--  -->
 <template>
   <div class='setting-main bg-alpha'>
-    <preview :subtitleConfig="subtitleConfig"/>
+    <preview :assStyleConfig="assStyleConfig"/>
     <previewConfig @changeConfig="changeConfig"/>
 
+    <div class="save-btn text" @click="saveAssStyle">保存(save)</div>
     <div class="back-btn text" @click="closeDialog('preview')">返回(back)</div>
   </div>
 </template>
@@ -11,6 +12,7 @@
 <script>
 import previewConfig from './previewConfig'
 import preview from './preview'
+import { ipcRenderer as ipc } from 'electron'
 export default {
   components: {
     previewConfig,
@@ -18,7 +20,7 @@ export default {
   },
   data () {
     return {
-      subtitleConfig: null
+      assStyleConfig: null
     }
   },
   computed: {},
@@ -27,11 +29,15 @@ export default {
     closeDialog (closeType) {
       this.$emit('closeDialog', closeType)
     },
-    changeConfig (subtitleConfig) {
-      this.subtitleConfig = subtitleConfig
+    changeConfig (assStyleConfig) {
+      this.assStyleConfig = assStyleConfig
     },
     init () {
 
+    },
+    saveAssStyle () {
+      this.$DB.read().set('assStyleConfig', this.assStyleConfig).write()
+      ipc.send('custom-message', { msg: '保存成功', type: 'info' })
     }
   },
   mounted () {

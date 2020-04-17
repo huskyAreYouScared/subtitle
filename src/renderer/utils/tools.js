@@ -1,5 +1,6 @@
 import route from '@/router'
 import {config} from '@All/utils/config.js'
+import db from '@All/utils/dataStore'
 // mp4,webm,ogg
 export function checkAllowFile (file) {
   let regexp = new RegExp(`.(${config.audioFormat.concat(config.videoFormat).join('|')})$`)
@@ -70,6 +71,7 @@ export function joinBCCFlie (subtitleData, splitDuration, totalDuration) {
  * @param {Array} subtitleData
  */
 export function joinAssFile (subtitleData = []) {
+  let assStyleConfig = db.read().get('assStyleConfig').value()
   let assTemplate = `[Script Info]
 Title:husky-subtitle provide
 Original Script:https://github.com/huskyAreYouScared/subtitle
@@ -81,7 +83,7 @@ Collisions:'Reverse'
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,方正黑体_GBK,40,&H00FFFFFF,&HF0000000,&H00000000,&H32000000,0,0,0,0,100,100,0,0.00,1,2,1,2,5,5,2,134
+Style: Default,方正黑体_GBK,${assStyleConfig.fontSize},&H00${RGB2HLS(assStyleConfig.color)},&HF0000000,&H00${RGB2HLS(assStyleConfig.outLineColor)},&H32000000,0,0,0,0,100,100,0,0.00,1,${assStyleConfig.outLine},1,2,5,5,2,134
 
 [Events]
 Format: Layer, Start, End, Style, Actor, MarginL, MarginR, MarginV, Effect, Text\n`
@@ -98,7 +100,12 @@ function deleteNewLine (subtitle) {
 function srt2AssReplace (date) {
   return date.replace(',', '.')
 }
-
+function RGB2HLS (rgb) {
+  let tempHls = rgb.replace('#', '').toUpperCase()
+  let regexp = new RegExp(/(\w{2})(\w{2})(\w{2})/g)
+  let match = regexp.exec(tempHls)
+  return match[3] + match[2] + match[1]
+}
 export function subtitleContentFormat (subtitle) {
   let length = subtitle.length
   let tempArr = subtitle.split('')

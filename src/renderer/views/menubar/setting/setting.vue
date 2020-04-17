@@ -129,10 +129,7 @@ export default {
     },
     saveSetting () {
       this.setArgument()
-      ipc.send('custom-message', {
-        msg: '保存成功',
-        type: 'info'
-      })
+      ipc.send('custom-message', { msg: '保存成功', type: 'info' })
     },
     closeDialog (closeType) {
       this.$emit('closeDialog', closeType)
