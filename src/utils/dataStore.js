@@ -42,7 +42,9 @@ if (!db.has('assStyleConfig').value()) {
     color: '#ffffff',
     outLine: 0,
     outLineColor: '#000000',
-    outLineBlur: 0
+    outLineBlur: 0,
+    fadeIn: 0,
+    fadeOut: 0
   }).write()
 }
 export default db

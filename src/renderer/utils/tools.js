@@ -89,7 +89,7 @@ Style: Default,方正黑体_GBK,${assStyleConfig.fontSize},&H00${RGB2HLS(assStyl
 Format: Layer, Start, End, Style, Actor, MarginL, MarginR, MarginV, Effect, Text\n`
 
   subtitleData.forEach(subtitleItem => {
-    assTemplate += `Dialogue: 0,${srt2AssReplace(subtitleItem.start)},${srt2AssReplace(subtitleItem.end)},*Default,NTP,0000,0000,0000,,${deleteNewLine(subtitleItem.value)}\n`
+    assTemplate += `Dialogue: 0,${srt2AssReplace(subtitleItem.start)},${srt2AssReplace(subtitleItem.end)},*Default,NTP,0000,0000,0000,,{\\fad(${assStyleConfig.fadeIn},${assStyleConfig.fadeOut})}${deleteNewLine(subtitleItem.value)}\n`
   })
   return assTemplate
 }

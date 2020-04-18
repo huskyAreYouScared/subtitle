@@ -18,16 +18,22 @@
         </div>
         <label for="" class="text input-label">{{formConfig.appIdName}}:</label>
         <input v-model="recognitionSetting.APP_ID" :type="recognitionSetting.appIdInputType" class="setting-input text">
-        <i class="iconfont close-icon" :class="{'icon-biyanjing':recognitionSetting.appIdInputType === 'password','icon-yanjing':recognitionSetting.appIdInputType === 'text'}" @click="toggleDisplay('appIdInputType')"></i>
+        <i class="iconfont close-icon" 
+          :class="{'icon-biyanjing':recognitionSetting.appIdInputType === 'password','icon-yanjing':recognitionSetting.appIdInputType === 'text'}" 
+          @click="toggleDisplay('appIdInputType')"></i>
         <br>
         <label for="" class="text input-label">{{formConfig.apiKeyName}}:</label>
         <input v-model="recognitionSetting.API_KEY" :type="recognitionSetting.keyInputType" class="setting-input text">
-        <i class="iconfont close-icon" :class="{'icon-biyanjing':recognitionSetting.keyInputType === 'password','icon-yanjing':recognitionSetting.keyInputType === 'text'}" @click="toggleDisplay('keyInputType')"></i>
+        <i class="iconfont close-icon" 
+          :class="{'icon-biyanjing':recognitionSetting.keyInputType === 'password','icon-yanjing':recognitionSetting.keyInputType === 'text'}" 
+          @click="toggleDisplay('keyInputType')"></i>
         <br>
         <div v-if="formConfig.isSecret">
           <label for="" class="text input-label">{{formConfig.secretKeyName}}:</label>
           <input v-model="recognitionSetting.SECRET_KEY" :type="recognitionSetting.secretInputType" class="setting-input text">
-          <i class="iconfont close-icon" :class="{'icon-biyanjing':recognitionSetting.secretInputType === 'password','icon-yanjing':recognitionSetting.secretInputType === 'text'}" @click="toggleDisplay('secretInputType')"></i>
+          <i class="iconfont close-icon" 
+            :class="{'icon-biyanjing':recognitionSetting.secretInputType === 'password','icon-yanjing':recognitionSetting.secretInputType === 'text'}" 
+            @click="toggleDisplay('secretInputType')"></i>
           <br>
         </div>
       </details>
