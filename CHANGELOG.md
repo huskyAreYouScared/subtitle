@@ -1,3 +1,21 @@
+## [0.1.2](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.1...v0.1.2) (2020-04-19)
+
+
+### Features
+
+* **datastore,setting,iconfont:** add show and hide toggle button to main config params ([d243646](https://github.com/huskyAreYouScared/subtitle/commit/d2436465ad5e794b8739bba53e01500b30af1d2a))
+* **mergesubtitleinvideo:** merge subtitle file type change ,change to ass subtitle file ([e227470](https://github.com/huskyAreYouScared/subtitle/commit/e22747081157b5c2d62e7c797dd709b4db19c921))
+* **preview relate file,datastore.js:** add special effects subtitle ([b1023ff](https://github.com/huskyAreYouScared/subtitle/commit/b1023ff859e32811d1ba3e6eff530a2427c54aba))
+* **vue-plugins,preview:** add ass subtitle preview ([4dfe72c](https://github.com/huskyAreYouScared/subtitle/commit/4dfe72cfbc40e2565fc5df9e6ffb68867c347145))
+
+
+### Performance Improvements
+
+* **recognize.js,tools.js:** ass template optimization ([00dc997](https://github.com/huskyAreYouScared/subtitle/commit/00dc997f04aed260c1e816175cd7ad8d3d8f3e5d))
+* **renderer subtitle,viewport:** export subtitles file optimization ([ff4a06a](https://github.com/huskyAreYouScared/subtitle/commit/ff4a06ab8d30cf87df144f0475b7c4f2a39e8c10))
+
+
+
 ## [0.1.1](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.1-alpha.0...v0.1.1) (2020-03-23)
 
 
