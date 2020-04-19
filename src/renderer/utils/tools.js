@@ -72,6 +72,7 @@ export function joinBCCFlie (subtitleData, splitDuration, totalDuration) {
  */
 export function joinAssFile (subtitleData = []) {
   let assStyleConfig = db.read().get('assStyleConfig').value()
+  let { fontSize, color, outLineColor, outLine, fadeIn, fadeOut } = assStyleConfig
   let assTemplate = `[Script Info]
 Title:husky-subtitle provide
 Original Script:https://github.com/huskyAreYouScared/subtitle
@@ -83,13 +84,14 @@ Collisions:'Reverse'
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,方正黑体_GBK,${assStyleConfig.fontSize},&H00${RGB2HLS(assStyleConfig.color)},&HF0000000,&H00${RGB2HLS(assStyleConfig.outLineColor)},&H32000000,0,0,0,0,100,100,0,0.00,1,${assStyleConfig.outLine},1,2,5,5,2,134
+Style: Default,方正黑体_GBK,${fontSize},&H00${RGB2HLS(color)},&HF0000000,&H00${RGB2HLS(outLineColor)},&H32000000,0,0,0,0,100,100,0,0.00,1,${outLine},1,2,5,5,2,134
 
 [Events]
 Format: Layer, Start, End, Style, Actor, MarginL, MarginR, MarginV, Effect, Text\n`
 
   subtitleData.forEach(subtitleItem => {
-    assTemplate += `Dialogue: 0,${srt2AssReplace(subtitleItem.start)},${srt2AssReplace(subtitleItem.end)},*Default,NTP,0000,0000,0000,,{\\fad(${assStyleConfig.fadeIn},${assStyleConfig.fadeOut})}${deleteNewLine(subtitleItem.value)}\n`
+    let { start, end } = subtitleItem
+    assTemplate += `Dialogue: 1,${srt2AssReplace(start)},${srt2AssReplace(end)},*Default,NTP,0000,0000,0000,,{\\fad(${fadeIn},${fadeOut})}${deleteNewLine(subtitleItem.value)}\n`
   })
   return assTemplate
 }

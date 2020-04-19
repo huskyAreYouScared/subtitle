@@ -37,10 +37,10 @@ export const aiAudio = (srtObjTemp) => {
 function recognizeInit (state) {
   let resultState = {
     0: '识别完成',
-    3302: '鉴权失败，请查看配置是否有误'
+    3302: '鉴权失败，请查看配置是否有误或者网络状况不好，请稍后重试'
   }
   ipc.send('custom-message', {
-    msg: resultState[state] ? resultState[state] : '请查看配置，是否有误',
+    msg: resultState[state] ? resultState[state] : '请查看配置，是否有误或者网络状况不好，请稍后重试',
     type: 'info'
   })
   recognizeIndex = 1
