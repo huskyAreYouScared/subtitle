@@ -1,6 +1,6 @@
 <!-- assExport -->
 <template>
-   <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="exportAssSubtitle()">ass</button>
+   <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="exportSubtitle">{{fileType}}</button>
 </template>
 
 <script>
@@ -15,15 +15,19 @@ export default {
       default: function () {
         return []
       }
+    },
+    fileType: {
+      type: String,
+      default: 'ass'
     }
   },
   data: () => {
     return {
-      fileType: 'ass'
+      // fileType: 'ass'
     }
   },
   methods: {
-    exportAssSubtitle () {
+    exportSubtitle () {
       if (this.subtitleData.length === 0) {
         ipc.send('custom-message', {
           msg: '还没有字幕，请先生成字幕',
@@ -31,10 +35,10 @@ export default {
         })
         return
       }
-      ipc.send('save-ass-file-dialog')
+      ipc.send('save-file-dialog', this.fileType)
     },
     ipcInit () {
-      ipc.on('save-ass-file', (event, file) => {
+      ipc.on(`save-${this.fileType}-file`, (event, file) => {
         let path = suffixCtrl(file.filePath, this.fileType)
         fsWriteStream(path, this.subtitleData, this.fileType).then(res => {
           ipc.send('custom-message', {

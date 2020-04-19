@@ -13,9 +13,9 @@ export function fsWriteStream (path, subtitleData, subtitleType) {
       if (subtitleType === 'ass') {
         writeStream.write(joinAssFile(subtitleData), 'utf-8')
       } else if (subtitleType === 'srt') {
-        writeStream.write(joinBCCFlie(subtitleData), 'utf-8')
-      } else if (subtitleType === 'bcc') {
         writeStream.write(joinSrtFlie(subtitleData), 'utf-8')
+      } else if (subtitleType === 'bcc') {
+        writeStream.write(joinBCCFlie(subtitleData), 'utf-8')
       }
       writeStream.end()
     })

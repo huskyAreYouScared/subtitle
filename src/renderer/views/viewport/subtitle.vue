@@ -3,11 +3,14 @@
     <div>
       <div class="subtitle-ctrl-container">
         <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="splitStep">生成字幕</button>
-        <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="exportFile('srt')">srt</button>
-        <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="exportFile('bcc')">bcc</button>
-        <assExport :subtitleData="srtObjTemp"/>
+        <assExport fileType="srt" :subtitleData="srtObjTemp"/>
+        <assExport fileType="bcc" :subtitleData="srtObjTemp"/>
+        <assExport fileType="ass" :subtitleData="srtObjTemp"/>
         <mergeSubtitleInVideo :subtitleData="srtObjTemp"/>
-        <input type="checkbox" id="scrollCtrl"  v-model="scrollStateCtrl"/><label for="scrollCtrl"><span class="text">scroll</span></label>
+        <input class="checkBox"  type="checkbox" id="scrollCtrl"  v-model="scrollStateCtrl"/>
+        <label class="text checkBox-label" for="scrollCtrl">
+          scroll
+        </label>
       </div>
       <div class="srt-container" ref="subtitleContainer">
         <p v-for="audioItem in srtObjTemp" :key="audioItem.index">
@@ -30,7 +33,6 @@ import assExport from '@/views/viewport/toolButton/assExport'
 import { ipcRenderer as ipc } from 'electron'
 import { mapState, mapMutations } from 'vuex'
 import { aiAudio } from '@/utils/recognize'
-import { joinSrtFlie, joinBCCFlie } from '@/utils/tools'
 import fs from 'fs'
 export default {
   name: 'subtitle',
@@ -77,29 +79,9 @@ export default {
   },
   mounted () {
     this.updateSubtitleConfig()
-    this.ipcInit()
   },
   methods: {
     ...mapMutations(['setLoading']),
-    ipcInit () {
-      ipc.on('save-srt-file', (event, file) => {
-        let subtitleConetnt = ''
-        if (this.exportType === 'srt') {
-          subtitleConetnt = joinSrtFlie(this.srtObjTemp)
-        } else if (this.exportType === 'bcc') {
-          subtitleConetnt = joinBCCFlie(this.srtObjTemp, this.splitDuration, this.videoDuration)
-        }
-        let path = this.suffixCtrl(file.filePath)
-        fs.writeFile(path, subtitleConetnt, {flag: 'w'}, (err, data) => {
-          if (!err) {
-            ipc.send('custom-message', {
-              msg: '保存成功',
-              type: 'info'
-            })
-          }
-        })
-      })
-    },
     init () {
       this.lastNum = 2 // const 固定值为二
       this.fileIndex = 1 // 文件索引
@@ -283,13 +265,6 @@ export default {
         this.srtObjTemp[current - 1].end = /\./.test(TimeLine)
           ? TimeLine.toString().replace('.', ',') : TimeLine + ',000'
       }
-    },
-    exportFile (type) {
-      if (!this.checkIsSubtitle(this.srtObjTemp)) {
-        return
-      }
-      this.exportType = type
-      ipc.send('save-srt-file-dialog')
     }
   }
 }

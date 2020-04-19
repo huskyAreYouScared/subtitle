@@ -28,16 +28,16 @@ ipcMain.on('save-srt-file-dialog', function (event) {
   })
 })
 // save ass file
-ipcMain.on('save-ass-file-dialog', function (event) {
+ipcMain.on('save-file-dialog', function (event, data) {
   dialog.showSaveDialog({
     // properties: ['openDirectory'],
     title: '保存文件',
     filters: [
-      { name: 'subtitle', extensions: ['ass', 'srt', 'bcc'] }
+      { name: 'subtitle', extensions: [data] }
     ]
   }).then(res => {
     if (!res.canceled) {
-      event.sender.send('save-ass-file', res)
+      event.sender.send(`save-${data}-file`, res)
     }
   })
 })
