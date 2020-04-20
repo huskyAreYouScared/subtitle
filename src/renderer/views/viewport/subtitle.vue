@@ -3,33 +3,24 @@
     <div>
       <div class="subtitle-ctrl-container">
         <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="splitStep">生成字幕</button>
-        <assExport fileType="srt" :subtitleData="srtObjTemp"/>
-        <assExport fileType="bcc" :subtitleData="srtObjTemp"/>
-        <assExport fileType="ass" :subtitleData="srtObjTemp"/>
+        <subtitlesExport fileType="srt" :subtitleData="srtObjTemp"/>
+        <subtitlesExport fileType="bcc" :subtitleData="srtObjTemp"/>
+        <subtitlesExport fileType="ass" :subtitleData="srtObjTemp"/>
         <mergeSubtitleInVideo :subtitleData="srtObjTemp"/>
         <input class="checkBox"  type="checkbox" id="scrollCtrl"  v-model="scrollStateCtrl"/>
         <label class="text checkBox-label" for="scrollCtrl">
           scroll
         </label>
       </div>
-      <div class="srt-container" ref="subtitleContainer">
-        <p v-for="audioItem in srtObjTemp" :key="audioItem.index">
-          <input class="srt-input bg" type="text" v-model="audioItem.index">
-          <br/>
-          <input class="srt-input bg" type="text" v-model="audioItem.start">
-          -->
-          <input class="srt-input bg" type="text" v-model="audioItem.end">
-          <br/>
-          <textarea class="srt-textarea bg" v-model="audioItem.value" cols="30" rows="10"></textarea>
-        </p>
-      </div>
+      <timeLine :data="srtObjTemp" :scrollStateCtrl="scrollStateCtrl"/>
     </div>
   </div>
 </template>
 
 <script>
-import mergeSubtitleInVideo from '@/views/viewport/toolButton/mergeSubtitleInVideo'
-import assExport from '@/views/viewport/toolButton/assExport'
+import mergeSubtitleInVideo from '@/views/viewport/components/mergeSubtitleInVideo'
+import subtitlesExport from '@/views/viewport/components/subtitlesExport'
+import timeLine from '@/views/viewport/components/timeLine'
 import { ipcRenderer as ipc } from 'electron'
 import { mapState, mapMutations } from 'vuex'
 import { aiAudio } from '@/utils/recognize'
@@ -38,7 +29,8 @@ export default {
   name: 'subtitle',
   components: {
     mergeSubtitleInVideo,
-    assExport
+    subtitlesExport,
+    timeLine
   },
   data () {
     return {
@@ -55,22 +47,7 @@ export default {
       lastNum: 2// 帮助校准结尾时间引入的
     }
   },
-  watch: {
-    duration: {
-      handler: function (newVal, oldVal) {
-      },
-      deep: true
-    },
-    currentTime: {
-      handler: function (newVal, oldVal) {
-        if (this.scrollStateCtrl) {
-          this.subtitleAutoScroll(this.videoDuration,
-            newVal.currentTime, this.splitDuration, this.$refs.subtitleContainer)
-        }
-      },
-      deep: true
-    }
-  },
+  watch: {},
   computed: {
     ...mapState(['duration', 'currentTime', 'loading']),
     videoDuration () {
@@ -90,25 +67,6 @@ export default {
       this.splitStartTimeSeconds = 0
       this.currentSplitSecond = 0
       this.srtObjTemp = [] // 清空之前的切分信息数组
-    },
-    /**
-     * @param totalDuration 视频总时长 video total duration
-     * @param current 视频当前播放时长 video current duration
-     * @param splitduration 视频切割时长 video split duration
-     * @param scrollEl 滚动的元素 need scroll element
-     */
-    subtitleAutoScroll (totalDuration, current, splitduration, scrollEl) {
-      if (current < splitduration) {
-        return
-      }
-      let strContainer = scrollEl
-      // 获取subtitle-container 总高度
-      let rangeScroll = strContainer.scrollHeight
-      // 每隔一个duration，进行向下滚动
-      if (current > splitduration) {
-        let videoProgress = rangeScroll * ((current - splitduration) / totalDuration)
-        scrollEl.scrollTop = videoProgress
-      }
     },
     suffixCtrl (path) {
       let pathTempArr = path.split('.')
