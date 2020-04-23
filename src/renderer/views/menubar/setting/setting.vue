@@ -144,7 +144,6 @@ export default {
       this.changeForm(this.recognitionSetting.service)
     },
     toggleDisplay (inputName) {
-      console.log(inputName)
       this.recognitionSetting[inputName] = this.recognitionSetting[inputName] === 'password' ? 'text' : 'password'
     },
     changeForm (serviceName) {

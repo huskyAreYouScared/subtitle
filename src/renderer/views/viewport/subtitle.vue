@@ -143,7 +143,6 @@ export default {
           aiAudio(this.srtObjTemp)
         }
       } catch (error) {
-        console.log(error)
         ipc.send('custom-message', {msg: '抱歉，程序出错', type: 'error'})
       }
     },

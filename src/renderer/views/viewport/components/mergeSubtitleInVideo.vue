@@ -42,7 +42,6 @@ export default {
         this.setLoading(true)
         let subtitleConetnt = joinAssFile(this.subtitleData)
         let path = suffixCtrl(file.filePath, 'ass')
-        console.log(path)
         let subtitlePath = ''
         fs.writeFile(path, subtitleConetnt, {flag: 'w'}, async (err, data) => {
           // windows path Transfer ':'
