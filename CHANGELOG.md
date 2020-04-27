@@ -1,3 +1,29 @@
+## [0.1.3](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.1-alpha.0...v0.1.3) (2020-04-27)
+
+
+### Bug Fixes
+
+* **subtitlesexport:** fix export bcc filte can't use,add custom timeline ([ddf3d0f](https://github.com/huskyAreYouScared/subtitle/commit/ddf3d0f6a68fd71b227a348716674d3bbd3096b0))
+
+
+### Features
+
+* **datastore,setting,iconfont:** add show and hide toggle button to main config params ([d243646](https://github.com/huskyAreYouScared/subtitle/commit/d2436465ad5e794b8739bba53e01500b30af1d2a))
+* **mergesubtitleinvideo:** merge subtitle file type change ,change to ass subtitle file ([e227470](https://github.com/huskyAreYouScared/subtitle/commit/e22747081157b5c2d62e7c797dd709b4db19c921))
+* **preview relate file,datastore.js:** add special effects subtitle ([b1023ff](https://github.com/huskyAreYouScared/subtitle/commit/b1023ff859e32811d1ba3e6eff530a2427c54aba))
+* **renderer new about and update setting relative style,main index ipc-event:** add new about page ([fdaf945](https://github.com/huskyAreYouScared/subtitle/commit/fdaf9455ec22a23db1bff567e2808b3ce5f8d9e1))
+* **timeline:** add custom timeline ([9225f1e](https://github.com/huskyAreYouScared/subtitle/commit/9225f1eb9f021407499e9643af1aa089a91921e6))
+* **vue-plugins,preview:** add ass subtitle preview ([4dfe72c](https://github.com/huskyAreYouScared/subtitle/commit/4dfe72cfbc40e2565fc5df9e6ffb68867c347145))
+
+
+### Performance Improvements
+
+* **components of subtitle:** optimization timeline component ([419a7e6](https://github.com/huskyAreYouScared/subtitle/commit/419a7e64022be35e9933b4535e4631db86ba5938))
+* **recognize.js,tools.js:** ass template optimization ([00dc997](https://github.com/huskyAreYouScared/subtitle/commit/00dc997f04aed260c1e816175cd7ad8d3d8f3e5d))
+* **renderer subtitle,viewport:** export subtitles file optimization ([ff4a06a](https://github.com/huskyAreYouScared/subtitle/commit/ff4a06ab8d30cf87df144f0475b7c4f2a39e8c10))
+
+
+
 ## [0.1.2](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.1...v0.1.2) (2020-04-19)
 
 
