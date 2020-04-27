@@ -6,7 +6,7 @@ let fs = require('fs')
  * @param {Array} subtitleData
  * @param {String} subtitleType
  */
-export function fsWriteStream (path, subtitleData, subtitleType) {
+export function fsWriteStream (path, subtitleData, subtitleType, splitDuration) {
   return new Promise((resolve, reject) => {
     const writeStream = fs.createWriteStream(path)
     writeStream.on('open', () => {
@@ -15,7 +15,7 @@ export function fsWriteStream (path, subtitleData, subtitleType) {
       } else if (subtitleType === 'srt') {
         writeStream.write(joinSrtFlie(subtitleData), 'utf-8')
       } else if (subtitleType === 'bcc') {
-        writeStream.write(joinBCCFlie(subtitleData), 'utf-8')
+        writeStream.write(joinBCCFlie(subtitleData, splitDuration), 'utf-8')
       }
       writeStream.end()
     })

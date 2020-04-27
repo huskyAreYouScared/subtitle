@@ -23,7 +23,7 @@ export default {
   },
   data: () => {
     return {
-      // fileType: 'ass'
+      splitDuration: 0
     }
   },
   methods: {
@@ -40,7 +40,7 @@ export default {
     ipcInit () {
       ipc.on(`save-${this.fileType}-file`, (event, file) => {
         let path = suffixCtrl(file.filePath, this.fileType)
-        fsWriteStream(path, this.subtitleData, this.fileType).then(res => {
+        fsWriteStream(path, this.subtitleData, this.fileType, this.splitDuration).then(res => {
           ipc.send('custom-message', {
             msg: '成功',
             type: 'info'
@@ -56,6 +56,7 @@ export default {
   },
   mounted () {
     this.ipcInit()
+    this.splitDuration = parseInt(this.$DB.read().get('subtitleConfig').value().splitDuration)
   }
 }
 </script>

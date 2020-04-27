@@ -72,9 +72,13 @@ Vue.prototype.$quickRouter = quickRouter
 // add vue plugins
 Vue.use(inputOnlyNumber)
 
-new Vue({
+const app = new Vue({
   components: { App },
   router,
   store,
   template: '<App/>'
 }).$mount('#app')
+
+export default {
+  app
+}
