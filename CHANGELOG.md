@@ -1,3 +1,23 @@
+## [0.1.4](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.2...v0.1.4) (2020-04-28)
+
+
+### Bug Fixes
+
+* **fs.js and subtitlesexport.vue:** fix export bcc file last timeline empty ([32561f5](https://github.com/huskyAreYouScared/subtitle/commit/32561f5c89daa4a29edaf2a37dec9fbc35a53514))
+* **subtitlesexport:** fix export bcc filte can't use,add custom timeline ([ddf3d0f](https://github.com/huskyAreYouScared/subtitle/commit/ddf3d0f6a68fd71b227a348716674d3bbd3096b0))
+
+
+### Features
+
+* **timeline:** add custom timeline ([9225f1e](https://github.com/huskyAreYouScared/subtitle/commit/9225f1eb9f021407499e9643af1aa089a91921e6))
+
+
+### Performance Improvements
+
+* **components of subtitle:** optimization timeline component ([419a7e6](https://github.com/huskyAreYouScared/subtitle/commit/419a7e64022be35e9933b4535e4631db86ba5938))
+
+
+
 ## [0.1.3](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.1-alpha.0...v0.1.3) (2020-04-27)
 
 
