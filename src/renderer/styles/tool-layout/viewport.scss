@@ -1,6 +1,7 @@
 .viewport-container{
   // subtitle component style
   .subtitle-container{
+    position: relative;
     height: calc(100vh - 35px);
     border: solid 1px $tint;
   }
@@ -57,6 +58,11 @@
       color: #fff;
       border: $tint 0 solid;
       width: 100%;
+    }
+    .history-container{
+      position: absolute;
+      right: 5px;
+      top: 5px;
     }
   }
   

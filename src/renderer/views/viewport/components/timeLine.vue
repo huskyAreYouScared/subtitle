@@ -1,6 +1,7 @@
 <template>
   <div class="srt-container" ref="subtitleContainer">
-    <p v-for="(timeLineItem,index) in data" :key="index">
+    <historyOperator v-show="history.length>0" @clearHistoryAndReset="clearHistoryAndReset" :number="history.length" @reset="reset"/>
+    <p v-for="(timeLineItem,index) in operateData" :key="index">
       <input class="srt-input bg" type="text" v-model="timeLineItem.index">
       <br/>
       <input class="srt-input bg" type="text" v-model="timeLineItem.start">
@@ -9,13 +10,18 @@
       <br/>
       <textarea class="srt-textarea bg" v-model="timeLineItem.value" cols="30" rows="10"></textarea>
       <i class="iconfont icon-jiahao text" @click="addTimeLine(timeLineItem,index)"></i>
+      <i class="iconfont icon-jianhao text-16" @click="deleteTimeLine(timeLineItem,index)"></i>
     </p>
   </div>
 </template>
 
 <script>
+import historyOperator from './historyOperator'
 import { mapState } from 'vuex'
 export default {
+  components: {
+    historyOperator
+  },
   props: {
     data: {
       type: Array,
@@ -30,7 +36,9 @@ export default {
   },
   data: function () {
     return {
-      splitDuration: 10
+      splitDuration: 10,
+      history: [],
+      operateData: []
     }
   },
   computed: {
@@ -46,6 +54,12 @@ export default {
           this.subtitleAutoScroll(this.videoDuration,
             newVal.currentTime, this.splitDuration, this.$refs.subtitleContainer)
         }
+      },
+      deep: true
+    },
+    data: {
+      handler: function (newVal, oldVal) {
+        this.operateData = JSON.parse(JSON.stringify(newVal))
       },
       deep: true
     }
@@ -77,14 +91,31 @@ export default {
       }
     },
     addTimeLine (timeLineItem, index) {
+      this.addHistory()
       const deepClone = JSON.parse(JSON.stringify(timeLineItem))
-      this.data.splice(index, 0, deepClone)
-      this.resetIndex(this.data)
+      this.operateData.splice(index, 0, deepClone)
+      this.resetIndex(this.operateData)
+    },
+    deleteTimeLine (timeLineItem, index) {
+      this.addHistory()
+      this.operateData.splice(index, 1)
+      this.resetIndex(this.operateData)
+    },
+    addHistory () {
+      const deepClone = JSON.parse(JSON.stringify(this.operateData))
+      this.history.push(deepClone)
     },
     resetIndex (data) {
       data.forEach((timeLineItem, index) => {
         timeLineItem.index = index + 1
       })
+    },
+    reset () {
+      this.operateData = this.history.pop()
+    },
+    clearHistoryAndReset () {
+      this.history = []
+      this.operateData = JSON.parse(JSON.stringify(this.data))
     }
   }
 }
