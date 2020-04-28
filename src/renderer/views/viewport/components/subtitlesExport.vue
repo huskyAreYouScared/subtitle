@@ -7,6 +7,7 @@
 import { fsWriteStream } from '@/utils/fs'
 import { suffixCtrl } from '@/utils/tools'
 import { ipcRenderer as ipc } from 'electron'
+import { mapState } from 'vuex'
 export default {
   components: {},
   props: {
@@ -26,6 +27,12 @@ export default {
       splitDuration: 0
     }
   },
+  computed: {
+    ...mapState(['duration', 'currentTime', 'loading']),
+    videoDuration () {
+      return this.duration.duration.duration
+    }
+  },
   methods: {
     exportSubtitle () {
       if (this.subtitleData.length === 0) {
@@ -40,7 +47,7 @@ export default {
     ipcInit () {
       ipc.on(`save-${this.fileType}-file`, (event, file) => {
         let path = suffixCtrl(file.filePath, this.fileType)
-        fsWriteStream(path, this.subtitleData, this.fileType, this.splitDuration).then(res => {
+        fsWriteStream(path, this.subtitleData, this.fileType, this.splitDuration, this.videoDuration).then(res => {
           ipc.send('custom-message', {
             msg: '成功',
             type: 'info'
