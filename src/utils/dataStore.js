@@ -19,6 +19,7 @@ const adapter = new FileSync(path.join(STORE_PATH, '/data.json'))
 const db = Datastore(adapter)
 db._.mixin(LodashId)
 
+// recognize config
 if (!db.has('recognitionObject').value()) {
   db.set('recognitionObject', {
     APP_ID: '',
@@ -31,11 +32,13 @@ if (!db.has('recognitionObject').value()) {
     secretInputType: 'password'
   }).write()
 }
+// subtitles config
 if (!db.has('subtitleConfig').value()) {
   db.set('subtitleConfig', {
     splitDuration: 10
   }).write()
 }
+// ass config
 if (!db.has('assStyleConfig').value()) {
   db.set('assStyleConfig', {
     fontSize: 30,
@@ -46,6 +49,10 @@ if (!db.has('assStyleConfig').value()) {
     fadeIn: 0,
     fadeOut: 0
   }).write()
+}
+// subtitle history
+if (!db.has('subtitlesHistory').value()) {
+  db.set('subtitlesHistory', {}).write()
 }
 export default db
 

@@ -1,7 +1,7 @@
 <template>
   <div class="srt-container" ref="subtitleContainer">
-    <historyOperator v-show="history.length>0" @clearHistoryAndReset="clearHistoryAndReset" :number="history.length" @reset="reset"/>
-    <p v-for="(timeLineItem,index) in operateData" :key="index">
+    <historyOperator v-show="history.length>0" :number="history.length" @reset="reset"/>
+    <p v-for="(timeLineItem,index) in data" :key="index">
       <input class="srt-input bg" type="text" v-model="timeLineItem.index">
       <br/>
       <input class="srt-input bg" type="text" v-model="timeLineItem.start">
@@ -37,8 +37,7 @@ export default {
   data: function () {
     return {
       splitDuration: 10,
-      history: [],
-      operateData: []
+      history: []
     }
   },
   computed: {
@@ -54,12 +53,6 @@ export default {
           this.subtitleAutoScroll(this.videoDuration,
             newVal.currentTime, this.splitDuration, this.$refs.subtitleContainer)
         }
-      },
-      deep: true
-    },
-    data: {
-      handler: function (newVal, oldVal) {
-        this.operateData = JSON.parse(JSON.stringify(newVal))
       },
       deep: true
     }
@@ -93,16 +86,16 @@ export default {
     addTimeLine (timeLineItem, index) {
       this.addHistory()
       const deepClone = JSON.parse(JSON.stringify(timeLineItem))
-      this.operateData.splice(index, 0, deepClone)
-      this.resetIndex(this.operateData)
+      this.data.splice(index, 0, deepClone)
+      this.resetIndex(this.data)
     },
     deleteTimeLine (timeLineItem, index) {
       this.addHistory()
-      this.operateData.splice(index, 1)
-      this.resetIndex(this.operateData)
+      this.data.splice(index, 1)
+      this.resetIndex(this.data)
     },
     addHistory () {
-      const deepClone = JSON.parse(JSON.stringify(this.operateData))
+      const deepClone = JSON.parse(JSON.stringify(this.data))
       this.history.push(deepClone)
     },
     resetIndex (data) {
@@ -111,11 +104,13 @@ export default {
       })
     },
     reset () {
-      this.operateData = this.history.pop()
-    },
-    clearHistoryAndReset () {
-      this.history = []
-      this.operateData = JSON.parse(JSON.stringify(this.data))
+      do {
+        this.data.pop()
+      } while (this.data.length !== 0)
+      let historySubtitles = this.history.pop()
+      historySubtitles.forEach(subtitleItem => {
+        this.data.push(subtitleItem)
+      })
     }
   }
 }

@@ -7,6 +7,7 @@
         <subtitlesExport fileType="bcc" :subtitleData="srtObjTemp"/>
         <subtitlesExport fileType="ass" :subtitleData="srtObjTemp"/>
         <mergeSubtitleInVideo :subtitleData="srtObjTemp"/>
+        <historyManager :subtitleData="srtObjTemp"/>
         <input class="checkBox"  type="checkbox" id="scrollCtrl"  v-model="scrollStateCtrl"/>
         <label class="text checkBox-label" for="scrollCtrl">
           scroll
@@ -21,6 +22,7 @@
 import mergeSubtitleInVideo from '@/views/viewport/components/mergeSubtitleInVideo'
 import subtitlesExport from '@/views/viewport/components/subtitlesExport'
 import timeLine from '@/views/viewport/components/timeLine'
+import historyManager from '@/views/viewport/components/historyManager'
 import { ipcRenderer as ipc } from 'electron'
 import { mapState, mapMutations } from 'vuex'
 import { aiAudio } from '@/utils/recognize'
@@ -30,7 +32,8 @@ export default {
   components: {
     mergeSubtitleInVideo,
     subtitlesExport,
-    timeLine
+    timeLine,
+    historyManager
   },
   data () {
     return {

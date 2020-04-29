@@ -1,6 +1,6 @@
 <template>
   <div class="history-container">
-    <button type="button" class="subtitle-ctrl-btn bg-tint text" @dblclick="clearHistoryAndReset"  @click="reset">上一步({{number}})</button>
+    <button type="button" class="subtitle-ctrl-btn bg-tint text" @click="reset">上一步({{number}})</button>
   </div>
 </template>
 
@@ -15,9 +15,6 @@ export default {
   methods: {
     reset () {
       this.$emit('reset')
-    },
-    clearHistoryAndReset () {
-      this.$emit('clearHistoryAndReset')
     }
   }
 }
