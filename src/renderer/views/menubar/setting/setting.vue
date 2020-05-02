@@ -44,6 +44,7 @@
       <input v-model="subtitleConfig.splitDuration" maxlength="2" class="setting-input text">
       <br>
     </div>
+    <history/>
     <div class="back-btn text" @click="closeDialog('setting')">返回(back)</div>
     <div class="save-btn text" @click="saveSetting">保存(save)</div>
   </div>
@@ -51,8 +52,11 @@
 
 <script>
 import { ipcRenderer as ipc } from 'electron'
+import history from './components/history'
 export default {
-  components: {},
+  components: {
+    history
+  },
   data () {
     return {
       recognitionSetting: {

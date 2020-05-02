@@ -122,3 +122,7 @@ export function suffixCtrl (path, suffic) {
   pathTempArr[pathTempArr.length - 1] = suffic
   return pathTempArr.join('.')
 }
+
+export function deepCloneJson (data) {
+  return JSON.parse(JSON.stringify(data))
+}

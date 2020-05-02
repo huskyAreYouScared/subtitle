@@ -52,7 +52,7 @@ if (!db.has('assStyleConfig').value()) {
 }
 // subtitle history
 if (!db.has('subtitlesHistory').value()) {
-  db.set('subtitlesHistory', {}).write()
+  db.set('subtitlesHistory', []).write()
 }
 export default db
 

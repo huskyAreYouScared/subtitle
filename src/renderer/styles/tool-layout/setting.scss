@@ -20,8 +20,15 @@
     box-sizing: border-box;
     position: relative;
     @include settingBorder;
+    .text-align-right{
+      float: right;
+      @include cursorPointer;
+    }
   }
-
+  .round-60{
+    width: 60%;
+    margin: 5px 20px;
+  }
   .preview-config-container{
     width: 55%;
     display: flex;
