@@ -88,6 +88,11 @@
     margin-left:  20px;
     margin-top:  5px;
     text-indent: 4px;
+    vertical-align: middle;
+  }
+  .input-display-text{
+    display: inline-block;
+    line-height: 35px;
   }
   .setting-full-input{
     width: 80%;

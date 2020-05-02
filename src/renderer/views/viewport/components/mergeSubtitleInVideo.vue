@@ -25,6 +25,11 @@ export default {
       return this.filePath.filePath.path
     }
   },
+  data: function () {
+    return {
+      subtitleConfig: null
+    }
+  },
   methods: {
     ...mapMutations(['setLoading']),
     mergeSubtitleInVideo () {
@@ -38,7 +43,10 @@ export default {
       ipc.send('save-video-file-dialog')
     },
     init () {
+      // init video and subtitle config
+      // listener merge video directive
       ipc.on('save-video-file', (event, file) => {
+        this.subtitleConfig = this.$DB.read().get('subtitleConfig').value()
         this.setLoading(true)
         let subtitleConetnt = joinAssFile(this.subtitleData)
         let path = suffixCtrl(file.filePath, 'ass')
@@ -56,7 +64,7 @@ export default {
               } else {
                 subtitlePath = path
               }
-              await this.$exec(`"${this.$ffmpegPath}" -y -i "${this.filePathStore}" -vf "subtitles='${subtitlePath}'" "${file.filePath}"`)
+              await this.$exec(`"${this.$ffmpegPath}" -y -i "${this.filePathStore}" -crf ${this.subtitleConfig.videoQuality} -vf "subtitles='${subtitlePath}'" "${file.filePath}"`)
               ipc.send('custom-message', {
                 msg: '完成，请查收',
                 type: 'info'

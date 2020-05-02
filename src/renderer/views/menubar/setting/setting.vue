@@ -43,6 +43,9 @@
       <label for="" class="text input-label">自定义语音切割时间（建议以10s作为分割时长，分割时长不能超过30s）:</label>
       <input v-model="subtitleConfig.splitDuration" maxlength="2" class="setting-input text">
       <br>
+      <label for="" class="text input-label">视频质量（0代表无损（不压缩），数值越大视频质量越差）：</label>
+      <input v-model="subtitleConfig.videoQuality" type="range" min="0" max="51" class="setting-input text">
+      <span class="input-display-text text" >{{subtitleConfig.videoQuality}}</span>
     </div>
     <history/>
     <div class="back-btn text" @click="closeDialog('setting')">返回(back)</div>
@@ -70,7 +73,8 @@ export default {
         secretInputType: 'password'
       },
       subtitleConfig: {
-        splitDuration: ''
+        splitDuration: '',
+        videoQuality: 0
       },
       regionList: [
         {

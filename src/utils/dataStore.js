@@ -35,7 +35,8 @@ if (!db.has('recognitionObject').value()) {
 // subtitles config
 if (!db.has('subtitleConfig').value()) {
   db.set('subtitleConfig', {
-    splitDuration: 10
+    splitDuration: 10,
+    videoQuality: 0 // 0代表无损
   }).write()
 }
 // ass config
