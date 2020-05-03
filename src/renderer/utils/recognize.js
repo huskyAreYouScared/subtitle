@@ -19,6 +19,8 @@ const vueInstance = Vue.prototype
 export const aiAudio = (srtObjTemp) => {
   let { APP_ID, API_KEY, SECRET_KEY, service, region } = vueInstance.$DB.read().get('recognitionObject').value()
   // this.recognizeIndex = 1
+  console.log(APP_ID, API_KEY, SECRET_KEY, service, region)
+
   if (service === 'baidu') {
     baiduInstance(APP_ID, API_KEY, SECRET_KEY, srtObjTemp)
   } else if (service === 'tencent') {
@@ -27,6 +29,8 @@ export const aiAudio = (srtObjTemp) => {
     xunfeiInstance(APP_ID, API_KEY, SECRET_KEY, srtObjTemp)
   } else if (service === 'tianyi') {
     tianyiRecognize(APP_ID, API_KEY, srtObjTemp)
+  } else {
+    tencentInstance(APP_ID, API_KEY, SECRET_KEY, region, srtObjTemp)
   }
 }
 
@@ -37,7 +41,7 @@ export const aiAudio = (srtObjTemp) => {
 function recognizeInit (state) {
   let resultState = {
     0: '识别完成',
-    3302: '鉴权失败，请查看配置是否有误或者网络状况不好，请稍后重试'
+    3302: '鉴权失败，请查看左上角配置是否有误或者网络状况不好，请稍后重试'
   }
   ipc.send('custom-message', {
     msg: resultState[state] ? resultState[state] : '请查看配置，是否有误或者网络状况不好，请稍后重试',
@@ -200,7 +204,11 @@ function xunfeiInstance (APP_ID, API_KEY, SECRET_KEY, srtObjTemp) {
   config.appid = APP_ID
   config.apiSecret = SECRET_KEY
   config.apiKey = API_KEY
-  xunfeiRecognize(srtObjTemp)
+  if (APP_ID && API_KEY && SECRET_KEY) {
+    xunfeiRecognize(srtObjTemp)
+  } else {
+    recognizeInit(3302)
+  }
 }
 // 鉴权签名
 function getAuthStr (date) {

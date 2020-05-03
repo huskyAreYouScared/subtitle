@@ -1,7 +1,7 @@
 <div align="center">
 
 ![github](https://raw.githubusercontent.com/huskyareyouscared/subtitle/master/build/icons/256x256.png)
-# HuskySubtitle
+# HuskySubtitles
 [![github](https://badgen.net/github/release/huskyareyouscared/subtitle)](https://github.com/huskyAreYouScared/subtitle/releases)
 [![github](https://badgen.net/github/assets-dl/huskyAreYouScared/subtitle)](https://github.com/huskyAreYouScared/subtitle/releases)
 [![github](https://badgen.net/github/license/huskyAreYouScared/subtitle)](https://www.mit-license.org/)

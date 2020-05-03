@@ -6,6 +6,7 @@ $rightMenu:3;
   display: flex;
   justify-content: flex-start;
   position: relative;
+  z-index: 1000000000000000000;
   .menu-item{
     -webkit-app-region: no-drag;
     width: 40px;
