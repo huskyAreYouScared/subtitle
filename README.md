@@ -21,8 +21,8 @@
 ## speech recognize platform (current)
 * baiduCloud
 * tencentCloud
-* 讯飞Cloud
-* 天翼Cloud
+* xunfeiCloud
+* tianyiCloud
 ## Article
 * [address 1](https://husky_are_you_scared.gitee.io/blog/subtitle/) gitee pages blog
 * [address 2](https://huskyareyouscared.github.io/blog/subtitle/ ) github pages blog
@@ -33,6 +33,11 @@
 * macOS download `dmg`file.
 
 * ~~Linux download `AppImage`file.~~
+
+## Tutorials
+
+* [video tutorials](https://www.bilibili.com/video/BV1hp4y1C74N)
+* ~~[text tutorials]()~~ now building
 
 ## MIT
 
