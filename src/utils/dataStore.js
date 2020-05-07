@@ -27,6 +27,7 @@ if (!db.has('recognitionObject').value()) {
     SECRET_KEY: '',
     service: '',
     region: '',
+    language: '',
     appIdInputType: 'text',
     keyInputType: 'password',
     secretInputType: 'password'
@@ -36,7 +37,7 @@ if (!db.has('recognitionObject').value()) {
 if (!db.has('subtitleConfig').value()) {
   db.set('subtitleConfig', {
     splitDuration: 10,
-    videoQuality: 0 // 0代表无损
+    videoQuality: 1 // 1代表无损
   }).write()
 }
 // ass config

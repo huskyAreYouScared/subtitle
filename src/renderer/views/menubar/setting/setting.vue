@@ -16,6 +16,13 @@
           </select>
           <br>
         </div>
+        <div v-if="formConfig.isLanguage">
+          <label for="" class="text input-label">语种选择:</label>
+          <select  v-model="recognitionSetting.language" class="setting-input text">
+            <option :value ="languageItem.value" v-for="(languageItem,index) in languageList[recognitionSetting.service]" :key="index">{{languageItem.name}}</option>
+          </select>
+          <br>
+        </div>
         <label for="" class="text input-label">{{formConfig.appIdName}}:</label>
         <input v-model="recognitionSetting.APP_ID" :type="recognitionSetting.appIdInputType" class="setting-input text">
         <i class="iconfont close-icon" 
@@ -43,8 +50,8 @@
       <label for="" class="text input-label">自定义语音切割时间（建议以10s作为分割时长，分割时长不能超过30s）:</label>
       <input v-model="subtitleConfig.splitDuration" maxlength="2" class="setting-input text">
       <br>
-      <label for="" class="text input-label">视频质量（0代表无损（不压缩），数值越大视频质量越差）：</label>
-      <input v-model="subtitleConfig.videoQuality" type="range" min="0" max="51" class="setting-input text">
+      <label for="" class="text input-label">视频质量（1代表无损（不压缩），数值越大视频质量越差）：</label>
+      <input v-model="subtitleConfig.videoQuality" type="range" min="1" max="51" class="setting-input text">
       <span class="input-display-text text" >{{subtitleConfig.videoQuality}}</span>
     </div>
     <history/>
@@ -68,6 +75,7 @@ export default {
         SECRET_KEY: '',
         service: '',
         region: '',
+        language: '',
         appIdInputType: 'text',
         keyInputType: 'text',
         secretInputType: 'password'
@@ -75,6 +83,26 @@ export default {
       subtitleConfig: {
         splitDuration: '',
         videoQuality: 0
+      },
+      languageList: {
+        baidu: [
+          {
+            name: '普通话(纯中文识别)',
+            value: 1537
+          },
+          {
+            name: '英语',
+            value: 1737
+          },
+          {
+            name: '粤语',
+            value: 1637
+          },
+          {
+            name: '四川话',
+            value: 1537
+          }
+        ]
       },
       regionList: [
         {
@@ -156,15 +184,15 @@ export default {
     },
     changeForm (serviceName) {
       if (serviceName === 'baidu') {
-        this.formConfig = {isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey', isSecret: true}
+        this.formConfig = {isLanguage: true, isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey', isSecret: true}
       } else if (serviceName === 'tencent') {
-        this.formConfig = {isRegion: true, appIdName: 'ProjectId', apiKeyName: 'SecretId', secretKeyName: 'SecretKey', isSecret: true}
+        this.formConfig = {isLanguage: false, isRegion: true, appIdName: 'ProjectId', apiKeyName: 'SecretId', secretKeyName: 'SecretKey', isSecret: true}
       } else if (serviceName === 'xunfei') {
-        this.formConfig = {isRegion: false, appIdName: 'APPID', apiKeyName: 'APIKey', secretKeyName: 'APISecret', isSecret: true}
+        this.formConfig = {isLanguage: false, isRegion: false, appIdName: 'APPID', apiKeyName: 'APIKey', secretKeyName: 'APISecret', isSecret: true}
       } else if (serviceName === 'tianyi') {
-        this.formConfig = {isRegion: false, appIdName: 'APPID', apiKeyName: 'APIKey', secretKeyName: 'APISecret', isSecret: false}
+        this.formConfig = {isLanguage: false, isRegion: false, appIdName: 'APPID', apiKeyName: 'APIKey', secretKeyName: 'APISecret', isSecret: false}
       } else {
-        this.formConfig = {isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey', isSecret: true}
+        this.formConfig = {isLanguage: false, isRegion: false, appIdName: 'App_id', apiKeyName: 'Api_Key', secretKeyName: 'SecretKey', isSecret: true}
       }
     },
     init () {

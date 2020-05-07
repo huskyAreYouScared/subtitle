@@ -17,12 +17,9 @@ function loadingHide () {
 }
 const vueInstance = Vue.prototype
 export const aiAudio = (srtObjTemp) => {
-  let { APP_ID, API_KEY, SECRET_KEY, service, region } = vueInstance.$DB.read().get('recognitionObject').value()
-  // this.recognizeIndex = 1
-  console.log(APP_ID, API_KEY, SECRET_KEY, service, region)
-
+  let { APP_ID, API_KEY, SECRET_KEY, service, region, language } = vueInstance.$DB.read().get('recognitionObject').value()
   if (service === 'baidu') {
-    baiduInstance(APP_ID, API_KEY, SECRET_KEY, srtObjTemp)
+    baiduInstance(APP_ID, API_KEY, SECRET_KEY, language, srtObjTemp)
   } else if (service === 'tencent') {
     tencentInstance(APP_ID, API_KEY, SECRET_KEY, region, srtObjTemp)
   } else if (service === 'xunfei') {
@@ -53,11 +50,11 @@ function recognizeInit (state) {
 }
 
 // baidu
-async function baiduInstance (APP_ID, API_KEY, SECRET_KEY, srtObjTemp) {
+async function baiduInstance (APP_ID, API_KEY, SECRET_KEY, language, srtObjTemp) {
   // 新建一个对象，建议只保存一个对象调用服务接口
   if (APP_ID && API_KEY && SECRET_KEY) {
     let client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY)
-    await baiduRecognize(client, srtObjTemp)
+    await baiduRecognize(client, language, srtObjTemp)
   } else {
     ipc.send('custom-message', {
       msg: '请前往设置输入语音识别配置信息',
@@ -72,20 +69,21 @@ async function baiduInstance (APP_ID, API_KEY, SECRET_KEY, srtObjTemp) {
  * @param {Object} client recognizeInstance
  * @param {Array} srtObjTemp srt Data
  */
-export function baiduRecognize (client, srtObjTemp) {
+export function baiduRecognize (client, language, srtObjTemp) {
   fs.readFile(`${vueInstance.$objectPath}/temp/wav/output_${recognizeIndex}.wav`, (err, data) => {
     if (err) {
       if (recognizeIndex < srtObjTemp.length) {
         recognizeIndex++
-        baiduRecognize(client, srtObjTemp)
+        baiduRecognize(client, language, srtObjTemp)
       } else {
         recognizeInit(0)
       }
       return
     }
     let voiceBuffer = Buffer.from(data)
+    let lan = language !== '' ? language : undefined
     // recognize local file
-    client.recognize(voiceBuffer, 'wav', 16000).then((result) => {
+    client.recognize(voiceBuffer, 'wav', 16000, {dev_id: lan}).then((result) => {
       if (result.err_no === 0) {
         srtObjTemp[recognizeIndex - 1].value = subtitleContentFormat(result.result[0])
       } else if (result.err_no === 3302) {
@@ -94,7 +92,7 @@ export function baiduRecognize (client, srtObjTemp) {
       }
       if (recognizeIndex < srtObjTemp.length) {
         recognizeIndex++
-        baiduRecognize(client, srtObjTemp)
+        baiduRecognize(client, language, srtObjTemp)
       } else {
         recognizeInit(0)
       }
@@ -265,7 +263,7 @@ export function xunfeiRecognize (srtObjTemp) {
       console.log(`error code ${res.code}, reason ${res.message}`)
     }
     if (res.data.status === '2') {
-    // res.data.status ==2 说明数据全部返回完毕，可以关闭连接，释放资源
+      // res.data.status ==2 说明数据全部返回完毕，可以关闭连接，释放资源
       // currentSid = res.sid
       ws.close()
     }
@@ -380,7 +378,7 @@ export function tianyiRecognize (APP_ID, API_KEY, srtObjTemp) {
     }
     let voiceBase64EncodeURI = encodeURI(Buffer.from(data).toString('base64'))
     // recognize local file
-    tianyiAxios.post('https://api.xfyun.cn/v1/service/v1/iat', qs.stringify({audio: voiceBase64EncodeURI})).then(res => {
+    tianyiAxios.post('https://api.xfyun.cn/v1/service/v1/iat', qs.stringify({ audio: voiceBase64EncodeURI })).then(res => {
       if (res.data.code === '0') {
         srtObjTemp[recognizeIndex - 1].value = subtitleContentFormat(res.data.data)
       }
