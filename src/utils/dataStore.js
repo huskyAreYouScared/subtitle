@@ -56,6 +56,13 @@ if (!db.has('assStyleConfig').value()) {
 if (!db.has('subtitlesHistory').value()) {
   db.set('subtitlesHistory', []).write()
 }
+
+// layout
+if (!db.has('layoutConfig').value()) {
+  db.set('layoutConfig', {
+    viewport: 'default'
+  }).write()
+}
 export default db
 
 // 作者：Molunerfinn
