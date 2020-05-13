@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import showVideo from './video'
+import showVideo from '@/components/video'
 import subtitle from './subtitle'
 import { mapState } from 'vuex'
 export default {

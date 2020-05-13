@@ -75,6 +75,9 @@ export function basicWindowEvent (mainWindow) {
       case 'minimize':
         mainWindow.minimize()
         break
+      case 'reload':
+        mainWindow.reload()
+        break
       case 'maximize':
         if (mainWindow.isMaximized()) {
           mainWindow.restore()
