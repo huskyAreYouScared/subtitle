@@ -5,9 +5,9 @@ $deep:#1d1d1d;
 $tint:rgb(68, 68, 68);
 $text:#F5F5F5;
 $sub-text:#BDBDBD;
-$smallTxt:12px;
 $test:rgb(26, 26, 26);
 $vivid:rgb(0, 255, 255);
+$smallTxt:12px;
 .bg{
   background: $primary;
 }
@@ -109,7 +109,7 @@ $vivid:rgb(0, 255, 255);
   }
   &::-webkit-scrollbar {
     width: 1px; /*对垂直流动条有效*/
-    height: 3px; /*对水平流动条有效*/
+    height: 5px; /*对水平流动条有效*/
   }
   &::-webkit-scrollbar-thumb{
     border-radius: 10px;

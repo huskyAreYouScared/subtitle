@@ -9065,6 +9065,13 @@ style-loader@^0.21.0:
     loader-utils "^1.1.0"
     schema-utils "^0.4.5"
 
+subtitle@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.npm.taobao.org/subtitle/download/subtitle-2.0.3.tgz#1fed16180273e60dc4be320ecc8ec2f90a51a28d"
+  integrity sha1-H+0WGAJz5g3EvjIOzI7C+QpRoo0=
+  dependencies:
+    zero-fill "^2.2.3"
+
 sumchecker@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npm.taobao.org/sumchecker/download/sumchecker-3.0.1.tgz#6377e996795abb0b6d348e9b3e1dfb24345a8e42"
@@ -10197,3 +10204,8 @@ yauzl@^2.10.0:
   dependencies:
     buffer-crc32 "~0.2.3"
     fd-slicer "~1.1.0"
+
+zero-fill@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.npm.taobao.org/zero-fill/download/zero-fill-2.2.3.tgz#a3def06ba5e39ae644850bb4ca2ad4112b4855e9"
+  integrity sha1-o97wa6XjmuZEhQu0yirUEStIVek=
