@@ -8,14 +8,25 @@
     @mouseleave="mouseLeave"
     >
     <div class="scale-second" v-for="item in 100" :key="item"></div>
-    <subtitlesChunk/>
-    <subtitlesChunk/>
+    <subtitlesChunk 
+      v-for="(subtitlesItem,subtitlesIndex) in data" 
+      :key="subtitlesIndex+'subtitles'"
+      :chunkInfo="subtitlesItem" 
+      :leftLimit="subtitlesIndex === 0?0:data[subtitlesIndex-1].endSecond"
+      :rightLimit="data[subtitlesIndex+1]?data[subtitlesIndex+1].startSecond:100"
+    />
   </section>
 </template>
 
 <script>
 import subtitlesChunk from './chunk/chunk'
 export default {
+  props: {
+    data: {
+      type: Array,
+      default: []
+    }
+  },
   components: {
     subtitlesChunk
   },
