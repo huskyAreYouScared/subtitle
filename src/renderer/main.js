@@ -11,7 +11,6 @@ import os from 'os'
 import { ipcRenderer as ipc } from 'electron'
 import db from '../utils/dataStore'
 import inputOnlyNumber from '@/vue-plugins/inputOnlyNumber/index'
-import changeSize from '@All/plugins/divChangeSize/'
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
@@ -72,7 +71,6 @@ Vue.prototype.$quickRouter = quickRouter
 
 // add vue plugins
 Vue.use(inputOnlyNumber)
-Vue.use(changeSize)
 
 const app = new Vue({
   components: { App },

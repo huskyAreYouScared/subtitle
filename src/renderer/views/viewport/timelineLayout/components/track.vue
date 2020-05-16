@@ -8,15 +8,17 @@
     @mouseleave="mouseLeave"
     >
     <div class="scale-second" v-for="item in 100" :key="item"></div>
-    <div class="sutitle-item" style="left:0px" v-changeSize>
-    </div>
-    <div class="sutitle-item" style="left:300px" v-changeSize>
-    </div>
+    <subtitlesChunk/>
+    <subtitlesChunk/>
   </section>
 </template>
 
 <script>
+import subtitlesChunk from './chunk/chunk'
 export default {
+  components: {
+    subtitlesChunk
+  },
   data: function () {
     return {
       isMove: false,

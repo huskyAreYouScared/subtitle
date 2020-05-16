@@ -41,7 +41,7 @@
         border-right: 1px solid $deep;
         z-index: 1;
       }
-      .sutitle-item{
+      .chunk-container{
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -49,6 +49,28 @@
         width: 300px;
         height: 20vh;
         background: #000;
+        .width-right-ctrl{
+          content: "";
+          display: inline-block;
+          position: absolute;
+          right: 0px;
+          width: 5px;
+          height: 100%;
+          background: #fff;
+          cursor: pointer;
+          user-select: none;
+        }
+        .width-left-ctrl{
+          content: "";
+          display: inline-block;
+          position: absolute;
+          left: 0px;
+          width: 5px;
+          height: 100%;
+          background: #fff;
+          cursor: pointer;
+          user-select: none;
+        }
       }
     }
   }
