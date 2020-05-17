@@ -42,6 +42,9 @@
         border-right: 1px solid $deep;
         z-index: 1;
       }
+      .fix-last-width{
+        margin-left: -5px;
+      }
       .chunk-container{
         position: absolute;
         top: 50%;

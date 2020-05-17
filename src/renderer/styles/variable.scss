@@ -21,6 +21,15 @@ $smallTxt:12px;
 .text{
   color: $text;
 }
+.mini-text{
+  font-size: 12px;
+}
+.text-center{
+  text-align: center;
+}
+.text-right{
+  text-align: right;
+}
 .text-deep{
   color: $sub-text;
 }
@@ -30,7 +39,6 @@ $smallTxt:12px;
 .text-lg{
   font-size: 24px!important;
 }
-
 .text-huge{
   font-size: 100px!important;
   border-bottom:1px  ;
@@ -132,4 +140,7 @@ $smallTxt:12px;
 
 .text-align-right{
   text-align: right;
+}
+.no-select{
+  @include cursorPointer;
 }

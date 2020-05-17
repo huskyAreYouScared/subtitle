@@ -1,7 +1,7 @@
 <template>
   <div
     ref="chunkItem" 
-    class="chunk-container" 
+    class="chunk-container no-select" 
     :style="{'left':(this.chunkInfo.startSecond * 100 /2)+'px',
             'width':((this.chunkInfo.endSecond - this.chunkInfo.startSecond) * 100 /2 )+'px'}"
     @mousedown="chunkMouseDown"
@@ -108,7 +108,9 @@ export default {
         this.updateSubtitles(currentWidth, currentLeft)
       }
       this.lastXPostion = e.clientX
-      e.stopPropagation()
+      if (this.isMove) {
+        e.stopPropagation()
+      }
     },
     updateSubtitles (currentWidth, currentLeft) {
       this.chunkInfo.endSecond = ((currentLeft + currentWidth) / 100) * 2

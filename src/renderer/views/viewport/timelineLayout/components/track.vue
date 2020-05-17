@@ -7,7 +7,20 @@
     @mousemove="mouseMove"
     @mouseleave="mouseLeave"
     >
-    <div class="scale-second" v-for="item in 100" :key="item"></div>
+    <div
+      class="scale-second text-right" 
+      v-for="item in Math.floor(videoDuration)" 
+      :key="item"
+    >
+      <span class="text mini-text no-select">{{item}}s</span>
+    </div>
+    <div
+      v-if="parseFloat((videoDuration % 1).toFixed(3))>0" 
+      class="scale-second text-right fix-last-width" 
+      :style="{'width': 50 * parseFloat((videoDuration % 1).toFixed(3)) +'px'}"
+    >
+      <span class="text mini-text no-select">{{videoDuration}}s</span>
+    </div>
     <subtitlesChunk 
       v-for="(subtitlesItem,subtitlesIndex) in data" 
       :key="subtitlesIndex+'subtitles'"
@@ -20,15 +33,37 @@
 
 <script>
 import subtitlesChunk from './chunk/chunk'
+import { mapState } from 'vuex'
 export default {
   props: {
     data: {
       type: Array,
       default: []
+    },
+    scrollStateCtrl: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
     subtitlesChunk
+  },
+  computed: {
+    ...mapState(['duration', 'currentTime', 'loading']),
+    videoDuration () {
+      return this.duration.duration.duration
+    }
+  },
+  watch: {
+    currentTime: {
+      handler: function (newVal, oldVal) {
+        if (this.scrollStateCtrl) {
+          this.subtitleAutoScroll(this.videoDuration,
+            newVal.currentTime, this.splitDuration, this.$refs.subtitleContainer)
+        }
+      },
+      deep: true
+    }
   },
   data: function () {
     return {
