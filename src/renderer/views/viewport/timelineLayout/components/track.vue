@@ -9,7 +9,7 @@
     >
     <div
       class="scale-second text-right" 
-      v-for="item in Math.floor(videoDuration)" 
+      v-for="item in totalSecondArr" 
       :key="item"
     >
       <span class="text mini-text no-select">{{item}}s</span>
@@ -52,6 +52,15 @@ export default {
     ...mapState(['duration', 'currentTime', 'loading']),
     videoDuration () {
       return this.duration.duration.duration
+    },
+    totalSecondArr () {
+      let arr = []
+      let length = Math.floor(this.videoDuration)
+      let i = 1
+      while (i <= length) {
+        arr.push(i++)
+      }
+      return arr
     }
   },
   watch: {
