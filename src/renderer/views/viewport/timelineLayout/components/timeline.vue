@@ -1,15 +1,19 @@
 <template>
   <div class='tl-timeline-container'>
-    <section class='subtitle-ctrl-container'></section>
+    <section class='subtitle-ctrl-container'>
+      <createSubtitles/>
+    </section>
     <subtitlesTrack :data="subtitleObj" />
   </div>
 </template>
 
 <script>
+import createSubtitles from './toolBtn/createSubtitles'
 import subtitlesTrack from './track'
 export default {
   components: {
-    subtitlesTrack
+    subtitlesTrack,
+    createSubtitles
   },
   data: function () {
     return {

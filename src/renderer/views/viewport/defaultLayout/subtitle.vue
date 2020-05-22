@@ -71,15 +71,6 @@ export default {
       this.currentSplitSecond = 0
       this.srtObjTemp = [] // 清空之前的切分信息数组
     },
-    suffixCtrl (path) {
-      let pathTempArr = path.split('.')
-      // 因为默认给bcc文件后缀，所以只判断了srt文件
-      if (this.exportType === 'srt') {
-        pathTempArr[pathTempArr.length - 1] = 'srt'
-        return pathTempArr.join('.')
-      }
-      return path
-    },
     // 更新subtitle config
     updateSubtitleConfig () {
       this.splitDuration = parseInt(this.$DB.read().get('subtitleConfig').value().splitDuration)
@@ -146,6 +137,7 @@ export default {
           aiAudio(this.srtObjTemp)
         }
       } catch (error) {
+        this.setLoading(false)
         ipc.send('custom-message', {msg: '抱歉，程序出错', type: 'error'})
       }
     },
