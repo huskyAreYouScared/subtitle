@@ -8,11 +8,17 @@
       <p class="header text">软件版本：{{ packageJSON.version}}</p>
       <br>
       <p class="header text">
-        使用教程(开发文档)：
+        开发文档
         <br><br>
         <span class="hyperlink" @click="openBrowser(huskyInfo.blog)">(gitee)地址一：{{ huskyInfo.blog}}</span>
         <br><br>
         <span class="hyperlink" @click="openBrowser(huskyInfo.blogBack)">(github)地址二：{{ huskyInfo.blogBack}}</span>
+      </p>
+      <br>
+      <p class="header text">
+        使用教程
+        <br><br>
+        <span class="hyperlink" @click="openBrowser(huskyInfo.tutorial)">B站：{{ huskyInfo.tutorial}}</span>
       </p>
       <br>
       <p class="header text">
@@ -36,6 +42,7 @@ export default {
         githubIssue: 'https://github.com/huskyAreYouScared/subtitle/issues',
         blog: 'https://husky_are_you_scared.gitee.io/blog/',
         blogBack: 'https://huskyareyouscared.github.io/blog/',
+        tutorial: 'https://www.bilibili.com/video/BV1hp4y1C74N',
         englishName: 'husky-subtitle',
         name: '哈哈字幕'
       }

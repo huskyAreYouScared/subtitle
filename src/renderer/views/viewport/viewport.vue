@@ -1,50 +1,32 @@
 <!--  -->
 <template>
   <div class='viewport-container col-lg-11 col-md-11 col-sm-11 col-xs-11'>
-    <div class="row">
-       <div class="subtitle-container col-lg-7 col-md-7 col-sm-7 col-xs-7">
-         <subtitle/>
-      </div>
-      <div class="video-container col-lg-5 col-md-5 col-sm-5 col-xs-5">
-        <showVideo v-if="currentFile !== null" :currentPath="currentFile.showPath"></showVideo>
-        <div class="novideo text" v-else>请选择视频文件</div>
-      </div>
-    </div>
-   
-   
+    <defaultLayout v-if="layoutConfig&&layoutConfig.viewport === 'default'" />
+    <timelineLayout v-else-if="layoutConfig&&layoutConfig.viewport === 'timelineLayout'" />
   </div>
 </template>
 
 <script>
-import showVideo from './video'
-import subtitle from './subtitle'
-import {mapState} from 'vuex'
+import defaultLayout from './defaultLayout'
+import timelineLayout from './timelineLayout'
 export default {
   components: {
-    showVideo,
-    subtitle
+    defaultLayout,
+    timelineLayout
   },
   data () {
     return {
-      currentFile: null
-    }
-  },
-  computed: {
-    ...mapState(['filePath'])
-  },
-  watch: {
-    filePath: {
-      handler: function (newVal, oldVal) {
-        this.currentFile = newVal.filePath
-      },
-      deep: true
+      layoutConfig: null
     }
   },
   methods: {
-
+    init () {
+      this.layoutConfig = this.$DB.read().get('layoutConfig').value()
+      console.log(this.$DB.read().get('layoutConfig').value())
+    }
   },
   mounted () {
-
+    this.init()
   }
 }
 </script>

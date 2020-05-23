@@ -10,6 +10,9 @@
     <div class="menu-item text" @click="open('preview')">
       预览
     </div>
+    <div class="menu-item text" @click="open('view')">
+      视图
+    </div>
     <div class="menu-item text menu-right-0" @click="mainEvent('quit')">
       <span class="iconfont icon-guanbi1"></span>
     </div>
@@ -22,6 +25,7 @@
     <setting v-if="settingDialog" @closeDialog="closeDialogEvent"/>
     <about v-if="aboutDialog" @closeDialog="closeDialogEvent"/>
     <preview v-if="previewDialog" @closeDialog="closeDialogEvent"/>
+    <viewMenu v-if="viewDialog" @closeDialog="closeDialogEvent"/>
   </div>
 </template>
 
@@ -29,18 +33,21 @@
 import setting from './setting/setting'
 import about from './about/about'
 import preview from './preview'
+import viewMenu from './view/view'
 import { ipcRenderer as ipc } from 'electron'
 export default {
   components: {
     setting,
     about,
-    preview
+    preview,
+    viewMenu
   },
   data () {
     return {
       settingDialog: false,
       aboutDialog: false,
-      previewDialog: false
+      previewDialog: false,
+      viewDialog: false
     }
   },
   computed: {},
@@ -57,6 +64,9 @@ export default {
         case 'preview':
           this.previewDialog = true
           break
+        case 'view':
+          this.viewDialog = true
+          break
         default:
           break
       }
@@ -68,6 +78,8 @@ export default {
         this.aboutDialog = false
       } else if (menubar === 'preview') {
         this.previewDialog = false
+      } else if (menubar === 'view') {
+        this.viewDialog = false
       }
     },
     mainEvent (mainEvent) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <video ref="currentVideo" class="video-style" controls :src="`file:${currentPath}`"></video>
+    <video ref="currentVideo" :style="customStyle" class="video-style" controls :src="`file:${currentPath}`"></video>
   </div>
 </template>
 
@@ -15,6 +15,10 @@ export default {
   },
   props: {
     currentPath: {
+      type: String,
+      default: ''
+    },
+    customStyle: {
       type: String,
       default: ''
     }
