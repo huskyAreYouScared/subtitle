@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import mergeSubtitleInVideo from '@/views/viewport/defaultLayout/components/mergeSubtitleInVideo'
-import subtitlesExport from '@/views/viewport/defaultLayout/components/subtitlesExport'
+import mergeSubtitleInVideo from '@/views/viewport/common/mergeSubtitleInVideo'
+import subtitlesExport from '@/views/viewport/common/subtitlesExport'
 import timeLine from '@/views/viewport/defaultLayout/components/timeLine'
-import historyManager from '@/views/viewport/defaultLayout/components/historyManager'
+import historyManager from '@/views/viewport/common/historyManager'
 import { ipcRenderer as ipc } from 'electron'
 import { mapState, mapMutations } from 'vuex'
 import { aiAudio } from '@/utils/recognize'

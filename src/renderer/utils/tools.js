@@ -100,7 +100,7 @@ function deleteNewLine (subtitle) {
   return subtitle.replace(/\n/g, '\\N')
 }
 function srt2AssReplace (date) {
-  return date.replace(',', '.')
+  return date.replace(',', '.').slice(0, -1)
 }
 function RGB2HLS (rgb) {
   let tempHls = rgb.replace('#', '').toUpperCase()
@@ -125,4 +125,8 @@ export function suffixCtrl (path, suffic) {
 
 export function deepCloneJson (data) {
   return JSON.parse(JSON.stringify(data))
+}
+
+export function parseFloatFixed (data, number) {
+  return parseFloat(data.toFixed(number))
 }

@@ -2,27 +2,45 @@
   <div class="tl-timeline-container">
     <section class="subtitle-ctrl-container">
       <createSubtitles @updateSubtitles="updateSubtitles" />
+      <subtitlesExport fileType="srt" :subtitleData="subtilesList"/>
+      <subtitlesExport fileType="bcc" :subtitleData="subtilesList"/>
+      <subtitlesExport fileType="ass" :subtitleData="subtilesList"/>
+      <historyManager :subtitleData="subtilesList"/>
+      <mergeSubtitleInVideo :subtitleData="subtilesList"/>
     </section>
-    <subtitlesTrack :data="subtilesList" />
+    <subtitlesTrack :subtitleData="subtilesList" @selectChunk="currentSelectChunk" />
+    <editSubtitles :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
   </div>
 </template>
 
 <script>
-import createSubtitles from './toolBtn/createSubtitles'
-import subtitlesTrack from './track'
+import mergeSubtitleInVideo from '@/views/viewport/common/mergeSubtitleInVideo'
+import historyManager from '@/views/viewport/common/historyManager'
+import subtitlesExport from '@/views/viewport/common/subtitlesExport'
+import createSubtitles from './toolsComponents/createSubtitles'
+import subtitlesTrack from './toolsComponents/track'
+import editSubtitles from './toolsComponents/editSubtitles'
 export default {
   components: {
     subtitlesTrack,
-    createSubtitles
+    createSubtitles,
+    historyManager,
+    mergeSubtitleInVideo,
+    subtitlesExport,
+    editSubtitles
   },
   data: function () {
     return {
-      subtilesList: []
+      subtilesList: [],
+      currentSubtitlesIndex: 0
     }
   },
   methods: {
     updateSubtitles (data) {
       this.subtilesList = data
+    },
+    currentSelectChunk (subtitlesIndex) {
+      this.currentSubtitlesIndex = subtitlesIndex
     }
   }
 }

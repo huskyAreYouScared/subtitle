@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <button type="button" @click="stop">stop</button>
-    <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="splitStep">生成字幕</button>
-  </div>
+  <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="splitStep">生成字幕</button>
 </template>
 
 <script>
@@ -40,15 +37,13 @@ export default {
   },
   methods: {
     ...mapMutations(['setLoading']),
-    stop () {
-      this.splitState = false
-    },
     updateSubtitleConfig () {
       this.splitDuration = parseInt(this.$DB.read().get('subtitleConfig').value().splitDuration)
     },
     init () {
       this.fileIndex = 1 // 文件索引
       this.subtilesList = [] // 清空之前的切分信息数组
+      this.currentSecond = 0
     },
     splitStep () {
       if (this.videoDuration) {

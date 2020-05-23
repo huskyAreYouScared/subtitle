@@ -15,28 +15,29 @@
       <span class="text mini-text no-select">{{item}}s</span>
     </div>
     <div
-      v-if="parseFloat((videoDuration % 1).toFixed(3))>0" 
+      v-if="parseFloat((videoDuration % 1).toFixed(2))>0" 
       class="scale-second text-right fix-last-width" 
-      :style="{'width': 50 * parseFloat((videoDuration % 1).toFixed(3)) +'px'}"
+      :style="{'width': 50 * parseFloat((videoDuration % 1).toFixed(2)) +'px'}"
     >
-      <span class="text mini-text no-select">{{videoDuration}}s</span>
+      <span class="text mini-text no-select">{{videoDuration.toFixed(2)}}s</span>
     </div>
     <subtitlesChunk 
-      v-for="(subtitlesItem,subtitlesIndex) in data" 
+      @selectChunk="$emit('selectChunk', subtitlesIndex)"
+      v-for="(subtitlesItem,subtitlesIndex) in subtitleData" 
       :key="subtitlesIndex+'subtitles'"
       :chunkInfo="subtitlesItem" 
-      :leftLimit="subtitlesIndex === 0?0.1:data[subtitlesIndex-1].endSecond"
-      :rightLimit="data[subtitlesIndex+1]?data[subtitlesIndex+1].startSecond:videoDuration - 0.05"
+      :leftLimit="subtitlesIndex === 0?0.1:subtitleData[subtitlesIndex-1].endSecond"
+      :rightLimit="subtitleData[subtitlesIndex+1]?subtitleData[subtitlesIndex+1].startSecond:videoDuration - 0.05"
     />
   </section>
 </template>
 
 <script>
-import subtitlesChunk from './chunk/chunk'
+import subtitlesChunk from './chunk'
 import { mapState } from 'vuex'
 export default {
   props: {
-    data: {
+    subtitleData: {
       type: Array,
       default: []
     },
@@ -74,13 +75,17 @@ export default {
       deep: true
     }
   },
-  data: function () {
+  subtitleData: function () {
     return {
       isMove: false,
       lastXPostion: 0
     }
   },
   methods: {
+    selectChunk (subtitlesIndex) {
+      console.log(123)
+      this.$emit('selectChunk', subtitlesIndex)
+    },
     mouseDown (e) {
       this.isMove = true
       this.lastXPostion = e.clientX

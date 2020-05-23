@@ -1,5 +1,6 @@
 <template>
   <div
+    @click="selectChunk"
     ref="chunkItem" 
     class="chunk-container no-select" 
     :style="{'left':(this.chunkInfo.startSecond * 100 /2)+'px',
@@ -25,6 +26,7 @@
 <script>
 import { toSrtTime } from 'subtitle'
 import { mapState } from 'vuex'
+import { parseFloatFixed } from '@/utils/tools'
 export default {
   props: {
     leftLimit: {
@@ -70,6 +72,9 @@ export default {
     window.removeEventListener('mouseup', this.closeMove, false)
   },
   methods: {
+    selectChunk () {
+      this.$emit('selectChunk')
+    },
     chunkMouseDown (e) {
       this.lastXPostion = e.clientX
       this.isMove = true
@@ -122,9 +127,9 @@ export default {
       }
     },
     updateSubtitles (currentWidth, currentLeft) {
-      this.chunkInfo.endSecond = ((currentLeft + currentWidth) / 100) * 2
+      this.chunkInfo.endSecond = parseFloatFixed(((currentLeft + currentWidth) / 100) * 2, 2)
       this.chunkInfo.end = toSrtTime(this.chunkInfo.endSecond * 1000)
-      this.chunkInfo.startSecond = (currentLeft / 100) * 2
+      this.chunkInfo.startSecond = parseFloatFixed((currentLeft / 100) * 2, 2)
       this.chunkInfo.start = toSrtTime(this.chunkInfo.startSecond * 1000)
       this.limitCheck(this.$refs.chunkItem, currentWidth, currentLeft)
     },
@@ -152,13 +157,6 @@ export default {
     boundaryValueCheck () {
       let currentLeft = parseInt(this.$refs.chunkItem.style.left.split('p')[0])
       let currentWidth = this.$refs.chunkItem.getBoundingClientRect().width
-      // if (currentLeft < 0) {
-      //   el.style.left = 0 + 'px'
-      // }
-      // if (currentLeft + currentWidth > this.videoDuration * 50) {
-      //   // el.style.left = this.videoDuration * 50 + 'px'
-      //   el.style.width = this.videoDuration * 50 - currentLeft + 'px'
-      // }
       this.updateSubtitles(currentWidth, currentLeft)
     }
   }
