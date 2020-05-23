@@ -26,6 +26,15 @@ export default {
       subtilesList: []
     }
   },
+  watch: {
+    subtilesList: {
+      handler: function (newVal) {
+        console.log(123)
+        this.$emit('updateSubtitles', newVal)
+      },
+      deep: true
+    }
+  },
   mounted () {
     this.updateSubtitleConfig()
   },
@@ -71,7 +80,6 @@ export default {
           this.addSubtitles(currentAudioSize)
           // 为下一次执行作准备
           this.currentSecond += this.splitDuration
-          console.log('currentSecond', this.currentSecond)
           this.setLoading(false)
           this.fileIndex++
           this.splitAudio()

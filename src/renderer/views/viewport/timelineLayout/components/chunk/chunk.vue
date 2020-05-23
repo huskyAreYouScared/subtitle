@@ -6,6 +6,7 @@
             'width':((this.chunkInfo.endSecond - this.chunkInfo.startSecond) * 100 /2 )+'px'}"
     @mousedown="chunkMouseDown"
     @mouseup="closeMove"
+    @mouseleave="boundaryValueCheck"
     @mousemove="move"
   >
     <div
@@ -22,6 +23,8 @@
 </template>
 
 <script>
+import { toSrtTime } from 'subtitle'
+import { mapState } from 'vuex'
 export default {
   props: {
     leftLimit: {
@@ -54,6 +57,12 @@ export default {
       lastXPostion: 0 // clentX last value
     }
   },
+  computed: {
+    ...mapState(['duration', 'currentTime', 'loading']),
+    videoDuration () {
+      return this.duration.duration.duration
+    }
+  },
   mounted () {
     window.addEventListener('mouseup', this.closeMove, false)
   },
@@ -61,8 +70,6 @@ export default {
     window.removeEventListener('mouseup', this.closeMove, false)
   },
   methods: {
-    initTrackEvent (e) {
-    },
     chunkMouseDown (e) {
       this.lastXPostion = e.clientX
       this.isMove = true
@@ -72,6 +79,8 @@ export default {
       this.isWidthChange = false
       this.isWidthPostion = false
       window.removeEventListener('mousemove', this.move, false)
+      // boundary value check
+      this.boundaryValueCheck()
     },
     rightCtrlMouseDown (e) {
       this.lastXPostion = e.clientX
@@ -114,8 +123,9 @@ export default {
     },
     updateSubtitles (currentWidth, currentLeft) {
       this.chunkInfo.endSecond = ((currentLeft + currentWidth) / 100) * 2
+      this.chunkInfo.end = toSrtTime(this.chunkInfo.endSecond * 1000)
       this.chunkInfo.startSecond = (currentLeft / 100) * 2
-      this.$emit('updateSubtitle')
+      this.chunkInfo.start = toSrtTime(this.chunkInfo.startSecond * 1000)
       this.limitCheck(this.$refs.chunkItem, currentWidth, currentLeft)
     },
     limitCheck (el, currentWidth, currentLeft) {
@@ -138,6 +148,18 @@ export default {
         el.style.left = currentLeft - 1 + 'px'
         el.style.width = currentWidth + 'px'
       }
+    },
+    boundaryValueCheck () {
+      let currentLeft = parseInt(this.$refs.chunkItem.style.left.split('p')[0])
+      let currentWidth = this.$refs.chunkItem.getBoundingClientRect().width
+      // if (currentLeft < 0) {
+      //   el.style.left = 0 + 'px'
+      // }
+      // if (currentLeft + currentWidth > this.videoDuration * 50) {
+      //   // el.style.left = this.videoDuration * 50 + 'px'
+      //   el.style.width = this.videoDuration * 50 - currentLeft + 'px'
+      // }
+      this.updateSubtitles(currentWidth, currentLeft)
     }
   }
 }

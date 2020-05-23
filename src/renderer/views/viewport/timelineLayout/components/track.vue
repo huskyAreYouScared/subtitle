@@ -25,8 +25,8 @@
       v-for="(subtitlesItem,subtitlesIndex) in data" 
       :key="subtitlesIndex+'subtitles'"
       :chunkInfo="subtitlesItem" 
-      :leftLimit="subtitlesIndex === 0?0:data[subtitlesIndex-1].endSecond"
-      :rightLimit="data[subtitlesIndex+1]?data[subtitlesIndex+1].startSecond:100"
+      :leftLimit="subtitlesIndex === 0?0.1:data[subtitlesIndex-1].endSecond"
+      :rightLimit="data[subtitlesIndex+1]?data[subtitlesIndex+1].startSecond:videoDuration - 0.05"
     />
   </section>
 </template>
