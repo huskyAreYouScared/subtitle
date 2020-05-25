@@ -54,6 +54,9 @@
       <input v-model="subtitleConfig.videoQuality" type="range" min="1" max="51" class="setting-input text">
       <span class="input-display-text text" >{{subtitleConfig.videoQuality}}</span>
     </div>
+    <div class="round-area">
+      <functionConfig/>
+    </div>
     <history/>
     <div class="back-btn text" @click="closeDialog('setting')">返回(back)</div>
     <div class="save-btn text" @click="saveSetting">保存(save)</div>
@@ -63,9 +66,11 @@
 <script>
 import { ipcRenderer as ipc } from 'electron'
 import history from './components/history'
+import functionConfig from './components/functionConfig'
 export default {
   components: {
-    history
+    history,
+    functionConfig
   },
   data () {
     return {

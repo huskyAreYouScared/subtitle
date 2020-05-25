@@ -63,6 +63,13 @@ if (!db.has('layoutConfig').value()) {
     viewport: 'default'
   }).write()
 }
+
+// software function config
+if (!db.has('functionConfig').value()) {
+  db.set('functionConfig', {
+    isRecognizeAfterSave: false
+  }).write()
+}
 export default db
 
 // 作者：Molunerfinn

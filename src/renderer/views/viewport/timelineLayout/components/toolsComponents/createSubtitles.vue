@@ -10,7 +10,7 @@ import { toSrtTime } from 'subtitle'
 import fs from 'fs'
 export default {
   computed: {
-    ...mapState(['duration', 'currentTime', 'loading']),
+    ...mapState(['duration', 'currentTime', 'loading', 'filePath']),
     videoDuration () {
       return this.duration.duration.duration
     }
@@ -20,14 +20,20 @@ export default {
       splitDuration: 10,
       currentSecond: 0, // 切分起始秒数
       splitState: false,
-      subtilesList: []
+      subtilesList: [],
+      currentFileObj: null
     }
   },
   watch: {
     subtilesList: {
       handler: function (newVal) {
-        console.log(123)
         this.$emit('updateSubtitles', newVal)
+      },
+      deep: true
+    },
+    filePath: {
+      handler: function (newVal, oldVal) {
+        this.currentFileObj = newVal.filePath
       },
       deep: true
     }
@@ -79,7 +85,7 @@ export default {
           this.fileIndex++
           this.splitAudio()
         } else {
-          aiAudio(this.subtilesList)
+          aiAudio(this.subtilesList, this.currentFileObj.name)
         }
       } catch (error) {
         this.setLoading(false)

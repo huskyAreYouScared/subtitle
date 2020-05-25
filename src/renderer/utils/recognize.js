@@ -10,14 +10,19 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '@/store/index'
 import { subtitleContentFormat } from '@/utils/tools'
+import { saveSubtitlesHistory } from '@/utils/dataOperator'
 // split audio file name output_1.wav recursion finish restore recognizeIndex 0
 let recognizeIndex = 1
+let currentFileName = ''
+let functionConfig = null
 function loadingHide () {
   store.commit('setLoading', false)
 }
 const vueInstance = Vue.prototype
-export const aiAudio = (srtObjTemp) => {
+export const aiAudio = (srtObjTemp, fileName) => {
+  currentFileName = fileName
   let { APP_ID, API_KEY, SECRET_KEY, service, region, language } = vueInstance.$DB.read().get('recognitionObject').value()
+  functionConfig = vueInstance.$DB.read().get('functionConfig').value()
   if (service === 'baidu') {
     baiduInstance(APP_ID, API_KEY, SECRET_KEY, language, srtObjTemp)
   } else if (service === 'tencent') {
@@ -35,7 +40,7 @@ export const aiAudio = (srtObjTemp) => {
  * init recognize
  * @param {Number} state
  */
-function recognizeInit (state) {
+function recognizeInit (state, srtObjTemp) {
   let resultState = {
     0: '识别完成',
     3302: '鉴权失败，请查看左上角配置是否有误或者网络状况不好，请稍后重试'
@@ -44,6 +49,12 @@ function recognizeInit (state) {
     msg: resultState[state] ? resultState[state] : '请查看配置，是否有误或者网络状况不好，请稍后重试',
     type: 'info'
   })
+  // complete recognize callback
+  if (state === 0 &&
+    functionConfig.isRecognizeAfterSave &&
+    srtObjTemp.length > 0) {
+    saveSubtitlesHistory(vueInstance, currentFileName, srtObjTemp)
+  }
   recognizeIndex = 1
   // loading cancel
   loadingHide()
@@ -76,7 +87,7 @@ export function baiduRecognize (client, language, srtObjTemp) {
         recognizeIndex++
         baiduRecognize(client, language, srtObjTemp)
       } else {
-        recognizeInit(0)
+        recognizeInit(0, srtObjTemp)
       }
       return
     }
@@ -87,14 +98,14 @@ export function baiduRecognize (client, language, srtObjTemp) {
       if (result.err_no === 0) {
         srtObjTemp[recognizeIndex - 1].value = subtitleContentFormat(result.result[0])
       } else if (result.err_no === 3302) {
-        recognizeInit(result.err_no)
+        recognizeInit(result.err_no, [])
         return
       }
       if (recognizeIndex < srtObjTemp.length) {
         recognizeIndex++
         baiduRecognize(client, language, srtObjTemp)
       } else {
-        recognizeInit(0)
+        recognizeInit(0, srtObjTemp)
       }
     }, () => {
       if (recognizeIndex > srtObjTemp.length) {
@@ -127,7 +138,7 @@ function tencentInstance (APP_ID, API_KEY, SECRET_KEY, region, srtObjTemp) {
   if (APP_ID && API_KEY && SECRET_KEY && region) {
     tencentRecognize(APP_ID, client, srtObjTemp)
   } else {
-    recognizeInit(3302)
+    recognizeInit(3302, [])
   }
 }
 
@@ -144,7 +155,7 @@ export function tencentRecognize (APP_ID, client, srtObjTemp) {
         recognizeIndex++
         tencentRecognize(APP_ID, client, srtObjTemp)
       } else {
-        recognizeInit(0)
+        recognizeInit(0, srtObjTemp)
       }
       return
     }
@@ -163,7 +174,7 @@ export function tencentRecognize (APP_ID, client, srtObjTemp) {
     req.from_json_string(params)
     client.SentenceRecognition(req, function (errMsg, result) {
       if (errMsg) {
-        recognizeInit(3302)
+        recognizeInit(3302, [])
         return
       } else {
         srtObjTemp[recognizeIndex - 1].value = subtitleContentFormat(result.Result)
@@ -172,7 +183,7 @@ export function tencentRecognize (APP_ID, client, srtObjTemp) {
         recognizeIndex++
         tencentRecognize(APP_ID, client, srtObjTemp)
       } else {
-        recognizeInit(0)
+        recognizeInit(0, srtObjTemp)
       }
     })
   })
@@ -205,7 +216,7 @@ function xunfeiInstance (APP_ID, API_KEY, SECRET_KEY, srtObjTemp) {
   if (APP_ID && API_KEY && SECRET_KEY) {
     xunfeiRecognize(srtObjTemp)
   } else {
-    recognizeInit(3302)
+    recognizeInit(3302, [])
   }
 }
 // 鉴权签名
@@ -326,7 +337,7 @@ export function xunfeiRecognize (srtObjTemp) {
       recognizeIndex++
       xunfeiRecognize(srtObjTemp)
     } else {
-      recognizeInit(0)
+      recognizeInit(0, srtObjTemp)
     }
   })
 }
@@ -372,7 +383,7 @@ export function tianyiRecognize (APP_ID, API_KEY, srtObjTemp) {
         recognizeIndex++
         tianyiRecognize(APP_ID, API_KEY, srtObjTemp)
       } else {
-        recognizeInit(0)
+        recognizeInit(0, srtObjTemp)
       }
       return
     }
@@ -386,7 +397,7 @@ export function tianyiRecognize (APP_ID, API_KEY, srtObjTemp) {
         recognizeIndex++
         tianyiRecognize(APP_ID, API_KEY, srtObjTemp)
       } else {
-        recognizeInit(0)
+        recognizeInit(0, srtObjTemp)
       }
     })
   })
