@@ -7,7 +7,6 @@
             'width':((this.chunkInfo.endSecond - this.chunkInfo.startSecond) * 100 /2 )+'px'}"
     @mousedown="chunkMouseDown"
     @mouseup="closeMove"
-    @mouseleave="boundaryValueCheck"
     @mousemove="move"
   >
     <div
@@ -85,7 +84,6 @@ export default {
       this.isWidthPostion = false
       window.removeEventListener('mousemove', this.move, false)
       // boundary value check
-      this.boundaryValueCheck()
     },
     rightCtrlMouseDown (e) {
       this.lastXPostion = e.clientX
@@ -153,11 +151,6 @@ export default {
         el.style.left = currentLeft - 1 + 'px'
         el.style.width = currentWidth + 'px'
       }
-    },
-    boundaryValueCheck () {
-      let currentLeft = parseInt(this.$refs.chunkItem.style.left.split('p')[0])
-      let currentWidth = this.$refs.chunkItem.getBoundingClientRect().width
-      this.updateSubtitles(currentWidth, currentLeft)
     }
   }
 }

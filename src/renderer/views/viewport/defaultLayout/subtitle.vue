@@ -47,12 +47,20 @@ export default {
       fileIndex: 1, // 文件索引
       splitDuration: 10, // * 切分持续时间
       exportType: 'srt',
-      lastNum: 2// 帮助校准结尾时间引入的
+      lastNum: 2, // 帮助校准结尾时间引入的
+      currentFileObj: null
     }
   },
-  watch: {},
+  watch: {
+    filePath: {
+      handler: function (newVal, oldVal) {
+        this.currentFileObj = newVal.filePath
+      },
+      deep: true
+    }
+  },
   computed: {
-    ...mapState(['duration', 'currentTime', 'loading']),
+    ...mapState(['duration', 'currentTime', 'loading', 'filePath']),
     videoDuration () {
       return this.duration.duration.duration
     }
@@ -134,7 +142,7 @@ export default {
           this.fileIndex++
           this.splitAudio()
         } else {
-          aiAudio(this.srtObjTemp)
+          aiAudio(this.srtObjTemp, this.currentFileObj.name)
         }
       } catch (error) {
         this.setLoading(false)

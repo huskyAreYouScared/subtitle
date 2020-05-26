@@ -14,7 +14,7 @@ import { saveSubtitlesHistory } from '@/utils/dataOperator'
 // split audio file name output_1.wav recursion finish restore recognizeIndex 0
 let recognizeIndex = 1
 let currentFileName = ''
-let functionConfig = null
+let functionConfig = null // function config from datastore
 function loadingHide () {
   store.commit('setLoading', false)
 }

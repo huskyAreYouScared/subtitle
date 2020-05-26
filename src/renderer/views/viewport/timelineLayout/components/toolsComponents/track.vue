@@ -35,6 +35,7 @@
 <script>
 import subtitlesChunk from './chunk'
 import { mapState } from 'vuex'
+import { toSrtTime } from 'subtitle'
 export default {
   props: {
     subtitleData: {
@@ -71,6 +72,22 @@ export default {
           this.subtitleAutoScroll(this.videoDuration,
             newVal.currentTime, this.splitDuration, this.$refs.subtitleContainer)
         }
+      },
+      deep: true
+    },
+    // subtitles value update
+    subtitleData: {
+      handler: function (newVal) {
+        newVal.forEach(item => {
+          if (item.startSecond < 0) {
+            item.startSecond = 0
+            item.start = toSrtTime(0)
+          }
+          if (item.endSecond > this.videoDuration) {
+            item.endSecond = this.videoDuration
+            item.end = toSrtTime(this.videoDuration * 1000)
+          }
+        })
       },
       deep: true
     }
