@@ -9,6 +9,7 @@
       <mergeSubtitleInVideo :subtitleData="subtilesList"/>
     </section>
     <subtitlesTrack :subtitleData="subtilesList" @selectChunk="currentSelectChunk" />
+    <srtShow :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
     <editSubtitles :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
   </div>
 </template>
@@ -20,6 +21,7 @@ import subtitlesExport from '@/views/viewport/common/subtitlesExport'
 import createSubtitles from './toolsComponents/createSubtitles'
 import subtitlesTrack from './toolsComponents/track'
 import editSubtitles from './toolsComponents/editSubtitles'
+import srtShow from './toolsComponents/srtShow'
 export default {
   components: {
     subtitlesTrack,
@@ -27,7 +29,8 @@ export default {
     historyManager,
     mergeSubtitleInVideo,
     subtitlesExport,
-    editSubtitles
+    editSubtitles,
+    srtShow
   },
   data: function () {
     return {

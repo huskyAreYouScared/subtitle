@@ -95,14 +95,14 @@ export default {
     addSubtitles (audioSize) {
       let endSecond = 0
       if (this.videoDuration - this.currentSecond > this.splitDuration) {
-        endSecond = this.splitDuration + this.currentSecond
+        endSecond = this.splitDuration + this.currentSecond - 0.1
       } else {
-        endSecond = this.videoDuration
+        endSecond = this.videoDuration - 0.1
       }
       this.subtilesList.push({
         index: this.fileIndex,
-        start: toSrtTime(this.currentSecond * 1000),
-        end: toSrtTime(endSecond * 1000),
+        start: toSrtTime(this.currentSecond * 1000).split('.')[0],
+        end: toSrtTime(endSecond * 1000).split('.')[0],
         value: '',
         audioFlieName: `output_${this.fileIndex}.wav`,
         startSecond: this.currentSecond,

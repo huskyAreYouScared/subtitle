@@ -81,11 +81,11 @@ export default {
         newVal.forEach(item => {
           if (item.startSecond < 0) {
             item.startSecond = 0
-            item.start = toSrtTime(0)
+            item.start = toSrtTime(0).split('.')[0]
           }
           if (item.endSecond > this.videoDuration) {
             item.endSecond = this.videoDuration
-            item.end = toSrtTime(this.videoDuration * 1000)
+            item.end = toSrtTime(this.videoDuration * 1000).split('.')[0]
           }
         })
       },
