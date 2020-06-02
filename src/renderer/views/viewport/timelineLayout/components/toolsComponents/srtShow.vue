@@ -9,7 +9,6 @@
 
 <script>
 export default {
-  components: {},
   props: {
     subtitleData: {
       type: Array,
@@ -21,19 +20,6 @@ export default {
       type: Number,
       default: 0
     }
-  },
-  data () {
-    return {
-
-    }
-  },
-  computed: {},
-  watch: {},
-  methods: {
-
-  },
-  mounted () {
-
   }
 }
 </script>

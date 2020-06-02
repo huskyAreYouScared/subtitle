@@ -7,10 +7,12 @@
       <subtitlesExport fileType="ass" :subtitleData="subtilesList"/>
       <historyManager :subtitleData="subtilesList"/>
       <mergeSubtitleInVideo :subtitleData="subtilesList"/>
+      <lastOrNext @updateIndex="updateIndex" :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
     </section>
     <subtitlesTrack :subtitleData="subtilesList" @selectChunk="currentSelectChunk" />
     <srtShow :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
     <editSubtitles :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
+    
   </div>
 </template>
 
@@ -21,6 +23,7 @@ import subtitlesExport from '@/views/viewport/common/subtitlesExport'
 import createSubtitles from './toolsComponents/createSubtitles'
 import subtitlesTrack from './toolsComponents/track'
 import editSubtitles from './toolsComponents/editSubtitles'
+import lastOrNext from './toolsComponents/lastOrNext'
 import srtShow from './toolsComponents/srtShow'
 export default {
   components: {
@@ -30,7 +33,8 @@ export default {
     mergeSubtitleInVideo,
     subtitlesExport,
     editSubtitles,
-    srtShow
+    srtShow,
+    lastOrNext
   },
   data: function () {
     return {
@@ -44,6 +48,9 @@ export default {
     },
     currentSelectChunk (subtitlesIndex) {
       this.currentSubtitlesIndex = subtitlesIndex
+    },
+    updateIndex (updateIndex) {
+      this.currentSubtitlesIndex = updateIndex
     }
   }
 }
