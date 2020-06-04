@@ -25,7 +25,8 @@
       @selectChunk="$emit('selectChunk', subtitlesIndex)"
       v-for="(subtitlesItem,subtitlesIndex) in subtitleData" 
       :key="subtitlesIndex+'subtitles'"
-      :chunkInfo="subtitlesItem" 
+      :chunkInfo="subtitlesItem"
+      :currentIndex="currentIndex"
       :leftLimit="subtitlesIndex === 0?0.1:subtitleData[subtitlesIndex-1].endSecond"
       :rightLimit="subtitleData[subtitlesIndex+1]?subtitleData[subtitlesIndex+1].startSecond:videoDuration - 0.05"
     />
@@ -45,6 +46,10 @@ export default {
     scrollStateCtrl: {
       type: Boolean,
       default: false
+    },
+    currentIndex: {
+      type: Number,
+      default: 0
     }
   },
   components: {
@@ -90,6 +95,9 @@ export default {
         })
       },
       deep: true
+    },
+    currentIndex (newVal) {
+      this.$refs.track.scrollLeft = this.subtitleData[newVal].startSecond * 50
     }
   },
   subtitleData: function () {
@@ -100,7 +108,6 @@ export default {
   },
   methods: {
     selectChunk (subtitlesIndex) {
-      console.log(123)
       this.$emit('selectChunk', subtitlesIndex)
     },
     mouseDown (e) {

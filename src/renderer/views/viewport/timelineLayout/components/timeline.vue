@@ -9,7 +9,7 @@
       <mergeSubtitleInVideo :subtitleData="subtilesList"/>
       <lastOrNext @updateIndex="updateIndex" :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
     </section>
-    <subtitlesTrack :subtitleData="subtilesList" @selectChunk="currentSelectChunk" />
+    <subtitlesTrack :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" @selectChunk="currentSelectChunk" />
     <srtShow :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
     <editSubtitles :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
     
