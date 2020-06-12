@@ -1,5 +1,5 @@
 @mixin settingBorder {
-  border: 1px dashed $text;
+  border: 1px dashed $textAlpha;
   border-radius: 15px;
 }
 .setting-main{

@@ -23,6 +23,8 @@ export function fsWriteStream (path, subtitleData, subtitleType, splitDuration, 
       resolve(true)
     })
     writeStream.on('error', (err) => {
+      console.log(err)
+
       reject(err)
     })
   })

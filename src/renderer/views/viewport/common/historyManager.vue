@@ -21,6 +21,7 @@
 import { mapState } from 'vuex'
 import { ipcRenderer as ipc } from 'electron'
 import { deepCloneJson } from '@/utils/tools'
+import { fsWriteStream } from '@/utils/fs'
 export default {
   props: {
     subtitleData: {
@@ -44,7 +45,8 @@ export default {
   },
   data: function () {
     return {
-      currentFile: null
+      currentFile: null,
+      tempfilePath: `${this.$objectPath}/temp/temp.srt`
     }
   },
   mounted () {
@@ -71,6 +73,7 @@ export default {
         subtitlesHistory[historyIndex].subtitles.forEach(subtitleItem => {
           this.subtitleData.push(subtitleItem)
         })
+        this.generteSubtitlesFile(this.tempfilePath, subtitlesHistory[historyIndex].subtitles)
       }
     },
     saveSubtitles () {
@@ -123,6 +126,19 @@ export default {
         }
       }
       return index
+    },
+    generteSubtitlesFile (path, subtitles) {
+      fsWriteStream(path, subtitles, 'srt', 10, 25.5).then(res => {
+        ipc.send('custom-message', {
+          msg: '成功',
+          type: 'info'
+        })
+      }, () => {
+        ipc.send('custom-message', {
+          msg: '失败',
+          type: 'error'
+        })
+      })
     }
   }
 }

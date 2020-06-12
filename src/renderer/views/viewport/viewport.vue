@@ -22,7 +22,6 @@ export default {
   methods: {
     init () {
       this.layoutConfig = this.$DB.read().get('layoutConfig').value()
-      console.log(this.$DB.read().get('layoutConfig').value())
     }
   },
   mounted () {
