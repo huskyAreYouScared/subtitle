@@ -1,4 +1,4 @@
-import { joinAssFile, joinBCCFlie, joinSrtFlie } from '@/utils/tools'
+import { joinAssFile, joinBCCFile, joinSrtFile, joinVttFile } from '@/utils/tools'
 let fs = require('fs')
 
 /**
@@ -10,12 +10,21 @@ export function fsWriteStream (path, subtitleData, subtitleType, splitDuration, 
   return new Promise((resolve, reject) => {
     const writeStream = fs.createWriteStream(path)
     writeStream.on('open', () => {
-      if (subtitleType === 'ass') {
-        writeStream.write(joinAssFile(subtitleData), 'utf-8')
-      } else if (subtitleType === 'srt') {
-        writeStream.write(joinSrtFlie(subtitleData), 'utf-8')
-      } else if (subtitleType === 'bcc') {
-        writeStream.write(joinBCCFlie(subtitleData, splitDuration, totalDuration), 'utf-8')
+      switch (subtitleType.toLowerCase()) {
+        case 'ass':
+          writeStream.write(joinAssFile(subtitleData), 'utf-8')
+          break
+        case 'srt':
+          writeStream.write(joinSrtFile(subtitleData), 'utf-8')
+          break
+        case 'bcc':
+          writeStream.write(joinBCCFile(subtitleData, splitDuration, totalDuration), 'utf-8')
+          break
+        case 'vtt':
+          writeStream.write(joinVttFile(subtitleData), 'utf-8')
+          break
+        default: writeStream.write(joinSrtFile(subtitleData), 'utf-8')
+          break
       }
       writeStream.end()
     })

@@ -1,6 +1,18 @@
 <template>
   <div>
-    <video ref="currentVideo" :style="customStyle" class="video-style" controls :src="`file:${currentPath}`"></video>
+    <video 
+      ref="currentVideo" 
+      autoplay="autoplay" 
+      :style="customStyle" 
+      autobuffer 
+      crossorigin="anonymous" 
+      class="video-style" 
+      controls
+      loop
+    >
+      <source :src="`file:${currentPath}`">
+      <track :src="`${this.$objectPath}/temp/temp.vtt`" kind="subtitles" label="中文字幕" srclang="zh"/>
+    </video>
   </div>
 </template>
 
@@ -40,7 +52,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

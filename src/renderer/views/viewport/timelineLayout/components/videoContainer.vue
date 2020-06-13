@@ -1,6 +1,6 @@
 <template>
   <div class="tl-video-container">
-    <showVideo customStyle="width:60%;margin:30px auto 10px;display:block;" v-if='currentFile !== null' :currentPath='currentFile.showPath'></showVideo>
+    <showVideo :customStyle="customStyle" v-if='currentFile !== null' :currentPath='currentFile.showPath'></showVideo>
     <div class='novideo text' v-else>请选择视频文件</div>
   </div>
 </template>
@@ -26,7 +26,8 @@ export default {
   },
   data () {
     return {
-      currentFile: null
+      currentFile: null,
+      customStyle: 'width:60%;margin:20px auto 20px;display:block;'
     }
   }
 }

@@ -1,6 +1,7 @@
 import route from '@/router'
 import {config} from '@All/utils/config.js'
 import db from '@All/utils/dataStore'
+import {toVttTime} from 'subtitle'
 // mp4,webm,ogg
 export function checkAllowFile (file) {
   let regexp = new RegExp(`.(${config.audioFormat.concat(config.videoFormat).join('|')})$`)
@@ -29,10 +30,21 @@ export function timeLineProcess (second) {
  *
  * @param {Array} subtitleData
  */
-export function joinSrtFlie (subtitleData) {
+export function joinSrtFile (subtitleData) {
   let appendText = ''
   subtitleData.forEach((item) => {
     appendText += `${item.index}\n${item.start} --> ${item.end}\n${item.value}\n\n`
+  })
+  return appendText
+}
+/**
+ *
+ * @param {Array} subtitleData
+ */
+export function joinVttFile (subtitleData) {
+  let appendText = 'WEBVTT\n\n'
+  subtitleData.forEach((item) => {
+    appendText += `${item.index}\n${toVttTime(item.startSecond * 1000)} --> ${toVttTime(item.endSecond * 1000)}\n${item.value}\n\n`
   })
   return appendText
 }
@@ -43,7 +55,7 @@ export function joinSrtFlie (subtitleData) {
  * @param {Number} splitDuration  切割的时间
  * @param {Number} totalDuration 总时长
  */
-export function joinBCCFlie (subtitleData, splitDuration, totalDuration) {
+export function joinBCCFile (subtitleData, splitDuration, totalDuration) {
   let BCCObj = {
     'font_size': 0.4,
     'font_color': '#FFFFFF',

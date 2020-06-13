@@ -46,7 +46,7 @@ export default {
   data: function () {
     return {
       currentFile: null,
-      tempfilePath: `${this.$objectPath}/temp/temp.srt`
+      tempfilePath: `${this.$objectPath}/temp/temp.vtt`
     }
   },
   mounted () {
@@ -128,11 +128,8 @@ export default {
       return index
     },
     generteSubtitlesFile (path, subtitles) {
-      fsWriteStream(path, subtitles, 'srt', 10, 25.5).then(res => {
-        ipc.send('custom-message', {
-          msg: '成功',
-          type: 'info'
-        })
+      fsWriteStream(path, subtitles, 'vtt', 10, 25.5).then(res => {
+        // other operate
       }, () => {
         ipc.send('custom-message', {
           msg: '失败',
