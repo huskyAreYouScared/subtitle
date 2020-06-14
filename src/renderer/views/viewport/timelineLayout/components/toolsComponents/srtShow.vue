@@ -1,9 +1,9 @@
 <!-- display subtitles item and time and start time -->
 <template>
   <div class='srt-timeline-show-box' v-if="subtitleData.length > 0">
-    <input disabled type="text" v-model="subtitleData[currentIndex].start" />
+    <input disabled type="text" class="srt-show-input" v-model="subtitleData[currentIndex].start" />
     <span class="text">~</span>
-    <input disabled type="text" v-model="subtitleData[currentIndex].end" />
+    <input disabled type="text" class="srt-show-input" v-model="subtitleData[currentIndex].end" />
   </div>
 </template>
 

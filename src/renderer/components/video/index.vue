@@ -1,8 +1,6 @@
 <template>
-  <div>
     <video 
       ref="currentVideo" 
-      autoplay="autoplay" 
       :style="customStyle" 
       autobuffer 
       crossorigin="anonymous" 
@@ -13,7 +11,6 @@
       <source :src="`file:${currentPath}`">
       <track :src="`${this.$objectPath}/temp/temp.vtt`" kind="subtitles" label="中文字幕" srclang="zh"/>
     </video>
-  </div>
 </template>
 
 <script>
@@ -31,8 +28,10 @@ export default {
       default: ''
     },
     customStyle: {
-      type: String,
-      default: ''
+      type: Object,
+      default: function () {
+        return {}
+      }
     }
   },
   mounted () {

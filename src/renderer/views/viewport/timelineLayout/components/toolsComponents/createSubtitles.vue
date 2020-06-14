@@ -34,6 +34,8 @@ export default {
     filePath: {
       handler: function (newVal, oldVal) {
         this.currentFileObj = newVal.filePath
+        this.init()
+        this.$emit('updateSubtitles', [])
       },
       deep: true
     }

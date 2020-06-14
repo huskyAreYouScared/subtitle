@@ -12,7 +12,7 @@
         </span>
       </p>
       <div class="file-item-empty text" v-show="filePath.length==0">
-        <span class="filler">支持拖拽上传文件</span>
+        <span class="filler">拖拽文件到这里</span>
       </div>
     </div>
   </div>

@@ -27,7 +27,12 @@ export default {
   data () {
     return {
       currentFile: null,
-      customStyle: 'width:60%;margin:20px auto 20px;display:block;'
+      customStyle: {
+        height: '95%',
+        margin: '10px auto',
+        display: 'block',
+        maxWidth: '100%'
+      }
     }
   }
 }
