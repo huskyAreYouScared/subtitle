@@ -11,6 +11,13 @@ import os from 'os'
 import { ipcRenderer as ipc } from 'electron'
 import db from '../utils/dataStore'
 import inputOnlyNumber from '@/vue-plugins/inputOnlyNumber/index'
+import * as Sentry from '@sentry/browser'
+import { Vue as VueIntegration } from '@sentry/integrations'
+// add error monitor
+Sentry.init({
+  dsn: 'https://be5ccff56665486eb961f16717d9982e@o410403.ingest.sentry.io/5284310',
+  integrations: [new VueIntegration({ Vue, attachProps: true })]
+})
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false

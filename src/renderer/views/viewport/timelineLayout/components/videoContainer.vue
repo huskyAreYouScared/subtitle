@@ -19,7 +19,6 @@ export default {
     filePath: {
       handler: function (newVal, oldVal) {
         this.currentFile = newVal.filePath
-        console.log(newVal)
       },
       deep: true
     }

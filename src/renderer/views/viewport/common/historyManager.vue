@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { ipcRenderer as ipc } from 'electron'
 import { deepCloneJson } from '@/utils/tools'
 import { fsWriteStream } from '@/utils/fs'
@@ -52,6 +52,7 @@ export default {
   mounted () {
   },
   methods: {
+    ...mapMutations(['setUpdateSubtitlesStatus']),
     historyReset () {
       let subtitlesHistory = this.$DB.read().get('subtitlesHistory').value()
       if (this.currentFile === null) {
@@ -75,6 +76,7 @@ export default {
         })
         this.generteSubtitlesFile(this.tempfilePath, subtitlesHistory[historyIndex].subtitles)
       }
+      this.setUpdateSubtitlesStatus(new Date())
     },
     saveSubtitles () {
       let subtitlesHistory = this.$DB.read().get('subtitlesHistory').value()
@@ -86,13 +88,13 @@ export default {
         return false
       }
       // if presence then override
-      let isSave = this.isExist(subtitlesHistory, this.currentFile.name)
-      if (isSave !== null) {
-        subtitlesHistory[isSave].subtitles = []
+      let historyIndex = this.isExist(subtitlesHistory, this.currentFile.name)
+      if (historyIndex !== null) {
+        subtitlesHistory[historyIndex].subtitles = []
         this.subtitleData.forEach(item => {
-          subtitlesHistory[isSave].subtitles.push(item)
+          subtitlesHistory[historyIndex].subtitles.push(item)
         })
-        // this.$set(this.subtitlesHistory, isSave, deepCloneJson(this.subtitleData))
+        // this.$set(this.subtitlesHistory, historyIndex, deepCloneJson(this.subtitleData))
       } else {
         subtitlesHistory.push(
           {fileName: this.currentFile.name, subtitles: deepCloneJson(this.subtitleData)}
@@ -110,6 +112,8 @@ export default {
           type: 'error'
         })
       }
+      this.generteSubtitlesFile(this.tempfilePath, subtitlesHistory[historyIndex].subtitles)
+      this.setUpdateSubtitlesStatus(new Date())
     },
     /**
      * @description is exist

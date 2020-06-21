@@ -1,5 +1,6 @@
 <template>
     <video 
+      v-if="!isUpdate"
       ref="currentVideo" 
       :style="customStyle" 
       autobuffer 
@@ -9,7 +10,7 @@
       loop
     >
       <source :src="`file:${currentPath}`">
-      <track :src="`${this.$objectPath}/temp/temp.vtt`" kind="subtitles" label="中文字幕" srclang="zh"/>
+      <track  :src="`${this.$objectPath}/temp/temp.vtt`" kind="subtitles" label="中文字幕" default srclang="zh"/>
     </video>
 </template>
 
@@ -17,10 +18,19 @@
 import {mapState, mapMutations} from 'vuex'
 export default {
   watch: {
-
+    updateSubtitlesStatus: {
+      handler: function () {
+        this.isUpdate = true
+        console.log('updateSubtitlesStatus')
+        this.$nextTick(() => {
+          this.isUpdate = false
+        })
+      },
+      deep: true
+    }
   },
   computed: {
-    ...mapState(['duration', 'currentTime'])
+    ...mapState(['duration', 'currentTime', 'updateSubtitlesStatus'])
   },
   props: {
     currentPath: {
@@ -32,6 +42,11 @@ export default {
       default: function () {
         return {}
       }
+    }
+  },
+  data: function () {
+    return {
+      isUpdate: false
     }
   },
   mounted () {

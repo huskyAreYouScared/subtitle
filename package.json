@@ -87,6 +87,8 @@
     }
   },
   "dependencies": {
+    "@sentry/browser": "^5.17.0",
+    "@sentry/integrations": "^5.17.0",
     "app-root-dir": "^1.0.2",
     "axios": "^0.18.0",
     "baidu-aip-sdk": "^2.4.5",

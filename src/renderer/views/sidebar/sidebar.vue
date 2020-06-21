@@ -35,7 +35,7 @@ export default {
   },
   watch: {},
   methods: {
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'setFilePath']),
     selectLocalFile () {
       ipc.send('open-file-dialog')
     },
@@ -83,7 +83,7 @@ export default {
       })
     },
     selectFile (item) {
-      this.$store.commit('setFilePath', item)
+      this.setFilePath(item)
       this.setLoading(true)
       // * check file format
       if (config.audioFormat.includes(item.format)) {

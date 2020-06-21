@@ -130,11 +130,11 @@ export default {
       }
     },
     updateSubtitles (currentWidth, currentLeft) {
+      this.limitCheck(this.$refs.chunkItem, currentWidth, currentLeft)
       this.chunkInfo.endSecond = parseFloatFixed(((currentLeft + currentWidth) / 100) * 2, 2)
       this.chunkInfo.end = toSrtTime(this.chunkInfo.endSecond * 1000).split('.')[0]
       this.chunkInfo.startSecond = parseFloatFixed((currentLeft / 100) * 2, 2)
       this.chunkInfo.start = toSrtTime(this.chunkInfo.startSecond * 1000).split('.')[0]
-      this.limitCheck(this.$refs.chunkItem, currentWidth, currentLeft)
     },
     limitCheck (el, currentWidth, currentLeft) {
       // width limit
@@ -153,7 +153,7 @@ export default {
       }
       // current right border cannot be greater than the limitRight value
       if (thanRight <= currentLeft + currentWidth) {
-        el.style.left = currentLeft - 0.1 + 'px'
+        el.style.left = currentLeft - 0.01 + 'px'
         el.style.width = currentWidth + 'px'
       }
     }
