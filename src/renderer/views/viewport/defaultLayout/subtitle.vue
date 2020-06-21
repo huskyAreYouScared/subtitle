@@ -2,7 +2,7 @@
   <div style="width:100%">
     <div>
       <div class="subtitle-ctrl-container">
-        <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="splitStep">生成字幕</button>
+        <button type="button" class="subtitle-ctrl-btn bg-tint text"  @click="splitStep">生成字幕</button>
         <subtitlesExport fileType="srt" :subtitleData="srtObjTemp"/>
         <subtitlesExport fileType="bcc" :subtitleData="srtObjTemp"/>
         <subtitlesExport fileType="ass" :subtitleData="srtObjTemp"/>

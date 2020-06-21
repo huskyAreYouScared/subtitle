@@ -3,7 +3,7 @@
     <button
       v-if="subtitleData.length > 0 && currentIndex !== subtitleData.length - 1"
       type="button" 
-      class="subtitle-ctrl-btn bg-tint"  
+      class="subtitle-ctrl-btn bg-tint text"  
       @click="next"
     >
       下一个
@@ -11,7 +11,7 @@
     <button
       v-if="currentIndex !== 0"
       type="button" 
-      class="subtitle-ctrl-btn bg-tint"  
+      class="subtitle-ctrl-btn bg-tint text"  
       @click="last"
     >
       上一个

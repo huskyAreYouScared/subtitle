@@ -43,6 +43,7 @@
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
+        border-radius: 5px;
         z-index: 2;
         width: 300px;
         height: 60%;
@@ -88,7 +89,6 @@
       border: 0;
       color: $text;
       text-indent: 4px;
-      @include boxFFFShadow;
     }
   }
   .edit-subtitles-box{
@@ -100,7 +100,6 @@
       width: 100%;
       background: $tint;
       color: $text;
-      @include boxFFFShadow;
     }
   }
 }

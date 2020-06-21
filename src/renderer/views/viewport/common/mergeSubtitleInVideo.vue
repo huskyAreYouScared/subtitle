@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="mergeSubtitleInVideo()">合成</button>
+  <button type="button" class="subtitle-ctrl-btn bg-tint text"  @click="mergeSubtitleInVideo()">合成</button>
 </template>
 
 <script>

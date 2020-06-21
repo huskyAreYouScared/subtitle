@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="splitStep">生成字幕</button>
+  <button type="button" class="subtitle-ctrl-btn bg-tint text"  @click="splitStep">生成字幕</button>
 </template>
 
 <script>

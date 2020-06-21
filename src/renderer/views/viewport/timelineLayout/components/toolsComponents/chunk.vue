@@ -2,8 +2,8 @@
   <div
     @click="selectChunk"
     ref="chunkItem" 
-    class="chunk-container no-select" 
-    :class="{'chunk-select-active':currentIndex + 1 === chunkInfo.index}"
+    class="chunk-container no-select " 
+    :class="{'border-neon':currentIndex + 1 === chunkInfo.index}"
     :style="{'left':(this.chunkInfo.startSecond * 100 /2)+'px',
             'width':((this.chunkInfo.endSecond - this.chunkInfo.startSecond) * 100 /2 )+'px'}"
     @mousedown="chunkMouseDown"

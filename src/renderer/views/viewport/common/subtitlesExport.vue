@@ -1,6 +1,6 @@
 <!-- assExport -->
 <template>
-   <button type="button" class="subtitle-ctrl-btn bg-tint"  @click="exportSubtitle">{{fileType}}</button>
+   <button type="button" class="subtitle-ctrl-btn bg-tint text"  @click="exportSubtitle">{{fileType}}</button>
 </template>
 
 <script>

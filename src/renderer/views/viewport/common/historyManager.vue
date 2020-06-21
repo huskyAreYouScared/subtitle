@@ -2,14 +2,14 @@
   <span>
     <button 
       type="button" 
-      class="subtitle-ctrl-btn bg-tint"  
+      class="subtitle-ctrl-btn bg-tint text"  
       @click="saveSubtitles"
     >
       保存
     </button>
     <button 
       type="button" 
-      class="subtitle-ctrl-btn bg-tint"  
+      class="subtitle-ctrl-btn bg-tint text"  
       @click="historyReset"
     >
       恢复
