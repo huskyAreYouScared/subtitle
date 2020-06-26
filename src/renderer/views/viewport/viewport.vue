@@ -22,6 +22,7 @@ export default {
   methods: {
     init () {
       this.layoutConfig = this.$DB.read().get('layoutConfig').value()
+      document.documentElement.style.setProperty('--neon-color', this.layoutConfig.themeColor)
     }
   },
   mounted () {

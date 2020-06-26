@@ -10,7 +10,8 @@ $sub-text:#BDBDBD;
 $test:rgb(26, 26, 26);
 $vivid:rgb(0, 255, 255);
 $smallTxt:12px;
-$neno:#f78fb3;
+$neon:var(--neon-color);
+
 .bg{
   background: $primary;
 }
@@ -28,17 +29,17 @@ $neno:#f78fb3;
   color: $text;
   text-shadow:  0 -40px 1000px,
                 0 0 2px,
-                0 0 52px $neno,
-                0 0 26px $neno,
-                0 0 5px $neno,
+                0 0 52px $neon,
+                0 0 26px $neon,
+                0 0 5px $neon,
                 0 10px 3px #000;
 }
 .border-neon{
   box-shadow: 0 -40px 1000px,
               0 0 2px,
-              0 0 52px $neno,
-              0 0 26px $neno,
-              0 0 5px $neno;
+              0 0 52px $neon,
+              0 0 26px $neon,
+              0 0 5px $neon;
 }
 .mini-text{
   font-size: 12px;

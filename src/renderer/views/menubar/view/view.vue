@@ -5,6 +5,7 @@
       <select v-model="layoutConfig.viewport" class="setting-input text" @change="viewportChange">
         <option :value ="viewportItem.value" v-for="(viewportItem,index) in viewportList" :key="index">{{viewportItem.name}}</option>
       </select>
+      <themeColor :layoutConfig="layoutConfig" />
     </div>
     <div class="back-btn text" @click="closeDialog('view')">返回(back)</div>
     <div class="save-btn text" @click="saveSetting">保存(save)</div>
@@ -13,11 +14,16 @@
 
 <script>
 import { ipcRenderer as ipc } from 'electron'
+import themeColor from './components/themeColor'
 export default {
+  components: {
+    themeColor
+  },
   data: function () {
     return {
       layoutConfig: {
-        viewport: 'default'
+        viewport: 'default',
+        themeColor: '#f78fb3'
       },
       viewportList: [
         { value: 'default', name: '默认' },
