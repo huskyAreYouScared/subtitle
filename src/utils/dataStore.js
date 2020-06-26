@@ -60,7 +60,7 @@ if (!db.has('subtitlesHistory').value()) {
 // layout
 if (!db.has('layoutConfig').value()) {
   db.set('layoutConfig', {
-    viewport: 'default'
+    viewport: 'timelineLayout' // default view timeline layout
   }).write()
 }
 

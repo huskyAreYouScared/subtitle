@@ -8,12 +8,17 @@
     .novideo{
       width: 45%;
       height: 60%;
-      border: 1px dashed $text;
-      border-radius: 10px;
+      font-size: 24px;
       display: flex;
       justify-content: center;
       align-items: center;
       margin: 30px auto 0;
+      transition: all 0.5s;
+      transform:rotateZ(0deg) ;
+    }
+    .novideo:hover{
+      transition: all 0.5s;
+      transform:rotateZ(360deg) ;
     }
   }
 

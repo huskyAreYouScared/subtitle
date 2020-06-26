@@ -2,7 +2,8 @@
 $primary:#212121;
 $primaryAlpha:#21212173;
 $deep:#1d1d1d;
-$tint:rgb(68, 68, 68);
+$tint:rgba(68, 68, 68, 0.5);
+$tintNoAlpha:rgb(68, 68, 68);
 $text:#F5F5F5;
 $textAlpha:rgba(245, 245, 245, 0.3);
 $sub-text:#BDBDBD;
@@ -16,6 +17,9 @@ $neno:#f78fb3;
 
 .bg-tint{
   background: $tint;
+}
+.bg-tint:hover{
+  background: $tintNoAlpha;
 }
 .bg-deep{
   background: $deep;
@@ -56,9 +60,11 @@ $neno:#f78fb3;
 }
 .text-huge{
   font-size: 100px!important;
-  border-bottom:1px  ;
+  border-bottom:1px;
 }
-
+.icon-mini-size{
+  font-size: 12px!important;
+}
 @mixin fontCustom($size, $color) {
   @if($size!=0){
     font-size: $size;

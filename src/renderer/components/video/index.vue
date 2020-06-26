@@ -7,7 +7,6 @@
       crossorigin="anonymous" 
       class="video-style" 
       controls
-      loop
     >
       <source :src="`file:${currentPath}`">
       <track  :src="`${this.$objectPath}/temp/temp.vtt`" kind="subtitles" label="中文字幕" default srclang="zh"/>
@@ -21,7 +20,6 @@ export default {
     updateSubtitlesStatus: {
       handler: function () {
         this.isUpdate = true
-        console.log('updateSubtitlesStatus')
         this.$nextTick(() => {
           this.isUpdate = false
         })

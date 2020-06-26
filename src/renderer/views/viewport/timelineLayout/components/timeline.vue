@@ -8,6 +8,7 @@
       <historyManager :subtitleData="subtilesList"/>
       <mergeSubtitleInVideo :subtitleData="subtilesList"/>
       <lastOrNext @updateIndex="updateIndex" :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
+      <addSubtitlesChunk :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex"/>
     </section>
     <subtitlesTrack :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" @selectChunk="currentSelectChunk" />
     <srtShow :subtitleData="subtilesList" :currentIndex="currentSubtitlesIndex" />
@@ -20,6 +21,7 @@
 import mergeSubtitleInVideo from '@/views/viewport/common/mergeSubtitleInVideo'
 import historyManager from '@/views/viewport/common/historyManager'
 import subtitlesExport from '@/views/viewport/common/subtitlesExport'
+import addSubtitlesChunk from '@/views/viewport/common/addSubtitlesChunk'
 import createSubtitles from './toolsComponents/createSubtitles'
 import subtitlesTrack from './toolsComponents/track'
 import editSubtitles from './toolsComponents/editSubtitles'
@@ -30,6 +32,7 @@ export default {
     subtitlesTrack,
     createSubtitles,
     historyManager,
+    addSubtitlesChunk,
     mergeSubtitleInVideo,
     subtitlesExport,
     editSubtitles,
