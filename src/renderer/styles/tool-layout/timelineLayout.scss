@@ -40,6 +40,7 @@
         box-sizing: border-box;
         border-right: 1px solid $deep;
         z-index: 1;
+        @include cursorPointer;
       }
       .fix-last-width{
         margin-left: -5px;

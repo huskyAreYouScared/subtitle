@@ -12,14 +12,14 @@
       v-for="item in totalSecondArr" 
       :key="item"
     >
-      <span class="text mini-text no-select">{{item}}s</span>
+      <span class="text mini-text no-select">{{item|timeFilter}}</span>
     </div>
     <div
       v-if="parseFloat((videoDuration % 1).toFixed(2))>0" 
       class="scale-second text-right fix-last-width" 
       :style="{'width': 50 * parseFloat((videoDuration % 1).toFixed(2)) +'px'}"
     >
-      <span class="text mini-text no-select">{{videoDuration.toFixed(2)}}s</span>
+      <span class="text mini-text no-select">...</span>
     </div>
     <subtitlesChunk 
       @selectChunk="$emit('selectChunk', subtitlesIndex)"
@@ -37,6 +37,7 @@
 import subtitlesChunk from './chunk'
 import { mapState } from 'vuex'
 import { toSrtTime } from 'subtitle'
+import { timeFilter } from '@/filters/timeFilter'
 export default {
   props: {
     subtitleData: {
@@ -51,6 +52,9 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  filters: {
+    timeFilter
   },
   components: {
     subtitlesChunk

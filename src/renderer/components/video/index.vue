@@ -25,6 +25,12 @@ export default {
         })
       },
       deep: true
+    },
+    currentPath () {
+      this.isUpdate = true
+      this.$nextTick(() => {
+        this.isUpdate = false
+      })
     }
   },
   computed: {
