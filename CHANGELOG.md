@@ -1,3 +1,45 @@
+# [0.2.0](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.4...v0.2.0) (2020-07-19)
+
+
+### Bug Fixes
+
+* **new store updatesubtitlesstatus,historymanger:** fix video track subtitles don't update ([4e44096](https://github.com/huskyAreYouScared/subtitle/commit/4e4409676c084483cd63d5efba92fccdbe79c1c1))
+* **readme,video,track:** interview update,document update,video and timeline bug fix ([74d59e3](https://github.com/huskyAreYouScared/subtitle/commit/74d59e388035228a8bb0e14f9d0a51017f7a2697))
+* **recognize.js:** no recognize config no feedback,menubar keep top ([a3616e2](https://github.com/huskyAreYouScared/subtitle/commit/a3616e26c38ae20a10d354214bb51db6d555170d))
+* **tools:** fix srt character garbled ([e5813c2](https://github.com/huskyAreYouScared/subtitle/commit/e5813c25fbc5d235548f1b4d046a577b3657b6f6))
+
+
+### Features
+
+* **addsubtitleschunk:** can be added and deleted chunk of subtitles ([c8acf4d](https://github.com/huskyAreYouScared/subtitle/commit/c8acf4dab7a2eff9c2b3f99a9a843a7474aa78c0))
+* **chunk:** border value limit compare ([9888adc](https://github.com/huskyAreYouScared/subtitle/commit/9888adc97ab9a2d3a4d5f96066f6c50edb660acb))
+* **chunk track timeline:** change subtitles item,scroll relate postion ([35330f4](https://github.com/huskyAreYouScared/subtitle/commit/35330f436ad4fadd3731552a01af1c722de1f47c))
+* **createsubtitles , timeline ,chunk , track:** subtitles data of recognize,pass to timeline,etc ([6b544ae](https://github.com/huskyAreYouScared/subtitle/commit/6b544ae9181ba41912d998f6c86db66900b88426))
+* **createsubtitles, subtitle:** complete new version subtitles edit speech recognize algorithm ([16d8e8a](https://github.com/huskyAreYouScared/subtitle/commit/16d8e8ae4c96f87676b9437a853d91951bcf7580))
+* **datastore, setting createsubtitles, dataoperator:** complete recognize auto save subtitles data ([4041894](https://github.com/huskyAreYouScared/subtitle/commit/40418949fa138052effb9ab5fad299b224687019))
+* **lastornext:** add next and last button ,control subtitles of current select ([e124521](https://github.com/huskyAreYouScared/subtitle/commit/e12452185c47ee92c8eb9da7a95458eb579e02ca))
+* **new srtshow,timelinelayout relative file:** amend srt time value,new srt time show component ([895c080](https://github.com/huskyAreYouScared/subtitle/commit/895c080e066d869b3bc48daba23f1da0a88e6135))
+* **plugins track:** add change div size instruction plugins , use v-changeSize instruction in track ([e3feba7](https://github.com/huskyAreYouScared/subtitle/commit/e3feba7bc66e4c0a8727d0084cf7add5e09e248d))
+* **setting.vue mergesubtitleinvideo datastore.js:** add video quality config ([4c18c83](https://github.com/huskyAreYouScared/subtitle/commit/4c18c83630c3ca05d9704981998badb94043ac5a))
+* **subtitle,track,chank:** amend subtitles value ([93986df](https://github.com/huskyAreYouScared/subtitle/commit/93986df34aaefc91d47f09a7cb96aeea634526ec))
+* **themecolor:** dynamic change theme color ([ecfe089](https://github.com/huskyAreYouScared/subtitle/commit/ecfe08925c3fffacf16f50cdb76b4b562aa74d18))
+* **timeline.vue new historyoperator.vue:** operate timeline history,add delete timeline item ([993be57](https://github.com/huskyAreYouScared/subtitle/commit/993be57657d8ca5f9ff5698295e9787a5e237cf7))
+* **timelinelayout:** add edit subtitles function ([225d441](https://github.com/huskyAreYouScared/subtitle/commit/225d4412cd8836f267af983b913710d4ed69d93c))
+* **timelinelayout view etc:** view edit ([7eb5356](https://github.com/huskyAreYouScared/subtitle/commit/7eb535615ed0a669425b8edcc86c113eb555a970))
+* **tools video components historymanager:** add vtt subtitles track in the video element ([568d54c](https://github.com/huskyAreYouScared/subtitle/commit/568d54c63e8a947feaf9f8a090b1aea2439ef2f4))
+* **variable.scss:** change text style ([2c3338f](https://github.com/huskyAreYouScared/subtitle/commit/2c3338ff8550a1a84b24199e0204c156ec88c8b9))
+* style optimization, text update ([5bddb3c](https://github.com/huskyAreYouScared/subtitle/commit/5bddb3c26c504cd3d7db52a49fad151cb1da0023))
+* **track:** add timescale ([57ed0f4](https://github.com/huskyAreYouScared/subtitle/commit/57ed0f42306a0b01e79a7a7ab3dd7e5891df38be))
+* **track timeline:** add track components ([d4a88bd](https://github.com/huskyAreYouScared/subtitle/commit/d4a88bd32d5a220ecf9fd672a31ded1cac8db351))
+
+
+### Performance Improvements
+
+* **chunk:** optimization chunk slider component ([e770b8e](https://github.com/huskyAreYouScared/subtitle/commit/e770b8ec780ec3c6a20f10ac85dfe1618b6cd2ba))
+* **track:** track compute optimization ([066829c](https://github.com/huskyAreYouScared/subtitle/commit/066829c267185fe9d8f5bfd04fa4919c0e412c84))
+
+
+
 ## [0.1.4](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.2...v0.1.4) (2020-04-28)
 
 
