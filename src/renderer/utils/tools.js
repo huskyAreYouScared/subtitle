@@ -31,7 +31,7 @@ export function timeLineProcess (second) {
  * @param {Array} subtitleData
  */
 export function joinSrtFile (subtitleData) {
-  let appendText = ''
+  let appendText = '\uFEFF'
   subtitleData.forEach((item) => {
     appendText += `${item.index}\n${item.start} --> ${item.end}\n${item.value}\n\n`
   })
