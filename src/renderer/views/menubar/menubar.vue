@@ -13,6 +13,9 @@
     <div class="menu-item text" @click="open('view')">
       视图
     </div>
+    <div class="menu-item text" @click="open('barrage')">
+      弹幕
+    </div>
     <div class="menu-item text menu-right-0" @click="mainEvent('quit')">
       <span class="iconfont icon-guanbi1"></span>
     </div>
@@ -26,6 +29,7 @@
     <about v-if="aboutDialog" @closeDialog="closeDialogEvent"/>
     <preview v-if="previewDialog" @closeDialog="closeDialogEvent"/>
     <viewMenu v-if="viewDialog" @closeDialog="closeDialogEvent"/>
+    <barrage v-if="barrageDialog" @closeDialog="closeDialogEvent"/>
   </div>
 </template>
 
@@ -34,24 +38,25 @@ import setting from './setting/setting'
 import about from './about/about'
 import preview from './preview'
 import viewMenu from './view/view'
+import barrage from './barrage'
 import { ipcRenderer as ipc } from 'electron'
 export default {
   components: {
     setting,
     about,
     preview,
-    viewMenu
+    viewMenu,
+    barrage
   },
   data () {
     return {
       settingDialog: false,
       aboutDialog: false,
       previewDialog: false,
-      viewDialog: false
+      viewDialog: false,
+      barrageDialog: false
     }
   },
-  computed: {},
-  watch: {},
   methods: {
     open (menubar) {
       switch (menubar) {
@@ -67,6 +72,9 @@ export default {
         case 'view':
           this.viewDialog = true
           break
+        case 'barrage':
+          this.barrageDialog = true
+          break
         default:
           break
       }
@@ -80,14 +88,13 @@ export default {
         this.previewDialog = false
       } else if (menubar === 'view') {
         this.viewDialog = false
+      } else if (menubar === 'barrage') {
+        this.barrageDialog = false
       }
     },
     mainEvent (mainEvent) {
       ipc.send('main-event', mainEvent)
     }
-  },
-  mounted () {
-
   }
 }
 </script>

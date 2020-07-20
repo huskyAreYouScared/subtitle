@@ -71,6 +71,11 @@ if (!db.has('functionConfig').value()) {
     isRecognizeAfterSave: false
   }).write()
 }
+
+// custom barrage
+if (!db.has('barrageData').value()) {
+  db.set('barrageData', []).write()
+}
 export default db
 
 // 作者：Molunerfinn
