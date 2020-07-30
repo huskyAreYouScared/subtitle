@@ -13,9 +13,9 @@
     <div class="menu-item text" @click="open('view')">
       视图
     </div>
-    <div class="menu-item text" @click="open('barrage')">
+    <!-- <div class="menu-item text" @click="open('barrage')">
       弹幕
-    </div>
+    </div> -->
     <div class="menu-item text menu-right-0" @click="mainEvent('quit')">
       <span class="iconfont icon-guanbi1"></span>
     </div>
