@@ -22,7 +22,7 @@
       <span class="text mini-text no-select">...</span>
     </div>
     <subtitlesChunk 
-      @selectChunk="$emit('selectChunk', subtitlesIndex)"
+      @selectChunk="selectChunk(subtitlesIndex)"
       v-for="(subtitlesItem,subtitlesIndex) in subtitleData" 
       :key="subtitlesIndex+'subtitles'"
       :chunkInfo="subtitlesItem"
@@ -101,7 +101,7 @@ export default {
       deep: true
     },
     currentIndex (newVal) {
-      this.$refs.track.scrollLeft = this.subtitleData[newVal].startSecond * 50
+      // this.$refs.track.scrollLeft = this.subtitleData[newVal].startSecond * 50
     }
   },
   subtitleData: function () {
