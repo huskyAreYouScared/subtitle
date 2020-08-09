@@ -1,3 +1,12 @@
+## [0.2.1](https://github.com/huskyAreYouScared/subtitle/compare/v0.2.0...v0.2.1) (2020-08-09)
+
+
+### Bug Fixes
+
+* **track:** don't auto position subtile chunk ([25010f7](https://github.com/huskyAreYouScared/subtitle/commit/25010f706a4a0059075e93e8a55e5d07056a4296))
+
+
+
 # [0.2.0](https://github.com/huskyAreYouScared/subtitle/compare/v0.1.4...v0.2.0) (2020-07-19)
 
 
