@@ -258,15 +258,10 @@
   resolved "https://registry.npm.taobao.org/@types/minimatch/download/@types/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha1-PcoOPzOyAPx9ETnAzZbBJoyt/Z0=
 
-"@types/node@*":
-  version "14.0.4"
-  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-14.0.4.tgz#43a63fc5edce226bed106b31b875165256271107"
-  integrity sha1-Q6Y/xe3OImvtEGsxuHUWUlYnEQc=
-
-"@types/node@^12.0.12":
-  version "12.12.41"
-  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-12.12.41.tgz#cf48562b53ab6cf85d28dde95f1d06815af275c8"
-  integrity sha1-z0hWK1OrbPhdKN3pXx0GgVrydcg=
+"@types/node@*", "@types/node@^14.6.2":
+  version "14.18.12"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.12.tgz#0d4557fd3b94497d793efd4e7d92df2f83b4ef24"
+  integrity sha512-q4jlIR71hUpWTnGhXWcakgkZeHa3CCjcQcnuzU8M891BAWA2jHiziiWEPEkdS5pFsz7H9HJiy8BrK7tBRNrY7A==
 
 "@types/yargs-parser@*":
   version "15.0.0"
@@ -3639,13 +3634,13 @@ electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.47:
   resolved "https://registry.npm.taobao.org/electron-to-chromium/download/electron-to-chromium-1.3.448.tgz#682831ecf3ce505231978f7c795a2813740cae7c"
   integrity sha1-aCgx7PPOUFIxl498eVooE3QMrnw=
 
-electron@^7.1.9:
-  version "7.3.0"
-  resolved "https://registry.npm.taobao.org/electron/download/electron-7.3.0.tgz#b4e1bd1efe32314534dba9b60ea5cc688216f3b3"
-  integrity sha1-tOG9Hv4yMUU026m2DqXMaIIW87M=
+electron@^13.6.6:
+  version "13.6.6"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-13.6.6.tgz#ebd4754b2b55d54a2e8e9cdc3d0a2bb6b7053827"
+  integrity sha512-TP2Bl1nTxaH1yRmlYiF7imzvKE/NASE0cl6wOYA3AaP/UrBGc4L3NwJfn5Z55o+1t4TH8vCRxENufESyb32HhA==
   dependencies:
     "@electron/get" "^1.0.1"
-    "@types/node" "^12.0.12"
+    "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
 elliptic@^6.0.0, elliptic@^6.5.2:
